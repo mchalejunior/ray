@@ -1,3 +1,5 @@
+[![Build status](https://saftrare.visualstudio.com/GitRnD/_apis/build/status/RayTests)](https://saftrare.visualstudio.com/GitRnD/_build/latest?definitionId=12)
+
 # ray
 
 [The Ray Tracer Challenge](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge) in .NET Core.
