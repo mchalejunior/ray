@@ -1,4 +1,4 @@
-[![Build status](https://saftrare.visualstudio.com/GitRnD/_apis/build/status/RayTests)](https://saftrare.visualstudio.com/GitRnD/_build/latest?definitionId=12)
+[![Build status](https://saftrare.visualstudio.com/GitRnD/_apis/build/status/RayTest)](https://saftrare.visualstudio.com/GitRnD/_build/latest?definitionId=12)
 
 # ray
 
