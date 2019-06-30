@@ -10,14 +10,21 @@ namespace Ray.Domain.Test.Tuples
     {
         private Vector4 _tuple = new Vector4();
 
-        [Given(@"a <- tuple (\d\.\d) (-\d\.\d) (\d\.\d) (\d\.\d)")]
-        public void InitializationValues_SetOnTupleInstance(float x, float y, float z, float w)
+        [Given(@"a <- tuple (\d\.\d) (-\d\.\d) (\d\.\d)")]
+        public void InitializationValues_SetOnTupleInstance(float x, float y, float z)
         {
             _tuple.X = x;
             _tuple.Y = y;
             _tuple.Z = z;
+        }
+
+        [And(@"a.w = (\d\.\d)")]
+        public void InitializationValues_SetOnTupleInstance(float w)
+        {
             _tuple.W = w;
         }
+
+
 
         [Then(@"a.x = (\d\.\d)")]
         public void ReadX_VerifyValue(float x)
@@ -37,22 +44,18 @@ namespace Ray.Domain.Test.Tuples
             Assert.Equal(z, _tuple.Z);
         }
 
-        [And(@"a.w = (\d\.\d)")]
-        public void ReadW_VerifyValue(float w)
+        [And(@"a.IsPoint = (.+)")]
+        public void ReadTuple_CheckForPoint(string boolToParse)
         {
-            Assert.Equal(w, _tuple.W);
+            bool expected = bool.Parse(boolToParse);
+            Assert.Equal(expected, _tuple.IsPoint());
         }
 
-        [And(@"a is a point")]
-        public void ReadTuple_VerifyIsPoint()
+        [And(@"a.IsVector = (.+)")]
+        public void ReadTuple_CheckForVector(string boolToParse)
         {
-            Assert.True(_tuple.IsPoint());
-        }
-
-        [And(@"a is not a vector")]
-        public void ReadTuple_VerifyIsNotVector()
-        {
-            Assert.False(_tuple.IsVector());
+            bool expected = bool.Parse(boolToParse);
+            Assert.Equal(expected, _tuple.IsVector());
         }
     }
 }
