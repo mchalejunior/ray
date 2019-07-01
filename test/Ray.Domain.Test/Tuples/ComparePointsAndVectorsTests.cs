@@ -8,7 +8,8 @@ namespace Ray.Domain.Test.Tuples
     [FeatureFile("./features/tuples/ComparePointsAndVectors.feature")]
     public sealed class ComparePointsAndVectorsTests : Feature
     {
-        private Vector4 _tuple = new Vector4();
+        private Vector4 _tuple = new Vector4(),
+            _comparisonInstance = new Vector4();
 
         [Given(@"a <- tuple (\d\.\d) (-\d\.\d) (\d\.\d)")]
         public void InitializationValues_SetOnTupleInstance(float x, float y, float z)
@@ -16,6 +17,14 @@ namespace Ray.Domain.Test.Tuples
             _tuple.X = x;
             _tuple.Y = y;
             _tuple.Z = z;
+        }
+
+        [And(@"b <- tuple (\d\.\d) (-\d\.\d) (\d\.\d)")]
+        public void InitializationValues_SetOnComparisonInstance(float x, float y, float z)
+        {
+            _comparisonInstance.X = x;
+            _comparisonInstance.Y = y;
+            _comparisonInstance.Z = z;
         }
 
         [And(@"a.w = (\d\.\d)")]
@@ -56,6 +65,13 @@ namespace Ray.Domain.Test.Tuples
         {
             bool expected = bool.Parse(boolToParse);
             Assert.Equal(expected, _tuple.IsVector());
+        }
+
+        [Then(@"a = b is (.+)")]
+        public void CompareTuples_VerifyEquality(string boolToParse)
+        {
+            bool expected = bool.Parse(boolToParse);
+            Assert.Equal(expected, _tuple.Equals(_comparisonInstance));
         }
     }
 }

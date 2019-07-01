@@ -14,5 +14,15 @@ namespace Ray.Domain.Extensions
         {
             return Math.Abs(tuple.W) <= Single.Epsilon;
         }
+
+        public static Vector4 AsPoint(this Vector3 tuple)
+        {
+            return new Vector4(tuple, 1.0F);
+        }
+
+        public static Vector4 AsVector(this Vector3 tuple)
+        {
+            return new Vector4(tuple, 0.0F);
+        }
     }
 }

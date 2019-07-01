@@ -21,6 +21,9 @@
     <None Update="features\tuples\ComparePointsAndVectors.feature">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="features\tuples\ConvertTupleToPointOrVector.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
