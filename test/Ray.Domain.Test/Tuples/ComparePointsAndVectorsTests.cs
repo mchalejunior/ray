@@ -11,7 +11,7 @@ namespace Ray.Domain.Test.Tuples
         private Vector4 _tuple = new Vector4(),
             _comparisonInstance = new Vector4();
 
-        [Given(@"a <- tuple (\d\.\d) (-\d\.\d) (\d\.\d)")]
+        [Given(@"a = tuple (\d\.\d) (-\d\.\d) (\d\.\d)")]
         public void InitializationValues_SetOnTupleInstance(float x, float y, float z)
         {
             _tuple.X = x;
@@ -19,7 +19,7 @@ namespace Ray.Domain.Test.Tuples
             _tuple.Z = z;
         }
 
-        [And(@"b <- tuple (\d\.\d) (-\d\.\d) (\d\.\d)")]
+        [And(@"b = tuple (\d\.\d) (-\d\.\d) (\d\.\d)")]
         public void InitializationValues_SetOnComparisonInstance(float x, float y, float z)
         {
             _comparisonInstance.X = x;
@@ -33,7 +33,11 @@ namespace Ray.Domain.Test.Tuples
             _tuple.W = w;
         }
 
-
+        [And(@"b.w = (\d\.\d)")]
+        public void InitializationValues_SetOnComparisonInstance(float w)
+        {
+            _comparisonInstance.W = w;
+        }
 
         [Then(@"a.x = (\d\.\d)")]
         public void ReadX_VerifyValue(float x)
