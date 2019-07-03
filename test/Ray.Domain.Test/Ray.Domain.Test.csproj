@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Tuples\ComparePointsAndVectorsTests.cs" />
+    <Compile Remove="Tuples\ConvertTupleToPointOrVectorTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Tuples\ComparePointsAndVectorsTests.cs" />
+    <None Include="Tuples\ConvertTupleToPointOrVectorTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="Xunit.Gherkin.Quick" Version="3.4.0" />
@@ -25,10 +35,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="features\tuples\ComparePointsAndVectors.feature">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="features\tuples\ConvertTupleToPointOrVector.feature">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
