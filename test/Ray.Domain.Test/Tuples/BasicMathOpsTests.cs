@@ -11,7 +11,7 @@ namespace Ray.Domain.Test.Tuples
             _secondTuple = new Vector4();
 
         [Given(@"a1 = tuple (\d) (-\d) (\d) (\d)")]
-        public void One(float x, float y, float z, float w)
+        public void InitializationValues_SetOnFirstTuple(float x, float y, float z, float w)
         {
             _firstTuple.X = x;
             _firstTuple.Y = y;
@@ -20,7 +20,7 @@ namespace Ray.Domain.Test.Tuples
         }
 
         [And(@"a2 = tuple (-\d) (\d) (\d) (\d)")]
-        public void Two(float x, float y, float z, float w)
+        public void InitializationValues_SetOnSecondTuple(float x, float y, float z, float w)
         {
             _secondTuple.X = x;
             _secondTuple.Y = y;
@@ -29,12 +29,11 @@ namespace Ray.Domain.Test.Tuples
         }
 
         [Then(@"a1 plus a2 = tuple (\d) (\d) (\d) (\d)")]
-        public void Three(float x, float y, float z, float w)
+        public void GivenExpectedAnswer_PerformAddition_VerifyResult(float x, float y, float z, float w)
         {
             var expectedResult = new Vector4(x, y, z, w);
             var actualResult = Vector4.Add(_firstTuple, _secondTuple);
             Assert.True(expectedResult.Equals(actualResult));
         }
-
     }
 }
