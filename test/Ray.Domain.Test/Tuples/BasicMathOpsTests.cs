@@ -1,11 +1,11 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Xunit;
 using Xunit.Gherkin.Quick;
 
 namespace Ray.Domain.Test.Tuples
 {
-    [FeatureFile("./features/tuples/BasicOperations.feature")]
-    public sealed class BasicOperationsTests : Feature
+    [FeatureFile("./features/tuples/BasicMathOps.feature")]
+    public sealed class BasicMathOpsTests : Feature
     {
         private Vector4 _firstTuple = new Vector4(),
             _secondTuple = new Vector4();

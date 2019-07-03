@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="features\tuples\BasicOperations.feature">
+    <None Update="features\tuples\BasicMathOps.feature">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="features\tuples\ComparePointsAndVectors.feature">
