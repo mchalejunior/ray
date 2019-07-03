@@ -24,3 +24,10 @@ Bleeding a little bit, getting used to the xunit.gherkin.quick framework.
 4. In general (to learn more about xunit.gherkin.quick / Gherkin syntax): 
    Trick seems to be to study the code base - the documentation is incomplete. 
    E.g. see [test files and matching feature files](https://github.com/ttutisani/Xunit.Gherkin.Quick/blob/master/source/Xunit.Gherkin.Quick.ProjectConsumer/Addition/AddNumbersTo5.cs)
+
+5. Resharper test runner appears to work. But when you add Backgrounds and Scenario's 
+   it looks like it's only running one of the connotations. I thought I had something 
+   wrong in the Gherkin syntax and started adjusting that. But I discovered that there 
+   was no issue and the multiple connotations were visible in the 
+   Visual Studio test explorer, or in the test results on the build box.
+
