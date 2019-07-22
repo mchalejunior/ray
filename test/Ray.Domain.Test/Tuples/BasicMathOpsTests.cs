@@ -69,7 +69,12 @@ namespace Ray.Domain.Test.Tuples
             Assert.True(expectedResult.Equals(actualResult));
         }
 
-        
+        [Then(@"magnitude of a1 equals (\d\.\d+)")]
+        public void GivenExpectedAnswer_ComputeMagnitude_VerifyResult(float magnitude)
+        {
+            var actualResult = _firstTuple.Length();
+            Assert.True(magnitude.Equals(actualResult));
+        }
 
 
         #region Overloads as helpers / give more natural language to the BDD spec

@@ -75,3 +75,19 @@ Scenario: Dividing a tuple by a scalar
 	Given a1 = tuple 1 -2 3 -4
 	Then a1 divided by 2.0 = tuple 0.5 -1.0 1.5 -2.0
 
+
+#Magnitude.
+#Conceptually: A vector encodes direction and distance. The distance is 
+#	called magnitude. It's how far you would travel in a straight line if 
+#	you walked from one end of the vector to the other.
+Scenario Outline: Computing the magnitude of a vector
+	Given a1 = vector <x> <y> <z>
+	Then magnitude of a1 equals <magnitude>
+
+	Examples: Scaling UP
+		| x  | y  | z  | magnitude   |
+		| 1  | 0  | 0  | 1.0         |
+		| 0  | 1  | 0  | 1.0         |
+		| 0  | 0  | 1  | 1.0         |
+		| 1  | 2  | 3  | 3.741657387 | # root 14
+		| -1 | -2 | -3 | 3.741657387 | # root 14
