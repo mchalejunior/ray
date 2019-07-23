@@ -25,6 +25,24 @@ namespace Ray.Domain.Extensions
             return new Vector4(tuple, 0.0F);
         }
 
+        public static Vector4 Cross(this Vector4 left, Vector4 right)
+        {
+            // Cross Product only with Vector3.
+            // Apparently it's possible with 4D vectors, but significantly more complex.
+            // And not required by the 3D Ray Tracer.
+
+            if (left.IsPoint() || right.IsPoint())
+            {
+                throw new ApplicationException(
+                    "Cross Product can only be calculated on two Vectors (w=0).");
+            }
+
+            return Vector3.Cross(
+                new Vector3(left.X, left.Y, left.Z),
+                new Vector3(right.X, right.Y, right.Z)
+            ).AsVector();
+        }
+
         public static bool IsUnitVector(this Vector4 tuple, bool isUnitTest = false)
         {
             if (!isUnitTest)

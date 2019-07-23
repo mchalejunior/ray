@@ -101,6 +101,7 @@ Scenario Outline: Computing the length of a vector
 #	This is important, otherwise everything would scale differently and visually the
 #	scene would be inconsistent, at best! So normalizing a vector is calculating it's
 #	equivalent unit vector (same direction, length = 1).
+#Mathematically: You normalize a tuple by dividing each of its components by it's magnitude.
 Scenario Outline: Normalizing with whole numbers
 	Given a1 = vector <xIn> <yIn> <zIn>
 	Then a1 normalized = vector <xOut> <yOut> <zOut>
@@ -121,4 +122,34 @@ Scenario: Normalized Vector has Length 1
 	Given a1 = vector 1 2 3
 	And a2 = a1 normalized
 	Then a2 is a unit vector
+
+
+#Dot Product (a.k.a. scalar product or inner product)
+#Conceptually: Used when intersecting rays with objects and to compute surface shading.
+#	The smaller the dot product, the larger the angle between the vectors.
+#	E.g. dot product of 1 means the vectors are identical, -1 means they point in opposit directions.
+#Mathematically: The sum of the products of the corresponding components of each vector.
+#	E.g. a1.X * a2.X + a1.Y * a2.Y...
+#	If the two vectors are unit vectors, the dot product is the cosine of the angle between them.
+Scenario: The dot product of two tuples
+	Given a1 = vector 1 2 3
+	And a2 = vector 2 3 4
+	Then dot of a1, a2 equals 20
+
+
+#Cross Product
+#Conceptually: Another vector op. Unlike Dot, it returns another vector instead of a scalar.
+#	Your new vector is perpendicular to both of the original vectors.
+#	Aside: Used with Triangles and View Transformations.
+#Mathematically: More complex formula that I'll ignore for now. Other interesting points...
+#	Order is important. Reversing the order changes the direction (negates).
+Scenario Outline: The cross product of two tuples
+	Given a1 = vector <x1> <y1> <z1>
+	And a2 = vector <x2> <y2> <z2>
+	Then cross of a1, a2 equals vector <xOut> <yOut> <zOut>
+
+	Examples: Scaling UP
+		| x1 | y1 | z1 | x2 | y2 | z2 | xOut | yOut | zOut |
+		| 1  | 2  | 3  | 2  | 3  | 4  | -1   | 2    | -1   |
+		| 2  | 3  | 4  | 1  | 2  | 3  | 1    | -2   | 1    |
 

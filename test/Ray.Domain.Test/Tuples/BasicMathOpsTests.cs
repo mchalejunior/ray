@@ -115,8 +115,27 @@ namespace Ray.Domain.Test.Tuples
             Assert.True(expectedResult.Equals(actualResult));
         }
 
+        [Then(@"dot of a1, a2 equals (\d+)")]
+        public void GivenExpectedAnswer_ComputeDotProduct_VerifyResult(float dot)
+        {
+            var expectedResult = dot;
+            var actualResult = Vector4.Dot(_firstTuple, _secondTuple);
+            Assert.True(expectedResult.Equals(actualResult));
+        }
 
-        //a1 normalized = vector 1 0 0
+        [Then(@"cross of a1, a2 equals vector (-?\d) (-?\d) (-?\d)")]
+        public void GivenExpectedAnswer_CrossVectors_VerifyResult(float x, float y, float z)
+        {
+            // Cross Product only with Vector3.
+            // Apparently it's possible with 4D vectors, but significantly more complex.
+            // And not required by the 3D Ray Tracer.
+
+            var expectedResult = new Vector4(x, y, z, 0.0F);
+            var actualResult = _firstTuple.Cross(_secondTuple);
+            Assert.True(expectedResult.Equals(actualResult));
+        }
+
+
 
         #region Overloads as helpers / give more natural language to the BDD spec
 
