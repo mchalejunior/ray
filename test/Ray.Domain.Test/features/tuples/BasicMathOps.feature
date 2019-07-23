@@ -76,11 +76,12 @@ Scenario: Dividing a tuple by a scalar
 	Then a1 divided by 2.0 = tuple 0.5 -1.0 1.5 -2.0
 
 
-#Magnitude.
+#Length (aka Magnitude).
 #Conceptually: A vector encodes direction and distance. The distance is 
 #	called magnitude. It's how far you would travel in a straight line if 
 #	you walked from one end of the vector to the other.
-Scenario Outline: Computing the magnitude of a vector
+#Mathematically: Pythagoras theorem. Square root of the sum of the sides squared.
+Scenario Outline: Computing the length of a vector
 	Given a1 = vector <x> <y> <z>
 	Then magnitude of a1 equals <magnitude>
 
@@ -91,3 +92,33 @@ Scenario Outline: Computing the magnitude of a vector
 		| 0  | 0  | 1  | 1.0         |
 		| 1  | 2  | 3  | 3.741657387 | # root 14
 		| -1 | -2 | -3 | 3.741657387 | # root 14
+
+
+#Normalize a vector.
+#Conceptually: The above scenarios - magnitude and scaling up / down are acting
+#	on unit vectors (unit vectors have length = 1). If we first normalize all vectors, 
+#	before applying further calculations then everything is anchored to a common scale.
+#	This is important, otherwise everything would scale differently and visually the
+#	scene would be inconsistent, at best! So normalizing a vector is calculating it's
+#	equivalent unit vector (same direction, length = 1).
+Scenario Outline: Normalizing with whole numbers
+	Given a1 = vector <xIn> <yIn> <zIn>
+	Then a1 normalized = vector <xOut> <yOut> <zOut>
+
+	Examples: Specified result
+		| xIn | yIn | zIn | xOut | yOut | zOut |
+		| 4   | 0   | 0   | 1    | 0    | 0    |
+
+Scenario Outline: Normalizing with decimals
+	Given a1 = vector <xIn> <yIn> <zIn>
+	Then a1 normalized is calculated from <magnitude>
+
+	Examples: Known input magnitude
+		| xIn | yIn | zIn | magnitude   |
+		| 1   | 2   | 3   | 3.741657387 | # root 14
+
+Scenario: Normalized Vector has Length 1
+	Given a1 = vector 1 2 3
+	And a2 = a1 normalized
+	Then a2 is a unit vector
+

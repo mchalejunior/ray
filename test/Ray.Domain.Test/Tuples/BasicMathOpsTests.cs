@@ -29,6 +29,12 @@ namespace Ray.Domain.Test.Tuples
             _secondTuple.W = w;
         }
 
+        [And(@"a2 = a1 normalized")]
+        public void InitializationValues_NormalizeFirstTuple_SetOnSecondTuple()
+        {
+            _secondTuple = Vector4.Normalize(_firstTuple);
+        }
+
         [Then(@"a1 plus a2 = tuple (-?\d) (-?\d) (-?\d) (-?\d)")]
         public void GivenExpectedAnswer_PerformAddition_VerifyResult(float x, float y, float z, float w)
         {
@@ -76,6 +82,41 @@ namespace Ray.Domain.Test.Tuples
             Assert.True(magnitude.Equals(actualResult));
         }
 
+        [Then(@"a2 is a unit vector")]
+        public void GivenVector_CompareAgainstNormalizedVector_VerifyIsUnitVector()
+        {
+            // Slightly convoluted assertion.
+            // Basically the normalization process gives a Vector with magnitude 1.
+            // But it's not accurate to Single.Epsilon.
+            // So have created an extension method that will normalize another
+            // vector and use it for comparison.
+
+            Assert.True(_secondTuple.IsUnitVector(true));
+        }
+
+        [Then(@"a1 normalized = vector (\d) (\d) (\d)")]
+        public void GivenExpectedAnswer_NormalizeVector_VerifyResult(float x, float y, float z)
+        {
+            var expectedResult = new Vector4(x, y, z, 0.0F);
+            var actualResult = Vector4.Normalize(_firstTuple);
+            Assert.True(expectedResult.Equals(actualResult));
+        }
+
+        [Then(@"a1 normalized is calculated from (\d\.\d+)")]
+        public void GivenKnownMagnitude_NormalizeVector_VerifyResult(float magnitude)
+        {
+            var expectedResult = new Vector4(
+                _firstTuple.X / magnitude,
+                _firstTuple.Y / magnitude,
+                _firstTuple.Z / magnitude,
+                0.0F // _firstTuple.W / magnitude - always dealing with W = 0 for our vector calcs.
+            );
+            var actualResult = Vector4.Normalize(_firstTuple);
+            Assert.True(expectedResult.Equals(actualResult));
+        }
+
+
+        //a1 normalized = vector 1 0 0
 
         #region Overloads as helpers / give more natural language to the BDD spec
 

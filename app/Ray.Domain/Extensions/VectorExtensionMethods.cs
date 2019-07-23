@@ -24,5 +24,28 @@ namespace Ray.Domain.Extensions
         {
             return new Vector4(tuple, 0.0F);
         }
+
+        public static bool IsUnitVector(this Vector4 tuple, bool isUnitTest = false)
+        {
+            if (!isUnitTest)
+            {
+                throw new ApplicationException(
+                    @"Wouldn't recommend calling in Production. 
+                    Instead can assume v.Normalize works as expected.");
+            }
+
+            if (!tuple.IsVector())
+            {
+                return false;
+            }
+
+            // Slightly convoluted assertion.
+            // Basically the normalization process gives a Vector with magnitude 1.
+            // But it's not accurate to Single.Epsilon.
+            // So here we normalize another vector and use it for comparison.
+
+            var unitVector = Vector4.Normalize(new Vector4(5.0F, -5.0F, 4.0F, 0.0F));
+            return unitVector.Length().IsApproximately(tuple.Length());
+        }
     }
 }
