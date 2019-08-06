@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using Ray.Domain.Extensions;
 using Xunit;
 using Xunit.Gherkin.Quick;
 
@@ -61,5 +62,45 @@ namespace Ray.Domain.Test.Colors
             var actualResult = _firstColor + _secondColor;
             Assert.True(Color.AreClose(expectedResult, actualResult));
         }
+
+        [Then(@"c1 minus c2 equals color (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        public void GivenExpectedAnswer_PerformSubtraction_VerifyResult(float r, float g, float b)
+        {
+            var expectedResult = new Color
+            {
+                ScR = r,
+                ScG = g,
+                ScB = b
+            };
+            var actualResult = _firstColor - _secondColor;
+            Assert.True(Color.AreClose(expectedResult, actualResult));
+        }
+
+        [Then(@"c1 multiplied by scalar (\d) equals color (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        public void GivenExpectedAnswer_MultiplyByScalar_VerifyResult(int scalar, float r, float g, float b)
+        {
+            var expectedResult = new Color
+            {
+                ScR = r,
+                ScG = g,
+                ScB = b
+            };
+            var actualResult = _firstColor * scalar;
+            Assert.True(Color.AreClose(expectedResult, actualResult));
+        }
+
+        [Then(@"c1 multiplied by c2 equals color (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        public void GivenExpectedAnswer_PerformMultiplication_VerifyResult(float r, float g, float b)
+        {
+            var expectedResult = new Color
+            {
+                ScR = r,
+                ScG = g,
+                ScB = b
+            };
+            var actualResult = _firstColor.Multiply(_secondColor);
+            Assert.True(Color.AreClose(expectedResult, actualResult));
+        }
+
     }
 }
