@@ -7,7 +7,7 @@ namespace Ray.Domain.Extensions
     {
         public static bool IsPoint(this Vector4 tuple)
         {
-            return Math.Abs(tuple.W - 1.0) <= Single.Epsilon;
+            return Math.Abs(tuple.W - 1.0F) <= Single.Epsilon;
         }
 
         public static bool IsVector(this Vector4 tuple)
