@@ -22,7 +22,7 @@ namespace Ray.Util.Console.ProjectileGame
         public Vector4 CurrentPosition { get; private set; }
         public Vector4 CurrentVelocity { get; private set; }
 
-        public bool HasLanded => CurrentPosition.Y <= 0.0F;
+        public bool HasLanded => CurrentPosition.Y <= 0.0F && TickCount > 0;
 
         public int TickCount { get; private set; }
 
