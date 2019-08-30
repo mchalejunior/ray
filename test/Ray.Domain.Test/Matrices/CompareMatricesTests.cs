@@ -26,9 +26,20 @@ namespace Ray.Domain.Test.Matrices
         private Matrix4x4 _firstMatrix, _secondMatrix;
 
         [Given(@"firstMatrix equals the following 4x4 matrix:")]
-        public void InitializationValues_SetOnMatrixInstance(DataTable m)
+        public void InitializationValues_SetOnFirstMatrixInstance(DataTable m)
         {
             _firstMatrix = new Matrix4x4(
+                m.ToFloat(1, 1), m.ToFloat(1, 2), m.ToFloat(1, 3), m.ToFloat(1, 4),
+                m.ToFloat(2, 1), m.ToFloat(2, 2), m.ToFloat(2, 3), m.ToFloat(2, 4),
+                m.ToFloat(3, 1), m.ToFloat(3, 2), m.ToFloat(3, 3), m.ToFloat(3, 4),
+                m.ToFloat(4, 1), m.ToFloat(4, 2), m.ToFloat(4, 3), m.ToFloat(4, 4)
+            );
+        }
+
+        [And(@"secondMatrix equals the following 4x4 matrix:")]
+        public void InitializationValues_SetOnSecondMatrixInstance(DataTable m)
+        {
+            _secondMatrix = new Matrix4x4(
                 m.ToFloat(1, 1), m.ToFloat(1, 2), m.ToFloat(1, 3), m.ToFloat(1, 4),
                 m.ToFloat(2, 1), m.ToFloat(2, 2), m.ToFloat(2, 3), m.ToFloat(2, 4),
                 m.ToFloat(3, 1), m.ToFloat(3, 2), m.ToFloat(3, 3), m.ToFloat(3, 4),
@@ -76,6 +87,18 @@ namespace Ray.Domain.Test.Matrices
         public void ReadMatrix_M43_VerifyValue(float r)
         {
             Assert.Equal(r, _firstMatrix.M43);
+        }
+
+        [Then(@"firstMatrix equals secondMatrix")]
+        public void CompareMatrices_AssertEquality()
+        {
+            Assert.Equal(_firstMatrix, _secondMatrix);
+        }
+
+        [Then(@"firstMatrix does NOT equal secondMatrix")]
+        public void CompareMatrices_AssertInequality()
+        {
+            Assert.NotEqual(_firstMatrix, _secondMatrix);
         }
     }
 }

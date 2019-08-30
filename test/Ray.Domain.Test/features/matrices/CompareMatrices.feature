@@ -19,4 +19,50 @@ Scenario: Initializing matrices
 	And firstMatrix.M41 equals 13.5
 	And firstMatrix.M43 equals 15.5
 
+ 
+Scenario: Matrix equality with identical matrices
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3  | c4  |
+		| r1 | 1.0 | 2.0 | 3.0 | 4.0 |
+		| r2 | 5.0 | 6.0 | 7.0 | 8.0 |
+		| r3 | 9.0 | 8.0 | 7.0 | 6.0 |
+		| r4 | 5.0 | 4.0 | 3.0 | 2.0 |
+	And secondMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3  | c4  |
+		| r1 | 1.0 | 2.0 | 3.0 | 4.0 |
+		| r2 | 5.0 | 6.0 | 7.0 | 8.0 |
+		| r3 | 9.0 | 8.0 | 7.0 | 6.0 |
+		| r4 | 5.0 | 4.0 | 3.0 | 2.0 |
+	Then firstMatrix equals secondMatrix
+ 
+ 
+Scenario: Matrix inequality with different matrices
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3  | c4  |
+		| r1 | 1.0 | 2.0 | 3.0 | 4.0 |
+		| r2 | 5.0 | 6.0 | 7.0 | 8.0 |
+		| r3 | 9.0 | 8.0 | 7.0 | 6.0 |
+		| r4 | 5.0 | 4.0 | 3.0 | 2.0 |
+	And secondMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3  | c4  |
+		| r1 | 2.0 | 3.0 | 4.0 | 5.0 |
+		| r2 | 6.0 | 7.0 | 8.0 | 9.0 |
+		| r3 | 8.0 | 7.0 | 6.0 | 5.0 |
+		| r4 | 4.0 | 3.0 | 2.0 | 1.0 |
+	Then firstMatrix does NOT equal secondMatrix
 
+ 
+Scenario: Matrix equality with approximately identical matrices
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3          | c4  |
+		| r1 | 1.0 | 2.0 | 3.0         | 4.0 |
+		| r2 | 5.0 | 6.0 | 7.0         | 8.0 |
+		| r3 | 9.0 | 8.0 | 7.0         | 6.0 |
+		| r4 | 5.0 | 4.0 | 3.741657387 | 2.0 |
+	And secondMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3          | c4  |
+		| r1 | 1.0 | 2.0 | 3.0         | 4.0 |
+		| r2 | 5.0 | 6.0 | 7.0         | 8.0 |
+		| r3 | 9.0 | 8.0 | 7.0         | 6.0 |
+		| r4 | 5.0 | 4.0 | 3.741657383 | 2.0 |
+	Then firstMatrix equals secondMatrix
