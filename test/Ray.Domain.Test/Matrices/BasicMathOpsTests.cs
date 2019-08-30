@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Gherkin.Ast;
+using Ray.Domain.Extensions;
 using Ray.Domain.Test.Extensions;
 using Xunit;
 using Xunit.Gherkin.Quick;
@@ -24,7 +25,7 @@ namespace Ray.Domain.Test.Matrices
     public sealed class BasicMathOpsTests : Feature
     {
         private Matrix4x4 _firstMatrix, _secondMatrix;
-        private Vector3 _transformation = new Vector3();
+        private Vector4 _tupleInstance = new Vector4();
 
         [Given(@"firstMatrix equals the following 4x4 matrix:")]
         public void InitializationValues_SetOnFirstMatrixInstance(DataTable m)
@@ -38,13 +39,13 @@ namespace Ray.Domain.Test.Matrices
             _secondMatrix = NewMatrix(m);
         }
 
-        [And(@"transformation equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
+        [And(@"t equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
         public void InitializationValues_SetOnTransformationTuple(float x, float y, float z, float w)
         {
-            _transformation.X = x;
-            _transformation.Y = y;
-            _transformation.Z = z;
-            //_transformation.W = w;
+            _tupleInstance.X = x;
+            _tupleInstance.Y = y;
+            _tupleInstance.Z = z;
+            _tupleInstance.W = w;
         }
 
         [Then(@"firstMatrix multiplied by secondMatrix equals the following 4x4 matrix:")]
@@ -55,11 +56,12 @@ namespace Ray.Domain.Test.Matrices
             Assert.Equal(expectedResult, actualResult);
         }
 
-        [Then(@"firstMatrix multiplied by transformation tuple equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
-        public void GivenExpectedAnswer_PerformTransformation_VerifyResult(float x, float y, float z, float w)
+        [Then(@"firstMatrix multiplied by t equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
+        public void GivenExpectedAnswer_MultiplyMatrixByTuple_VerifyResult(float x, float y, float z, float w)
         {
-            var expectedResult = new Vector4(x, y, z, 1.0F);
-            var actualResult = Vector4.Transform(_transformation, _firstMatrix);
+            var expectedResult = new Vector4(x, y, z, w);
+            var actualResult = _firstMatrix.Multiply(_tupleInstance);
+
             Assert.Equal(expectedResult, actualResult);
         }
 

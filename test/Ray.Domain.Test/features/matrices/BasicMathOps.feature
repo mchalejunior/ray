@@ -35,5 +35,5 @@ Scenario: A Matrix multiplied by a Tuple
 		| r2 | 2.0 | 4.0 | 4.0 | 2.0 |
 		| r3 | 8.0 | 6.0 | 4.0 | 1.0 |
 		| r4 | 0.0 | 0.0 | 0.0 | 1.0 |
-	And transformation equals tuple 1 2 3 1
-	Then firstMatrix multiplied by transformation tuple equals tuple 18 24 33 1
+	And t equals tuple 1 2 3 1
+	Then firstMatrix multiplied by t equals tuple 18 24 33 1
