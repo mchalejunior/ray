@@ -65,6 +65,30 @@ namespace Ray.Domain.Test.Matrices
             Assert.Equal(expectedResult, actualResult);
         }
 
+        [Then(@"firstMatrix multiplied by Identity Matrix equals firstMatrix")]
+        public void GivenInputMatrix_MultiplyByIdentityMatrix_VerifyResult()
+        {
+            var expectedResult = _firstMatrix;
+            var actualResult = _firstMatrix * Matrix4x4.Identity;
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Then(@"the Transpose of firstMatrix is the following 4x4 matrix:")]
+        public void GivenExpectedAnswer_PerformTranspose_VerifyResult(DataTable m)
+        {
+            var expectedResult = NewMatrix(m);
+            var actualResult = Matrix4x4.Transpose(_firstMatrix);
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Then(@"the Transpose of firstMatrix is still the Identity Matrix")]
+        public void GivenIdentityMatrix_PerformTranspose_VerifyResult()
+        {
+            var expectedResult = Matrix4x4.Identity;
+            var actualResult = Matrix4x4.Transpose(_firstMatrix);
+            Assert.Equal(expectedResult, actualResult);
+        }
+
 
         #region Helper methods
 

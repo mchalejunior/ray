@@ -37,3 +37,43 @@ Scenario: A Matrix multiplied by a Tuple
 		| r4 | 0.0 | 0.0 | 0.0 | 1.0 |
 	And t equals tuple 1 2 3 1
 	Then firstMatrix multiplied by t equals tuple 18 24 33 1
+
+
+ 
+Scenario: Multiplying a matrix by the Identity matrix
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3   | c4   |
+		| r1 | 0.0 | 1.0 | 2.0  | 4.0  |
+		| r2 | 2.0 | 4.0 | 6.0  | 8.0  |
+		| r3 | 2.0 | 4.0 | 8.0  | 16.0 |
+		| r4 | 4.0 | 8.0 | 16.0 | 32.0 |
+	Then firstMatrix multiplied by Identity Matrix equals firstMatrix
+
+
+#Transpose a matrix.
+#Use cases: light, shading.
+Scenario: Transposing a matrix
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3  | c4  |
+		| r1 | 0.0 | 9.0 | 3.0 | 0.0 |
+		| r2 | 9.0 | 8.0 | 0.0 | 8.0 |
+		| r3 | 1.0 | 8.0 | 5.0 | 3.0 |
+		| r4 | 0.0 | 0.0 | 5.0 | 8.0 |
+	Then the Transpose of firstMatrix is the following 4x4 matrix:
+		|    | c1  | c2  | c3  | c4  |
+		| r1 | 0.0 | 9.0 | 1.0 | 0.0 |
+		| r2 | 9.0 | 8.0 | 8.0 | 0.0 |
+		| r3 | 3.0 | 0.0 | 5.0 | 5.0 |
+		| r4 | 0.0 | 8.0 | 3.0 | 8.0 |
+
+
+#See below matrix values - this is the Identity matrix.
+#Notice that normally get this using Matrix4x4.Identity, as in other tests.
+Scenario: Transposing the Identity matrix
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3  | c4  |
+		| r1 | 1.0 | 0.0 | 0.0 | 0.0 |
+		| r2 | 0.0 | 1.0 | 0.0 | 0.0 |
+		| r3 | 0.0 | 0.0 | 1.0 | 0.0 |
+		| r4 | 0.0 | 0.0 | 0.0 | 1.0 |
+	Then the Transpose of firstMatrix is still the Identity Matrix
