@@ -34,6 +34,12 @@ namespace Ray.Domain.Test.Matrices
             _firstMatrix = NewMatrix(m);
         }
 
+        [Given(@"firstMatrix equals the Identity Matrix")]
+        public void InitializationValues_SetOnFirstMatrixInstance()
+        {
+            _firstMatrix = Matrix4x4.Identity;
+        }
+
         [And(@"secondMatrix equals the following 4x4 matrix:")]
         public void InitializationValues_SetOnSecondMatrixInstance(DataTable m)
         {
@@ -96,6 +102,14 @@ namespace Ray.Domain.Test.Matrices
             Assert.Equal(expectedResult, actualResult);
         }
 
+        [Then(@"the Inversion of firstMatrix is still the Identity Matrix")]
+        public void GivenIdentityMatrix_PerformInversion_VerifyResult()
+        {
+            var expectedResult = Matrix4x4.Identity;
+            Matrix4x4.Invert(_firstMatrix, out var actualResult);
+            Assert.Equal(expectedResult, actualResult);
+        }
+
         [Then(@"the Determinant of firstMatrix is (-?\d+)")]
         public void GivenExpectedAnswer_CalculateDeterminant_VerifyResult(float determinant)
         {
@@ -122,7 +136,6 @@ namespace Ray.Domain.Test.Matrices
             Assert.Equal(expectedResult, actualResult);
         }
 
-
         [Then(@"thirdMatrix multiplied by Inverse of secondMatrix equals firstMatrix")]
         public void GivenInputMatrices_UsingInverseMatrix_ReverseOperation_VerifyResult()
         {
@@ -146,6 +159,21 @@ namespace Ray.Domain.Test.Matrices
             Assert.True(diff < 0.0005F);
         }
 
+        [Then(@"firstMatrix multiplied by Inverse of firstMatrix equals the Identity Matrix")]
+        public void GivenInputMatrix_MultiplyByInverse_VerifyResult()
+        {
+            var expectedResult = Matrix4x4.Identity;
+            Matrix4x4.Invert(_firstMatrix, out var invertFirst);
+            var actualResult = _firstMatrix * invertFirst;
+
+            // See comments in GivenInputMatrices_UsingInverseMatrix_ReverseOperation_VerifyResult.
+            // Same deal here.
+            var d1 = expectedResult.GetDeterminant();
+            var d2 = actualResult.GetDeterminant();
+            var diff = Math.Abs(d1 - d2);
+
+            Assert.True(diff < 0.0005F);
+        }
 
 
         #region Helper methods

@@ -133,3 +133,18 @@ Scenario: Multiplying a product by its inverse
 		| r4 | 6.0  | -2.0 | 0.0 | 5.0  |
 	And thirdMatrix equals firstMatrix multiplied by secondMatrix
 	Then thirdMatrix multiplied by Inverse of secondMatrix equals firstMatrix
+
+ 
+Scenario: Invert the Identity matrix
+	Given firstMatrix equals the Identity Matrix
+	Then the Inversion of firstMatrix is still the Identity Matrix
+
+ 
+Scenario: Multiplying a matrix by its inverse
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2   | c3  | c4   |
+		| r1 | 6.0 | 4.0  | 4.0 | 4.0  |
+		| r2 | 5.0 | 5.0  | 7.0 | 6.0  |
+		| r3 | 4.0 | -9.0 | 3.0 | -7.0 |
+		| r4 | 9.0 | 1.0  | 7.0 | -6.0 |
+	Then firstMatrix multiplied by Inverse of firstMatrix equals the Identity Matrix
