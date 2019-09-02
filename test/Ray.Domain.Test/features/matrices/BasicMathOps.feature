@@ -118,7 +118,7 @@ Scenario: Invert a matrix
 		| r4 | -0.5225564  | -0.81390977 | -0.3007519  | 0.30639097  |
 
 
-Scenario: Multiply two matrices
+Scenario: Multiplying a product by its inverse
 	Given firstMatrix equals the following 4x4 matrix:
 		|    | c1  | c2  | c3  | c4  |
 		| r1 | 3.0 | -9.0 | 7.0 | 3.0 |
