@@ -68,7 +68,7 @@ Scenario: Transposing a matrix
 
 
 #See below matrix values - this is the Identity matrix.
-#Notice that normally get this using Matrix4x4.Identity, as in other tests.
+#Note: normally get this using Matrix4x4.Identity e.g. "Multiplying a matrix by the Identity matrix"
 Scenario: Transposing the Identity matrix
 	Given firstMatrix equals the following 4x4 matrix:
 		|    | c1  | c2  | c3  | c4  |
@@ -77,3 +77,59 @@ Scenario: Transposing the Identity matrix
 		| r3 | 0.0 | 0.0 | 1.0 | 0.0 |
 		| r4 | 0.0 | 0.0 | 0.0 | 1.0 |
 	Then the Transpose of firstMatrix is still the Identity Matrix
+
+
+#Invert a matrix.
+#Use cases: transforming and deforming shapes.
+Scenario: Matrix can be Inverted
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2   | c3  | c4   |
+		| r1 | 6.0 | 4.0  | 4.0 | 4.0  |
+		| r2 | 5.0 | 5.0  | 7.0 | 6.0  |
+		| r3 | 4.0 | -9.0 | 3.0 | -7.0 |
+		| r4 | 9.0 | 1.0  | 7.0 | -6.0 |
+	Then the Determinant of firstMatrix is -2120
+	And firstMatrix IsInvertible equals true
+
+
+Scenario: Matrix cannot be Inverted
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1   | c2   | c3   | c4   |
+		| r1 | -4.0 | 2.0  | -2.0 | -3.0 |
+		| r2 | 9.0  | 6.0  | 2.0  | 6.0  |
+		| r3 | 0.0  | -5.0 | 1.0  | -5.0 |
+		| r4 | 0.0  | 0.0  | 0.0  | 0.0  |
+	Then the Determinant of firstMatrix is 0
+	And firstMatrix IsInvertible equals false
+
+
+Scenario: Invert a matrix
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1   | c2   | c3   | c4   |
+		| r1 | -5.0 | 2.0  | 6.0  | -8.0 |
+		| r2 | 1.0  | -5.0 | 1.0  | 8.0  |
+		| r3 | 7.0  | 7.0  | -6.0 | -7.0 |
+		| r4 | 1.0  | -3.0 | 7.0  | 4.0  |
+	Then the Inversion of firstMatrix is the following 4x4 matrix:
+		|    | c1          | c2          | c3          | c4          |
+		| r1 | 0.21804512  | 0.45112783  | 0.24060151  | -0.04511278 |
+		| r2 | -0.8082707  | -1.456767   | -0.44360903 | 0.52067673  |
+		| r3 | -0.07894737 | -0.22368422 | -0.05263158 | 0.19736843  |
+		| r4 | -0.5225564  | -0.81390977 | -0.3007519  | 0.30639097  |
+
+
+Scenario: Multiply two matrices
+	Given firstMatrix equals the following 4x4 matrix:
+		|    | c1  | c2  | c3  | c4  |
+		| r1 | 3.0 | -9.0 | 7.0 | 3.0 |
+		| r2 | 3.0 | -8.0 | 2.0 | -9.0 |
+		| r3 | -4.0 | 4.0 | 4.0 | 1.0 |
+		| r4 | -6.0 | 5.0 | -1.0 | 1.0 |
+	And secondMatrix equals the following 4x4 matrix:
+		|    | c1   | c2  | c3  | c4   |
+		| r1 | 8.0 | 2.0 | 2.0 | 2.0  |
+		| r2 | 3.0  | -1.0 | 7.0 | 0.0 |
+		| r3 | 7.0  | 0.0 | 5.0 | 4.0  |
+		| r4 | 6.0  | -2.0 | 0.0 | 5.0  |
+	And thirdMatrix equals firstMatrix multiplied by secondMatrix
+	Then thirdMatrix multiplied by Inverse of secondMatrix equals firstMatrix

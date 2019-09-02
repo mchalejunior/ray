@@ -24,7 +24,7 @@ namespace Ray.Domain.Test.Matrices
     [FeatureFile("./features/matrices/BasicMathOps.feature")]
     public sealed class BasicMathOpsTests : Feature
     {
-        private Matrix4x4 _firstMatrix, _secondMatrix;
+        private Matrix4x4 _firstMatrix, _secondMatrix, _thirdMatrix;
         private Vector4 _tupleInstance = new Vector4();
 
         [Given(@"firstMatrix equals the following 4x4 matrix:")]
@@ -37,6 +37,12 @@ namespace Ray.Domain.Test.Matrices
         public void InitializationValues_SetOnSecondMatrixInstance(DataTable m)
         {
             _secondMatrix = NewMatrix(m);
+        }
+
+        [And(@"thirdMatrix equals firstMatrix multiplied by secondMatrix")]
+        public void InitializationValues_SetThirdMatrixInstance()
+        {
+            _thirdMatrix = _firstMatrix * _secondMatrix;
         }
 
         [And(@"t equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
@@ -88,6 +94,44 @@ namespace Ray.Domain.Test.Matrices
             var actualResult = Matrix4x4.Transpose(_firstMatrix);
             Assert.Equal(expectedResult, actualResult);
         }
+
+        [Then(@"the Determinant of firstMatrix is (-?\d+)")]
+        public void GivenExpectedAnswer_CalculateDeterminant_VerifyResult(float determinant)
+        {
+            var expectedResult = determinant;
+            var actualResult = _firstMatrix.GetDeterminant();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [And(@"firstMatrix IsInvertible equals (.+)")]
+        public void GivenExpectedAnswer_CheckIsInvertible_VerifyResult(string boolToParse)
+        {
+            var expectedResult = bool.Parse(boolToParse); ;
+            var actualResult = Matrix4x4.Invert(_firstMatrix, out var invertedMatrix);
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Then(@"the Inversion of firstMatrix is the following 4x4 matrix:")]
+        public void GivenExpectedAnswer_PerformInversion_VerifyResult(DataTable m)
+        {
+            var expectedResult = NewMatrix(m);
+            Matrix4x4.Invert(_firstMatrix, out var actualResult);
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+
+        [Then(@"thirdMatrix multiplied by Inverse of secondMatrix equals firstMatrix")]
+        public void GivenInputMatrices_UsingInverseMatrix_ReverseOperation_VerifyResult()
+        {
+            var expectedResult = _firstMatrix;
+            Matrix4x4.Invert(_secondMatrix, out var inverseSecond);
+            var actualResult = _thirdMatrix * inverseSecond;
+            
+            Assert.Equal(expectedResult, actualResult);
+        }
+
 
 
         #region Helper methods
