@@ -65,5 +65,14 @@ namespace Ray.Domain.Extensions
             var unitVector = Vector4.Normalize(new Vector4(5.0F, -5.0F, 4.0F, 0.0F));
             return unitVector.Length().IsApproximately(tuple.Length());
         }
+
+        public static bool IsApproximately(this Vector4 left, Vector4 right)
+        {
+            return left.X.IsApproximately(right.X) &&
+                   left.Y.IsApproximately(right.Y) &&
+                   left.Z.IsApproximately(right.Z) &&
+                   left.W.IsApproximately(right.W);
+        }
+
     }
 }
