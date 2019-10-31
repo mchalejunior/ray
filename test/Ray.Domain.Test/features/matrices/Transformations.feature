@@ -62,7 +62,43 @@ Scenario: Rotating a point around the x axis
 	#Full quarter rotation is Pi/2
 	And firstRotation equals Pi over 4
 	And secondRotation equals Pi over 2
-	And firstMatrix equals Rotation Matrix for firstRotation
-	And secondMatrix equals Rotation Matrix for secondRotation
+	And firstMatrix equals X Rotation Matrix for firstRotation
+	And secondMatrix equals X Rotation Matrix for secondRotation
 	Then firstMatrix multiplied by t1 equals tuple 0.0 0.70710677 0.70710677 1.0
 	And secondMatrix multiplied by t1 equals tuple 0.0 0.0 1.0 1.0
+
+
+Scenario: The inverse of an x rotation rotates in the opposite direction
+	Given t1 equals tuple 0 1 0 1
+	#Half quarter rotation is Pi/4
+	And firstRotation equals Pi over 4
+	And firstMatrix equals X Rotation Matrix for firstRotation
+	And secondMatrix equals inverse of firstMatrix
+	Then secondMatrix multiplied by t1 equals tuple 0.0 0.70710677 -0.70710677 1.0
+
+
+Scenario: Rotating a point around the y axis
+	Given t1 equals tuple 0 0 1 1
+	#Half quarter rotation is Pi/4
+	#Full quarter rotation is Pi/2
+	And firstRotation equals Pi over 4
+	And secondRotation equals Pi over 2
+	And firstMatrix equals Y Rotation Matrix for firstRotation
+	And secondMatrix equals Y Rotation Matrix for secondRotation
+	Then firstMatrix multiplied by t1 equals tuple 0.70710677 0.0 0.70710677 1.0
+	And secondMatrix multiplied by t1 equals tuple 1.0 0.0 0.0 1.0
+
+
+Scenario: Rotating a point around the z axis
+	Given t1 equals tuple 0 1 0 1
+	#Half quarter rotation is Pi/4
+	#Full quarter rotation is Pi/2
+	And firstRotation equals Pi over 4
+	And secondRotation equals Pi over 2
+	And firstMatrix equals Z Rotation Matrix for firstRotation
+	And secondMatrix equals Z Rotation Matrix for secondRotation
+	Then firstMatrix multiplied by t1 equals tuple -0.70710677 0.70710677 0.0 1.0
+	And secondMatrix multiplied by t1 equals tuple -1.0 0.0 0.0 1.0
+
+
+

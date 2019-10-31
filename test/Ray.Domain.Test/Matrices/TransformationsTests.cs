@@ -25,18 +25,41 @@ namespace Ray.Domain.Test.Matrices
             _firstMatrix = Matrix4x4.CreateScale(x, y, z);
         }
 
-        [And(@"firstMatrix equals Rotation Matrix for firstRotation")]
-        public void InitializationValues_Rotation_SetOnFirstMatrix()
+        [And(@"firstMatrix equals X Rotation Matrix for firstRotation")]
+        public void InitializationValues_XRotation_SetOnFirstMatrix()
         {
             _firstMatrix = Matrix4x4.CreateRotationX(_firstRotation);
         }
 
-        [And(@"secondMatrix equals Rotation Matrix for secondRotation")]
-        public void InitializationValues_Rotation_SetOnSecondMatrix()
+        [And(@"secondMatrix equals X Rotation Matrix for secondRotation")]
+        public void InitializationValues_XRotation_SetOnSecondMatrix()
         {
             _secondMatrix = Matrix4x4.CreateRotationX(_secondRotation);
         }
 
+        [And(@"firstMatrix equals Y Rotation Matrix for firstRotation")]
+        public void InitializationValues_YRotation_SetOnFirstMatrix()
+        {
+            _firstMatrix = Matrix4x4.CreateRotationY(_firstRotation);
+        }
+
+        [And(@"secondMatrix equals Y Rotation Matrix for secondRotation")]
+        public void InitializationValues_YRotation_SetOnSecondMatrix()
+        {
+            _secondMatrix = Matrix4x4.CreateRotationY(_secondRotation);
+        }
+
+        [And(@"firstMatrix equals Z Rotation Matrix for firstRotation")]
+        public void InitializationValues_ZRotation_SetOnFirstMatrix()
+        {
+            _firstMatrix = Matrix4x4.CreateRotationZ(_firstRotation);
+        }
+
+        [And(@"secondMatrix equals Z Rotation Matrix for secondRotation")]
+        public void InitializationValues_ZRotation_SetOnSecondMatrix()
+        {
+            _secondMatrix = Matrix4x4.CreateRotationZ(_secondRotation);
+        }
 
         [And(@"firstRotation equals Pi over (\d)")]
         public void InitializationValues_SetOnFirstRotation(int fraction)

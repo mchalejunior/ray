@@ -40,7 +40,7 @@ namespace Ray.Domain.Extensions
         public static Vector4 Multiply(this Matrix4x4 left, Vector4 right)
         {
             // skinnyMatrix
-            // A lay person explanation: System.Numerics namespace offers the ability to multiply two vectors,
+            // A lay person explanation: System.Numerics namespace offers the ability to multiply two matrices,
             // or two vectors. But not a matrix by a vector. The Ray Tracer Text describes how this vector is
             // really just a skinny 1x4 matrix. So that's what we create here and then just multiple two matrices.
             
