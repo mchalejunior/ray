@@ -102,3 +102,32 @@ Scenario: Rotating a point around the z axis
 
 
 
+# Shearing a.k.a. Skew
+# One of the most complex transforms visually. But quite a simple calculation.
+# Basically: a points movement on an axis are proportional to another axis movements.
+# Calculation: a dynamic shearing matrix is built (from the Identity matrix, with specified shearing offsets)
+#   and this is multipled by a point to give the new skewed point.
+
+Scenario Outline: A shearing transform moves axis points in proportion to other axis movements
+	Given firstMatrix equals Shearing Matrix <x2y> <x2z> <y2x> <y2z> <z2x> <z2y>
+	#Tuple t1 is a Point (W=1)
+	And t1 equals tuple 2 3 4 1
+	Then firstMatrix multiplied by t1 equals tuple <x> <y> <z> 1.0
+
+	Examples: Move one axis in proportion to another
+		| x2y | x2z | y2x | y2z | z2x | z2y | x   | y   | z   |
+		| 1   | 0   | 0   | 0   | 0   | 0   | 5.0 | 3.0 | 4.0 |
+		| 0   | 1   | 0   | 0   | 0   | 0   | 6.0 | 3.0 | 4.0 |
+		| 0   | 0   | 1   | 0   | 0   | 0   | 2.0 | 5.0 | 4.0 |
+		| 0   | 0   | 0   | 1   | 0   | 0   | 2.0 | 7.0 | 4.0 |
+		| 0   | 0   | 0   | 0   | 1   | 0   | 2.0 | 3.0 | 6.0 |
+		| 0   | 0   | 0   | 0   | 0   | 1   | 2.0 | 3.0 | 7.0 |
+
+#Examples:
+#  Move X in proportion to Y
+#  Move X in proportion to Z
+#  Move Y in proportion to X
+#  Move Y in proportion to Z
+#  Move Z in proportion to X
+#  Move Z in proportion to Y
+

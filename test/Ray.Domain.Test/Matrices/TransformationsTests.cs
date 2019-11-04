@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Ray.Domain.Extensions;
+using Ray.Domain.Maths.Factories;
 using Xunit;
 using Xunit.Gherkin.Quick;
 
@@ -23,6 +24,13 @@ namespace Ray.Domain.Test.Matrices
         public void InitializationValues_Scaling_SetOnFirstMatrixInstance(float x, float y, float z)
         {
             _firstMatrix = Matrix4x4.CreateScale(x, y, z);
+        }
+
+        [Given(@"firstMatrix equals Shearing Matrix (-?\d+) (-?\d+) (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
+        public void InitializationValues_Shearing_SetOnFirstMatrixInstance(float x2y, float x2z, float y2x, float y2z, float z2x, float z2y)
+        {
+            _firstMatrix = BasicMatrixFactory.CreateShearingMatrix(
+                x2y, x2z, y2x, y2z, z2x, z2y);
         }
 
         [And(@"firstMatrix equals X Rotation Matrix for firstRotation")]
@@ -123,6 +131,7 @@ namespace Ray.Domain.Test.Matrices
         {
             GivenExpectedAnswer_MultiplySecondMatrixByTuple_VerifyResult(x, y, z, w);
         }
+
 
     }
 }
