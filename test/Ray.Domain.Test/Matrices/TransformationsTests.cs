@@ -10,7 +10,7 @@ namespace Ray.Domain.Test.Matrices
     [FeatureFile("./features/matrices/Transformations.feature")]
     public sealed class TransformationsTests : Feature
     {
-        private Matrix4x4 _firstMatrix, _secondMatrix;
+        private Matrix4x4 _firstMatrix, _secondMatrix, _thirdMatrix;
         private Vector4 _tupleInstance;
         private float _firstRotation, _secondRotation;
 
@@ -68,6 +68,19 @@ namespace Ray.Domain.Test.Matrices
         {
             _secondMatrix = Matrix4x4.CreateRotationZ(_secondRotation);
         }
+
+        [And(@"secondMatrix equals Scaling Matrix (-?\d+) (-?\d+) (-?\d+)")]
+        public void InitializationValues_Scaling_SetOnSecondMatrixInstance(float x, float y, float z)
+        {
+            _secondMatrix = Matrix4x4.CreateScale(x, y, z);
+        }
+
+        [And(@"thirdMatrix equals Translation Matrix (-?\d+) (-?\d+) (-?\d+)")]
+        public void InitializationValues_Translation_SetOnThirdMatrixInstance(float x, float y, float z)
+        {
+            _thirdMatrix = Matrix4x4.CreateTranslation(x, y, z);
+        }
+
 
         [And(@"firstRotation equals Pi over (\d)")]
         public void InitializationValues_SetOnFirstRotation(int fraction)
@@ -132,6 +145,26 @@ namespace Ray.Domain.Test.Matrices
             GivenExpectedAnswer_MultiplySecondMatrixByTuple_VerifyResult(x, y, z, w);
         }
 
+        [Then(@"thirdMatrix multiplied by t1 equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        public void GivenExpectedAnswer_MultiplyThirdMatrixByTuple_VerifyResult(float x, float y, float z, float w)
+        {
+            var expectedResult = new Vector4(x, y, z, w);
+
+            var actualResult = _thirdMatrix.ToColumnMajorForm().Multiply(_tupleInstance);
+
+            Assert.True(expectedResult.IsApproximately(actualResult));
+        }
+
+        [Then(@"thirdMatrix multiplied by secondMatrix multiplied by firstMatrix multiplied by t1 equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        public void GivenExpectedAnswer_ChainTransformations_MultiplyByTuple_VerifyResult(float x, float y, float z, float w)
+        {
+            var expectedResult = new Vector4(x, y, z, w);
+
+            var chainedTransformation = _thirdMatrix.ToColumnMajorForm() * _secondMatrix.ToColumnMajorForm() * _firstMatrix.ToColumnMajorForm();
+            var actualResult = chainedTransformation.Multiply(_tupleInstance);
+
+            Assert.True(expectedResult.IsApproximately(actualResult));
+        }
 
     }
 }

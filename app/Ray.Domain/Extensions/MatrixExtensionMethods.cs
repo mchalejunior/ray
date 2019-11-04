@@ -16,9 +16,8 @@ namespace Ray.Domain.Extensions
         /// It doesn't matter which you use, but calculations are very different and so consistency is important.
         /// The Ray Tracer Text is the requirements as far as this code project is concerned. However, we're
         /// choosing to use <see cref="System.Numerics"/> namespace to do all the heavy lifting for us.
-        /// So in our case we'll do as many calculations/transformation etc. using the MSDN standard.
-        /// Then at the last minute (e.g. before translation to canvas) we'll convert using this extension
-        /// method and calculate / make the final interpretation in the Ray Tracer Text standard.
+        /// So in our case we'll have to convert to CMF before applying transformations, otherwise we'll get
+        /// completely different results and cannot use the specs supplied by the text to assert results.
         ///
         /// Crucially you must see the unit test suite for specific details on what to do here.
         /// </remarks>
@@ -45,7 +44,8 @@ namespace Ray.Domain.Extensions
             // really just a skinny 1x4 matrix. So that's what we create here and then just multiple two matrices.
             
             // You'll notice that we use CMF here. See further notes about this in ToColumnMajorForm. 
-            // Might not have to worry about this at all, but worth understanding the difference between CMF
+            // Ideally this important difference will be encapsulated by the code project being built here and it
+            // won't be something client code has to worry about, but worth understanding the difference between CMF
             // and RMF. And how the Ray Tracer Text and Microsoft model things differently.
 
             var skinnyMatrix = new Matrix4x4 {M11 = right.X, M21 = right.Y, M31 = right.Z, M41 = right.W};

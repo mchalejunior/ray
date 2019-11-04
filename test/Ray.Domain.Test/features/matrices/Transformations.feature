@@ -131,3 +131,38 @@ Scenario Outline: A shearing transform moves axis points in proportion to other 
 #  Move Z in proportion to X
 #  Move Z in proportion to Y
 
+
+
+# Chaining transformations.
+#  -Prove same result as performing one by one.
+#  -Show that chains need to be applied in reverse order.
+
+# Apply transforms one by one. 
+Scenario: Individual transformations are applied in sequence
+	Given t1 equals tuple 1 0 1 1
+	#Full quarter rotation is Pi/2
+	And firstRotation equals Pi over 2
+	And firstMatrix equals X Rotation Matrix for firstRotation
+	And secondMatrix equals Scaling Matrix 5 5 5
+	And thirdMatrix equals Translation Matrix 10 5 7
+	#Individually assert rotation, then apply output to next transform.
+	Then firstMatrix multiplied by t1 equals tuple 1.0 -1.0 0.0 1.0
+	And t1 equals tuple 1 -1 0 1
+	#Individually assert scaling, then apply output to next transform.
+	Then secondMatrix multiplied by t1 equals tuple 5.0 -5.0 0.0 1.0
+	And t1 equals tuple 5 -5 0 1
+	#Individually assert translation
+	Then thirdMatrix multiplied by t1 equals tuple 15.0 0.0 7.0 1.0
+
+# Chain transformations.
+Scenario: Chained transformations must be applied in reverse order
+	Given t1 equals tuple 1 0 1 1
+	#Full quarter rotation is Pi/2
+	And firstRotation equals Pi over 2
+	And firstMatrix equals X Rotation Matrix for firstRotation
+	And secondMatrix equals Scaling Matrix 5 5 5
+	And thirdMatrix equals Translation Matrix 10 5 7
+	#This time apply transforms in one go and assert final result is same.
+	Then thirdMatrix multiplied by secondMatrix multiplied by firstMatrix multiplied by t1 equals tuple 15.0 0.0 7.0 1.0
+
+
