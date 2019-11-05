@@ -124,7 +124,7 @@ namespace Ray.Domain.Test.Matrices
         {
             var expectedResult = new Vector4(x, y, z, w);
 
-            var actualResult = _firstMatrix.ToColumnMajorForm().Multiply(_tupleInstance);
+            var actualResult = _firstMatrix.Multiply(_tupleInstance);
 
             Assert.True(expectedResult.IsApproximately(actualResult));
         }
@@ -134,7 +134,7 @@ namespace Ray.Domain.Test.Matrices
         {
             var expectedResult = new Vector4(x, y, z, w);
 
-            var actualResult = _secondMatrix.ToColumnMajorForm().Multiply(_tupleInstance);
+            var actualResult = _secondMatrix.Multiply(_tupleInstance);
 
             Assert.True(expectedResult.IsApproximately(actualResult));
         }
@@ -150,7 +150,7 @@ namespace Ray.Domain.Test.Matrices
         {
             var expectedResult = new Vector4(x, y, z, w);
 
-            var actualResult = _thirdMatrix.ToColumnMajorForm().Multiply(_tupleInstance);
+            var actualResult = _thirdMatrix.Multiply(_tupleInstance);
 
             Assert.True(expectedResult.IsApproximately(actualResult));
         }
@@ -161,7 +161,7 @@ namespace Ray.Domain.Test.Matrices
             var expectedResult = new Vector4(x, y, z, w);
 
             var chainedTransformation = _thirdMatrix.ToColumnMajorForm() * _secondMatrix.ToColumnMajorForm() * _firstMatrix.ToColumnMajorForm();
-            var actualResult = chainedTransformation.Multiply(_tupleInstance);
+            var actualResult = chainedTransformation.Multiply(_tupleInstance, true);
 
             Assert.True(expectedResult.IsApproximately(actualResult));
         }

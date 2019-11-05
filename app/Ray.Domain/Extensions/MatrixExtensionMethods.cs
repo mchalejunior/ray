@@ -36,7 +36,7 @@ namespace Ray.Domain.Extensions
         /// Matrices are used to encode multiple operations, which can then be
         /// applied as an atomic operation on a point.
         /// </remarks>
-        public static Vector4 Multiply(this Matrix4x4 left, Vector4 right)
+        public static Vector4 Multiply(this Matrix4x4 left, Vector4 right, bool matrixAlreadyInCMF = false)
         {
             // skinnyMatrix
             // A lay person explanation: System.Numerics namespace offers the ability to multiply two matrices,
@@ -47,6 +47,10 @@ namespace Ray.Domain.Extensions
             // Ideally this important difference will be encapsulated by the code project being built here and it
             // won't be something client code has to worry about, but worth understanding the difference between CMF
             // and RMF. And how the Ray Tracer Text and Microsoft model things differently.
+            if (!matrixAlreadyInCMF)
+            {
+                left = left.ToColumnMajorForm();
+            }
 
             var skinnyMatrix = new Matrix4x4 {M11 = right.X, M21 = right.Y, M31 = right.Z, M41 = right.W};
             var matrixCalculation = left * skinnyMatrix;
@@ -58,5 +62,6 @@ namespace Ray.Domain.Extensions
                 matrixCalculation.M41
             );
         }
+
     }
 }

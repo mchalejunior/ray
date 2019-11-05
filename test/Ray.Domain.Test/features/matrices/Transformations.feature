@@ -1,7 +1,7 @@
 ﻿Feature: MatrixTransformationsFeature
 	In order to draw realistic 3D scenes
 	As a Ray Tracer
-	I want the ability to move and resize shapes using matrix transformations
+	I want the ability to move, resize, reflect etc. shapes using matrix transformations
  
 
 # Move a point. 

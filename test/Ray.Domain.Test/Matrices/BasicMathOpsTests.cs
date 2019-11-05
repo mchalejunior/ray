@@ -9,6 +9,16 @@ using Feature = Xunit.Gherkin.Quick.Feature;
 
 namespace Ray.Domain.Test.Matrices
 {
+    /*********** IMPORTANT NOTE ***********
+     * This entire test class has matrices specified in CMF (the Text standard, not the MSDN standard).
+     * This allows us to perform and assert all basic maths ops, exactly as it appears in the Text.
+     * That's fine, but important to realize that System.Numerics is doing the heavy lifting for us
+     * in the other test feature classes and uses RMF (the MSDN standard, not the Text standard).
+     * So RMF is actually going to be our standard and then we'll convert to CMF so that we match the
+     * Text's expectations and assertions. We'll encapsulate the conversion in our API to make it as
+     * natural as possible.
+     */
+
     /* NOTE: System.Numerics Matrix4x4 struct has 1-based indexing.
      *    However, the Ray Tracer text is zero-based. This is quite confusing!!
      *    But it'd be more confusing if I tried to convert between the two.
@@ -73,7 +83,7 @@ namespace Ray.Domain.Test.Matrices
         public void GivenExpectedAnswer_MultiplyMatrixByTuple_VerifyResult(float x, float y, float z, float w)
         {
             var expectedResult = new Vector4(x, y, z, w);
-            var actualResult = _firstMatrix.Multiply(_tupleInstance);
+            var actualResult = _firstMatrix.Multiply(_tupleInstance, true);
 
             Assert.Equal(expectedResult, actualResult);
         }
@@ -186,7 +196,7 @@ namespace Ray.Domain.Test.Matrices
                 m.ToFloat(3, 1), m.ToFloat(3, 2), m.ToFloat(3, 3), m.ToFloat(3, 4),
                 m.ToFloat(4, 1), m.ToFloat(4, 2), m.ToFloat(4, 3), m.ToFloat(4, 4)
             );
-        } 
+        }
 
         #endregion
     }
