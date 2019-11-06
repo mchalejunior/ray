@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Ray.Util.Console.ClockDrawing;
 using Ray.Util.Console.ProjectileGame;
 using Environment = Ray.Util.Console.ProjectileGame.Environment;
 
@@ -10,9 +11,15 @@ namespace Ray.Util.Console
         static void Main(string[] args)
         {
             RunProjectileSimulation();
+            RunClockDrawing();
 
             System.Console.WriteLine("Press return key to exit");
             System.Console.Read();
+        }
+
+        static void RunClockDrawing()
+        {
+            ClockRunner.DrawClock("c:\\temp\\ray\\clock1.bmp");
         }
 
         static void RunProjectileSimulation()

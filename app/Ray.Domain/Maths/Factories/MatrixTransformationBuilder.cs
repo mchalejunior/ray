@@ -40,6 +40,18 @@ namespace Ray.Domain.Maths.Factories
             return this;
         }
 
+        public IMatrixTransformationBuilder RotateY(float radians)
+        {
+            _matrices.Push(Matrix4x4.CreateRotationY(radians));
+            return this;
+        }
+
+        public IMatrixTransformationBuilder RotateZ(float radians)
+        {
+            _matrices.Push(Matrix4x4.CreateRotationZ(radians));
+            return this;
+        }
+
         public IMatrixTransformationBuilder Scale(Vector3 proportions)
         {
             _matrices.Push(Matrix4x4.CreateScale(proportions));
