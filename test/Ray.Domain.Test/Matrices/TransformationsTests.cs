@@ -85,14 +85,14 @@ namespace Ray.Domain.Test.Matrices
         [And(@"firstRotation equals Pi over (\d)")]
         public void InitializationValues_SetOnFirstRotation(int fraction)
         {
-            _firstRotation = (float)(Math.PI / fraction);
+            _firstRotation = MathF.PI / fraction;
         }
 
 
         [And(@"secondRotation equals Pi over (\d)")]
         public void InitializationValues_SetOnSecondRotation(int fraction)
         {
-            _secondRotation = (float)(Math.PI / fraction);
+            _secondRotation = MathF.PI / fraction;
         }
 
 

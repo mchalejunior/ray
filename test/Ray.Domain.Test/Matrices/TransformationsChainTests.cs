@@ -57,7 +57,7 @@ namespace Ray.Domain.Test.Matrices
         [And(@"firstRotation equals Pi over (\d)")]
         public void InitializationValues_SetOnFirstRotation(int fraction)
         {
-            _firstRotation = (float)(Math.PI / fraction);
+            _firstRotation = MathF.PI / fraction;
         }
 
         [Then(@"x-rotate scale and translate on t1 equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
