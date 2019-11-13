@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using Ray.Domain.Maths.Simulations.Intersections;
@@ -15,8 +16,12 @@ namespace Ray.Domain.Test.Rays
         private Vector4 _origin, _direction;
         private readonly Model.Ray _rayInstance = new Model.Ray();
         private Sphere _sphereInstance = null;
-        private RaySphereCalculator _xs = null;
         private float _distance;
+
+        private RaySphereCalculator _xs = null;
+        private IList<float> _orderedIntersectionDistances =>
+            _xs.Intersections.Select(x => x.GetPreciseIntersectionPoint().Distance).OrderBy(x => x).ToList();
+        
 
         [Given(@"origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
         public void InitializationValues_SetOnOriginInstance(float x, float y, float z, float w)
@@ -97,8 +102,7 @@ namespace Ray.Domain.Test.Rays
             var expectedAnswer = count;
 
             _xs.RunSimulation();
-            var intersections = _xs.Intersections;
-            var actualAnswer = intersections.Count;
+            var actualAnswer = _orderedIntersectionDistances.Count;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
@@ -108,8 +112,7 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = t;
 
-            var intersection = _xs.Intersections[index];
-            var actualAnswer = intersection.GetPreciseIntersectionPoint().Distance;
+            var actualAnswer = _orderedIntersectionDistances[index];
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }

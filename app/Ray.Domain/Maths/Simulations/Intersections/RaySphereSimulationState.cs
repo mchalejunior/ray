@@ -50,7 +50,7 @@ namespace Ray.Domain.Maths.Simulations.Intersections
         }
 
 
-        public bool IsRayPositionFurtherAwayThanStartingOrigin
+        public bool IsRayPositionFurtherAwayThanStartingPoint
         {
             get
             {

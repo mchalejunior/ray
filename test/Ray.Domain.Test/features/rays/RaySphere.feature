@@ -62,3 +62,28 @@ Scenario: A ray misses a sphere
 	And initialize xs as intersection calulator for ray, sphere
 	Then xs intersection count equals 0
 
+
+Scenario: A ray originates inside a sphere
+	Given origin equals tuple 0 0 0 1
+	And direction equals tuple 0 0 1 0
+	#Origin is a Point (W=1), direction a Vector (W=0)
+	When initialize ray with origin and direction
+	And initialize sphere as a unit sphere at the origin
+	And initialize xs as intersection calulator for ray, sphere
+	Then xs intersection count equals 2
+	And xs element 0 has t equals -1.0
+	And xs element 1 has t equals 1.0
+
+
+Scenario: A sphere is behind a ray
+	Given origin equals tuple 0 0 5 1
+	And direction equals tuple 0 0 1 0
+	#Origin is a Point (W=1), direction a Vector (W=0)
+	When initialize ray with origin and direction
+	And initialize sphere as a unit sphere at the origin
+	And initialize xs as intersection calulator for ray, sphere
+	Then xs intersection count equals 2
+	And xs element 0 has t equals -6.0
+	And xs element 1 has t equals -4.0
+
+

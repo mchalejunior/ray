@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 using Ray.Domain.Extensions;
 
 namespace Ray.Domain.Model
@@ -37,15 +35,19 @@ namespace Ray.Domain.Model
          */
         public bool IsInside(Vector4 point)
         {
+            return DistanceFromOrigin(point) <= MathF.Pow(Radius, 2F);
+        }
+        public float DistanceFromOrigin(Vector4 point)
+        {
             if (!point.IsPoint())
             {
                 throw new ArgumentOutOfRangeException("point", "Not a valid point");
             }
 
-            float result = MathF.Pow(point.X - Origin.X, 2F) +
-                           MathF.Pow(point.Y - Origin.Y, 2F) +
-                           MathF.Pow(point.Z - Origin.Z, 2F);
-            return result <= MathF.Pow(Radius, 2F);
+            return MathF.Pow(point.X - Origin.X, 2F) +
+                   MathF.Pow(point.Y - Origin.Y, 2F) +
+                   MathF.Pow(point.Z - Origin.Z, 2F);
         }
+
     }
 }
