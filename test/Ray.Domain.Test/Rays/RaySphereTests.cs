@@ -18,7 +18,7 @@ namespace Ray.Domain.Test.Rays
         private Sphere _sphereInstance = null;
         private float _distance;
 
-        private RaySphereCalculator _xs = null;
+        private SceneIntersectionCalculator _xs = null;
         private IList<float> _orderedIntersectionDistances =>
             _xs.Intersections.Select(x => x.GetPreciseIntersectionPoint().Distance).OrderBy(x => x).ToList();
         
@@ -63,7 +63,7 @@ namespace Ray.Domain.Test.Rays
         [And(@"initialize xs as intersection calulator for ray, sphere")]
         public void InitializationValues_SetOnIntersectionCalculator()
         {
-            _xs = new RaySphereCalculator(_rayInstance, _sphereInstance);
+            _xs = new SceneIntersectionCalculator(_rayInstance, new List<IBasicShape> {_sphereInstance});
         }
 
         [Then(@"ray origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]

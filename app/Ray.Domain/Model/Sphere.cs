@@ -4,7 +4,7 @@ using Ray.Domain.Extensions;
 
 namespace Ray.Domain.Model
 {
-    public class Sphere
+    public class Sphere : IBasicShape
     {
         public Sphere() : this(new Vector4(0F, 0F, 0F, 1F), 1F)
         {
