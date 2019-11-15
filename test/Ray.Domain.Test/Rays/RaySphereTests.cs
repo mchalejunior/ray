@@ -117,5 +117,30 @@ namespace Ray.Domain.Test.Rays
             Assert.Equal(expectedAnswer, actualAnswer);
         }
 
+        [And(@"xs element (\d) has shape equals sphere")]
+        public void GivenExpectedAnswer_QueryIntersection_VerifyShape(int index)
+        {
+            var expectedAnswer = _sphereInstance;
+
+            var actualAnswer = _xs.Intersections[index].GetPreciseIntersectionPoint().Shape;
+
+            Assert.Equal(expectedAnswer, actualAnswer);
+        }
+
+        [And(@"xs hit t equals (-?\d+\.\d+)")]
+        public void GivenExpectedAnswer_QueryHit_VerifyDistance(float t)
+        {
+            var expectedAnswer = t;
+
+            var actualAnswer = _xs.Hit.Distance;
+
+            Assert.Equal(expectedAnswer, actualAnswer);
+        }
+
+        [And(@"xs hit t equals null")]
+        public void GivenExpectedAnswer_QueryHit_VerifyNull()
+        {
+            Assert.Null(_xs.Hit);
+        }
     }
 }

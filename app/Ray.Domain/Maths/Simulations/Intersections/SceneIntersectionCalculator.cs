@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ray.Domain.Model;
 
 namespace Ray.Domain.Maths.Simulations.Intersections
@@ -14,6 +15,16 @@ namespace Ray.Domain.Maths.Simulations.Intersections
         /// <see cref="RunSimulation"/> must be called before querying this property, otherwise it will be empty.
         /// </summary>
         public IList<RayShapeIntersectionDto> Intersections { get; private set; } = new List<RayShapeIntersectionDto>();
+
+        /// <summary>
+        /// The Hit is the first thing the Ray hits. So return the first non-zero (in front of ray) intersection.
+        /// </summary>
+        public RayShapeSimulationState Hit => (
+            from i in Intersections
+            where i.IntersectionDistance > 0F
+            orderby i.IntersectionDistance
+            select i.GetPreciseIntersectionPoint()
+        ).FirstOrDefault();
 
 
         public SceneIntersectionCalculator(Model.Ray ray, List<IBasicShape> shapes)

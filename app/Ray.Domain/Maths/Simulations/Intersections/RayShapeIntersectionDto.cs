@@ -19,6 +19,11 @@ namespace Ray.Domain.Maths.Simulations.Intersections
                 State : 
                 PreviousState;
         }
-            
+
+        /// <summary>
+        /// Distance along ray where intersection occurred.
+        /// </summary>
+        /// <see cref="GetPreciseIntersectionPoint"/>
+        public float IntersectionDistance => GetPreciseIntersectionPoint().Distance;
     }
 }

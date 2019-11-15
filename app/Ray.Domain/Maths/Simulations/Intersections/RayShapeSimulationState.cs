@@ -7,7 +7,7 @@ namespace Ray.Domain.Maths.Simulations.Intersections
     public class RayShapeSimulationState
     {
         private readonly Model.Ray _ray;
-        private readonly IBasicShape _shape;
+        public IBasicShape Shape { get; private set; }
         private readonly int _step;
 
         private readonly float _distanceIncrement = 0.1F;
@@ -15,13 +15,13 @@ namespace Ray.Domain.Maths.Simulations.Intersections
         public RayShapeSimulationState(Model.Ray ray, IBasicShape shape, int step)
         {
             _ray = ray;
-            _shape = shape;
+            Shape = shape;
             _step = step;
         }
 
         public float Distance => _distanceIncrement * _step;
         public Vector4 Position => _ray.GetPosition(Distance);
-        public bool IsInsideShape => _shape.IsInside(Position);
+        public bool IsInsideShape => Shape.IsInside(Position);
 
 
         public IntersectionType CheckForIntersection(RayShapeSimulationState previousState)
