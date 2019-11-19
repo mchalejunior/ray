@@ -4,50 +4,41 @@ using Ray.Domain.Extensions;
 
 namespace Ray.Domain.Model
 {
-    public class Sphere : IBasicShape
+    public partial class Sphere : IBasicShape
     {
-        public Sphere() : this(new Vector4(0F, 0F, 0F, 1F), 1F)
+        public Sphere() : this(new Vector4(0F, 0F, 0F, 1F), new Vector4(1F, 1F, 1F, 0F))
         {
             // As per text, considering simple unit spheres with centre at the origin, to begin with.
         }
-        public Sphere(Vector4 origin, float radius)
+        public Sphere(Vector4 origin, Vector4 scale)
         {
             this.Origin = origin;
-            this.Radius = radius;
+            this.Scale = scale;
         }
 
         public Vector4 Origin { get; set; }
-        public float Radius { get; set; }
+        public Vector4 Scale { get; set; }
 
-
-        /* From this link: https://www.geeksforgeeks.org/check-whether-a-point-lies-inside-a-sphere-or-not/
-         * - A point (x, y, z) is inside the sphere with center (cx, cy, cz) and radius r if:
-         *     ( x-cx ) ^2 + (y-cy) ^2 + (z-cz) ^ 2 < r^2
-         * - A point (x, y, z) lies on the sphere with center (cx, cy, cz) and radius r if:
-         *     ( x-cx ) ^2 + (y-cy) ^2 + (z-cz) ^ 2 = r^2
-         * - A point (x, y, z) is outside the sphere with center (cx, cy, cz) and radius r if:
-         *     ( x-cx ) ^2 + (y-cy) ^2 + (z-cz) ^ 2 > r^2
-         *
-         * I'm getting away with just Inside or Outside and dropping On (for now anyway), as we're simulating
-         * a moving ray and sphere intersections - we hold the state of position n-1 and n. In this model
-         * tangential glances record 2 intersections at the same point. This is what the Ray Tracer text's
-         * unit test assertions expect.
-         */
-        public bool IsInside(Vector4 point)
+        public float Radius
         {
-            return DistanceFromOrigin(point) <= MathF.Pow(Radius, 2F);
-        }
-        public float DistanceFromOrigin(Vector4 point)
-        {
-            if (!point.IsPoint())
+            get
             {
-                throw new ArgumentOutOfRangeException("point", "Not a valid point");
-            }
+                var isPerfectSphere = (Scale.X + Scale.Y + Scale.Z).IsApproximately(3 * Scale.X);
+                if (!isPerfectSphere)
+                {
+                    throw new ApplicationException("Non-uniform Sphere. Cannot assume simple radius");
+                }
 
-            return MathF.Pow(point.X - Origin.X, 2F) +
-                   MathF.Pow(point.Y - Origin.Y, 2F) +
-                   MathF.Pow(point.Z - Origin.Z, 2F);
+                return Scale.X;
+            }
         }
 
+        /// <summary>
+        /// As per text: Intersection calculations kept simple by modeling as unit
+        /// spheres at the origin. This <see cref="Transformation"/> can be applied
+        /// to scale and translate the sphere as appropriate.
+        /// </summary>
+        public Matrix4x4 Transformation { get; set; } = Matrix4x4.Identity;
+        
     }
 }
