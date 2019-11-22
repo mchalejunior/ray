@@ -1,42 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 using Ray.Domain.Extensions;
+using Ray.Domain.Transportation;
 
 namespace Ray.Domain.Model
 {
     public partial class Sphere
     {
 
-        /* From this link: https://www.geeksforgeeks.org/check-whether-a-point-lies-inside-a-sphere-or-not/
-         * - A point (x, y, z) is inside the sphere with center (cx, cy, cz) and radius r if:
-         *     ( x-cx ) ^2 + (y-cy) ^2 + (z-cz) ^ 2 < r^2
-         * - A point (x, y, z) lies on the sphere with center (cx, cy, cz) and radius r if:
-         *     ( x-cx ) ^2 + (y-cy) ^2 + (z-cz) ^ 2 = r^2
-         * - A point (x, y, z) is outside the sphere with center (cx, cy, cz) and radius r if:
-         *     ( x-cx ) ^2 + (y-cy) ^2 + (z-cz) ^ 2 > r^2
-         *
-         * I'm getting away with just Inside or Outside and dropping On (for now anyway), as we're simulating
-         * a moving ray and sphere intersections - we hold the state of position n-1 and n. In this model
-         * tangential glances record 2 intersections at the same point. This is what the Ray Tracer text's
-         * unit test assertions expect.
-         */
-        public bool IsInside(Vector4 point)
+        public IEnumerable<IntersectionDto> GetIntersections(Ray ray, bool applyLocalTransformation = true)
         {
-            return DistanceFromOrigin(point) <= MathF.Pow(Radius, 2F);
-        }
-        public float DistanceFromOrigin(Vector4 point)
-        {
-            if (!point.IsPoint())
+            // These calculation assume a unit sphere at the axis origin.
+            // See Transformation property to understand how we scale and translate.
+            // But for this method, we should validate the assumptions as a pre-condition.
+            bool preconditionFailure = !IsPerfectSphere || !IsAtAxisOrigin;
+            if (_enforceAssumptions && preconditionFailure)
             {
-                throw new ArgumentOutOfRangeException("point", "Not a valid point");
+                throw new ApplicationException("Precondition failed: Require a unit sphere at the axis origin.");
             }
 
-            return MathF.Pow(point.X - Origin.X, 2F) +
-                   MathF.Pow(point.Y - Origin.Y, 2F) +
-                   MathF.Pow(point.Z - Origin.Z, 2F);
+            // As per text (and see this.Transformation): leave sphere as a unit sphere
+            // at the origin and transform the ray instead - simplest way to calculate intersections.
+            Ray localRay = GetTransformedRay(ray, applyLocalTransformation);
+
+            // Straight from text. See for derivation details.
+            var sphere_to_ray = localRay.Origin - this.Origin;
+            var a = Vector4.Dot(localRay.Direction, localRay.Direction);
+            var b = 2 * Vector4.Dot(localRay.Direction, sphere_to_ray);
+            var c = Vector4.Dot(sphere_to_ray, sphere_to_ray) - 1;
+
+            var discriminant = MathF.Pow(b, 2F) - 4 * a * c;
+
+            if (discriminant < 0)
+            {
+                return new List<IntersectionDto>();
+            }
+
+            var t1 = (-b - MathF.Sqrt(discriminant)) / (2 * a);
+            var t2 = (-b + MathF.Sqrt(discriminant)) / (2 * a);
+
+            return new List<IntersectionDto>
+            {
+                new IntersectionDto
+                {
+                    Ray = ray, // NOTE: return original ray (and sphere with transformation).
+                    Shape = this,
+                    DistanceT = t1
+                },
+                new IntersectionDto
+                {
+                    Ray = ray, // NOTE: return original ray (and sphere with transformation).
+                    Shape = this,
+                    DistanceT = t2
+                }
+            };
+
         }
+
+
+        #region Helper methods
+
+        private Ray GetTransformedRay(Ray ray, bool applyLocalTransformation)
+        {
+            if (!applyLocalTransformation)
+            {
+                return ray;
+            }
+
+            Matrix4x4.Invert(this.Transformation, out var sphereTransformInverted);
+            return new Ray
+            {
+                Origin = sphereTransformInverted.Multiply(ray.Origin),
+                Direction = sphereTransformInverted.Multiply(ray.Direction)
+            };
+        }
+
+        #endregion
 
     }
 }

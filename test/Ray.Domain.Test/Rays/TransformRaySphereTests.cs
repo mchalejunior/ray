@@ -17,12 +17,12 @@ namespace Ray.Domain.Test.Rays
         private Vector4 _origin, _direction;
         private readonly Model.Ray _rayInstance = new Model.Ray(),
             _transformedRay = new Model.Ray();
-        private Sphere _sphereInstance = null;
+        private IBasicShape _sphereInstance = null;
         private Matrix4x4 _firstMatrix;
 
         private SceneIntersectionCalculator _xs = null;
-        private IList<float> _orderedIntersectionDistances =>
-            _xs.Intersections.Select(x => x.GetPreciseIntersectionPoint().Distance).OrderBy(x => x).ToList();
+        //private IList<float> _orderedIntersectionDistances =>
+        //    _xs.Intersections.Select(x => x.DistanceT).OrderBy(x => x).ToList();
 
         [Given(@"origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
         public void InitializationValues_SetOnOriginInstance(float x, float y, float z, float w)
@@ -45,7 +45,7 @@ namespace Ray.Domain.Test.Rays
         [Given(@"initialize sphere as a unit sphere at the origin")]
         public void InitializationValues_SetOnSphereInstance()
         {
-            _sphereInstance = new Sphere();
+            _sphereInstance = Sphere.CreateDefaultInstance(true);
         }
 
         [When(@"initialize ray with origin and direction")]
@@ -94,59 +94,14 @@ namespace Ray.Domain.Test.Rays
         [And(@"initialize xs as intersection calulator for ray, sphere")]
         public void InitializationValues_SetOnIntersectionCalculator()
         {
-            // TODO: Temporary - need to think about applying directly to the sphere vs to the ray.
-            // Would applying to the ray only work for single sphere and transform - in my case,
-            // surely yes, but maybe if I'd modeled as the book, it wouldn't be such a problem!
 
-            // TODO: the below works - so have proved the books algorithm.
-            // Next try apply the scaling transform to the sphere. This obviously changes the radius.
-            // I think I can multiply the radius float by the matrix as per previous chapter.
-            // Verify that get same result that way too.
+            _xs = new SceneIntersectionCalculator(_rayInstance, new List<IBasicShape> { _sphereInstance });
 
-            // TODO: An ApplyTransform method on an IBasicShape instance that accepted a IMatrixTransformationBuilder?
 
-            if (_sphereInstance.Transformation != Matrix4x4.Identity)
-            {
 
-                // 1. Books way - apply Sphere transform to Ray instead.
-                //DoInitXs_BooksWay_ApplySphereTransformToRay();
-
-                // 2. Transform the sphere - simple way.
-                DoInitXs_MyWay_ApplyTransformToSphere_SimpleVersion();
-            }
-            else
-            {
-                _xs = new SceneIntersectionCalculator(_rayInstance, new List<IBasicShape> { _sphereInstance });
-            }
         }
 
         
-        // TODO: Temp code - decide best way forward.
-        private void DoInitXs_BooksWay_ApplySphereTransformToRay()
-        {
-            Matrix4x4.Invert(_sphereInstance.Transformation, out var sphereTransformInverted);
-            _transformedRay.Origin = sphereTransformInverted.Multiply(_rayInstance.Origin);
-            _transformedRay.Direction = sphereTransformInverted.Multiply(_rayInstance.Direction);
-
-            _xs = new SceneIntersectionCalculator(_transformedRay, new List<IBasicShape> { _sphereInstance });
-        }
-
-        private void DoInitXs_MyWay_ApplyTransformToSphere_SimpleVersion()
-        {
-            _sphereInstance.Origin = _sphereInstance.Transformation.Multiply(_sphereInstance.Origin);
-            // Bit of a problem here. A matrix can encode many transforms, including scaling.
-            // But for sphere we have Radius = float. Might need to change to vector and have a
-            // convenience property for radius. For now, just see if it even works!
-
-            _sphereInstance.Scale = _sphereInstance.Transformation.Multiply(_sphereInstance.Scale);
-
-            _xs = new SceneIntersectionCalculator(_rayInstance, new List<IBasicShape> { _sphereInstance });
-        }
-
-
-
-
-
 
 
 
@@ -163,7 +118,7 @@ namespace Ray.Domain.Test.Rays
             var expectedAnswer = count;
 
             _xs.RunSimulation();
-            var actualAnswer = _orderedIntersectionDistances.Count;
+            var actualAnswer = _xs.Intersections.Count;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
@@ -173,7 +128,7 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = t;
 
-            var actualAnswer = _orderedIntersectionDistances[index];
+            var actualAnswer = _xs.Intersections[index].DistanceT;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }

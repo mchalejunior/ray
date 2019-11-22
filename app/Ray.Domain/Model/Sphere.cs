@@ -6,14 +6,24 @@ namespace Ray.Domain.Model
 {
     public partial class Sphere : IBasicShape
     {
-        public Sphere() : this(new Vector4(0F, 0F, 0F, 1F), new Vector4(1F, 1F, 1F, 0F))
+        private readonly bool _enforceAssumptions;
+
+        public Sphere(Vector4 origin, Vector4 scale, bool enforceAssumptions)
         {
-            // As per text, considering simple unit spheres with centre at the origin, to begin with.
+            Origin = origin;
+            Scale = scale;
+            _enforceAssumptions = enforceAssumptions;
         }
-        public Sphere(Vector4 origin, Vector4 scale)
+
+        public static Sphere CreateDefaultInstance(bool enforceAssumptions = true)
         {
-            this.Origin = origin;
-            this.Scale = scale;
+            // As per text, considering simple unit spheres with centre at the origin,
+            // and transform the rays instead.
+
+            return new Sphere(
+                new Vector4(0F, 0F, 0F, 1F),
+                new Vector4(1F, 1F, 1F, 0F),
+                enforceAssumptions);
         }
 
         public Vector4 Origin { get; set; }
@@ -23,8 +33,7 @@ namespace Ray.Domain.Model
         {
             get
             {
-                var isPerfectSphere = (Scale.X + Scale.Y + Scale.Z).IsApproximately(3 * Scale.X);
-                if (!isPerfectSphere)
+                if (!IsPerfectSphere)
                 {
                     throw new ApplicationException("Non-uniform Sphere. Cannot assume simple radius");
                 }
@@ -36,9 +45,23 @@ namespace Ray.Domain.Model
         /// <summary>
         /// As per text: Intersection calculations kept simple by modeling as unit
         /// spheres at the origin. This <see cref="Transformation"/> can be applied
-        /// to scale and translate the sphere as appropriate.
+        /// to scale and translate this sphere instance as appropriate.
         /// </summary>
+        /// <remarks>
+        /// We actually apply the transform to the ray, rather than the sphere.
+        /// The ray ultimately determines the visual output, derived in no small
+        /// part by the intersection calculations. So keep the spheres uniform -
+        /// unit sphere @ origin, move them around world space with the transform,
+        /// but actually apply this transform (inverse of) to the ray.
+        /// </remarks>
+        /// <seealso cref="GetIntersections"/>
         public Matrix4x4 Transformation { get; set; } = Matrix4x4.Identity;
-        
+
+
+
+        public bool IsPerfectSphere => (Scale.X + Scale.Y + Scale.Z).IsApproximately(3 * Scale.X);
+
+        public bool IsAtAxisOrigin => (Origin.X + Origin.Y + Origin.Z).IsApproximately(0F);
+
     }
 }

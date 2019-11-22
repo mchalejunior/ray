@@ -19,9 +19,15 @@ namespace Ray.Domain.Test.Rays
         private float _distance;
 
         private SceneIntersectionCalculator _xs = null;
-        private IList<float> _orderedIntersectionDistances =>
-            _xs.Intersections.Select(x => x.GetPreciseIntersectionPoint().Distance).OrderBy(x => x).ToList();
+        //private IList<float> _orderedIntersectionDistances =>
+        //    _xs.Intersections.Select(x => x.GetPreciseIntersectionPoint().Distance).OrderBy(x => x).ToList();
         
+        // TODO: CM: mid refactor - making sure the new model is working, befor making elegant and removing old way.
+        private IList<float> _orderedIntersectionDistances =>
+            _sphereInstance.GetIntersections(_rayInstance).Select(x => x.DistanceT).ToList();
+
+
+
 
         [Given(@"origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
         public void InitializationValues_SetOnOriginInstance(float x, float y, float z, float w)
@@ -57,7 +63,7 @@ namespace Ray.Domain.Test.Rays
         [And(@"initialize sphere as a unit sphere at the origin")]
         public void InitializationValues_SetOnSphereInstance()
         {
-            _sphereInstance = new Sphere();
+            _sphereInstance = Sphere.CreateDefaultInstance(false);
         }
 
         [And(@"initialize xs as intersection calulator for ray, sphere")]
@@ -122,7 +128,7 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = _sphereInstance;
 
-            var actualAnswer = _xs.Intersections[index].GetPreciseIntersectionPoint().Shape;
+            var actualAnswer = _xs.Intersections[index].Shape;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
@@ -132,7 +138,7 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = t;
 
-            var actualAnswer = _xs.Hit.Distance;
+            var actualAnswer = _xs.Hit.DistanceT;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
