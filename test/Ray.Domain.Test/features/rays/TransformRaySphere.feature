@@ -8,9 +8,9 @@ Scenario: Translating a ray
 	Given origin equals tuple 1 2 3 1
 	And direction equals tuple 0 1 0 0
 	#Origin is a Point (W=1), direction a Vector (W=0)
-	And firstMatrix equals Translation Matrix 3 4 5
+	And transformMatrix equals Translation Matrix 3 4 5
 	When initialize ray with origin and direction
-	And transform ray with firstMatrix
+	And transform ray with transformMatrix
 	Then transformRay origin equals tuple 4.0 6.0 8.0 1.0
 	And transformRay direction equals tuple 0.0 1.0 0.0 0.0
 
@@ -19,35 +19,35 @@ Scenario: Scaling a ray
 	Given origin equals tuple 1 2 3 1
 	And direction equals tuple 0 1 0 0
 	#Origin is a Point (W=1), direction a Vector (W=0)
-	And firstMatrix equals Scaling Matrix 2 3 4
+	And transformMatrix equals Scaling Matrix 2 3 4
 	When initialize ray with origin and direction
-	And transform ray with firstMatrix
+	And transform ray with transformMatrix
 	Then transformRay origin equals tuple 2.0 6.0 12.0 1.0
 	And transformRay direction equals tuple 0.0 3.0 0.0 0.0
 
 
 Scenario: A spheres default transform
 	Given initialize sphere as a unit sphere at the origin
-	And firstMatrix equals Identity Matrix
+	And transformMatrix equals Identity Matrix
 	And initialize sphere as a unit sphere at the origin
-	Then sphere transform equals firstMatrix
+	Then sphere transform equals transformMatrix
 
 
 Scenario: Changing a spheres transformation
 	Given initialize sphere as a unit sphere at the origin
-	And firstMatrix equals Translation Matrix 2 3 4
+	And transformMatrix equals Translation Matrix 2 3 4
 	And initialize sphere as a unit sphere at the origin
-	When set sphere transformation equals firstMatrix
-	Then sphere transform equals firstMatrix
+	When set sphere transformation equals transformMatrix
+	Then sphere transform equals transformMatrix
 	  
 
 Scenario: Intersecting a scaled sphere with a ray
 	Given origin equals tuple 0 0 -5 1
 	And direction equals tuple 0 0 1 0
 	#Origin is a Point (W=1), direction a Vector (W=0)
-	And firstMatrix equals Scaling Matrix 2 2 2
+	And transformMatrix equals Scaling Matrix 2 2 2
 	And initialize sphere as a unit sphere at the origin
-	When set sphere transformation equals firstMatrix
+	When set sphere transformation equals transformMatrix
 	And initialize ray with origin and direction
 	And initialize xs as intersection calulator for ray, sphere
 	Then xs intersection count equals 2

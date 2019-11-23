@@ -68,11 +68,11 @@ namespace Ray.Domain.Model
                 return ray;
             }
 
-            Matrix4x4.Invert(this.Transformation, out var sphereTransformInverted);
             return new Ray
             {
-                Origin = sphereTransformInverted.Multiply(ray.Origin),
-                Direction = sphereTransformInverted.Multiply(ray.Direction)
+                // invert:true passed to Execute, as we apply the inverse of the Sphere transform to the Ray.
+                Origin = Transformation.Execute(ray.Origin, true),
+                Direction = Transformation.Execute(ray.Direction, true)
             };
         }
 

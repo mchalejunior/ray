@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Ray.Domain.Extensions;
+using Ray.Domain.Maths.Factories;
 
 namespace Ray.Domain.Model
 {
@@ -55,7 +56,7 @@ namespace Ray.Domain.Model
         /// but actually apply this transform (inverse of) to the ray.
         /// </remarks>
         /// <seealso cref="GetIntersections"/>
-        public Matrix4x4 Transformation { get; set; } = Matrix4x4.Identity;
+        public IMatrixTransformationBuilder Transformation { get; set; } = new MatrixTransformationBuilder();
 
 
 

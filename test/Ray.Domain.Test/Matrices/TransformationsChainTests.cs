@@ -66,10 +66,14 @@ namespace Ray.Domain.Test.Matrices
             var expectedResult = new Vector4(x, y, z, w);
 
             var actualResult_Raw = GetActualResult_Raw();
-            var actualResult_Natural = GetActualResult_Natural();
+            var builder = GetActualResult_Natural();
+            var actualResult_Natural = builder.Execute(_tupleInstance);
+            // also prove that can execute builder many times and get same result.
+            var actualResult_Natural_Copy = builder.Execute(_tupleInstance);
 
             Assert.True(expectedResult.IsApproximately(actualResult_Raw));
             Assert.True(expectedResult.IsApproximately(actualResult_Natural));
+            Assert.Equal(actualResult_Natural, actualResult_Natural_Copy);
         }
 
         private Vector4 GetActualResult_Raw()
@@ -93,7 +97,7 @@ namespace Ray.Domain.Test.Matrices
             return chainedTransformation.Multiply(_tupleInstance, true);
         }
 
-        private Vector4 GetActualResult_Natural()
+        private IMatrixTransformationBuilder GetActualResult_Natural()
         {
             // More natural way of chaining transformations.
             // The builder does the RMF/CMF conversion and
@@ -103,8 +107,7 @@ namespace Ray.Domain.Test.Matrices
             return builder
                 .RotateX(_firstRotation)
                 .Scale(_scale)
-                .Translate(_translation)
-                .Execute(_tupleInstance);
+                .Translate(_translation);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using Ray.Domain.Extensions;
+using Ray.Domain.Maths.Factories;
 using Ray.Domain.Maths.Simulations.Intersections;
 using Ray.Domain.Model;
 using Xunit;
@@ -18,11 +19,9 @@ namespace Ray.Domain.Test.Rays
         private readonly Model.Ray _rayInstance = new Model.Ray(),
             _transformedRay = new Model.Ray();
         private IBasicShape _sphereInstance = null;
-        private Matrix4x4 _firstMatrix;
-
+        private readonly IMatrixTransformationBuilder _transformMatrix = new MatrixTransformationBuilder();
         private SceneIntersectionCalculator _xs = null;
-        //private IList<float> _orderedIntersectionDistances =>
-        //    _xs.Intersections.Select(x => x.DistanceT).OrderBy(x => x).ToList();
+
 
         [Given(@"origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
         public void InitializationValues_SetOnOriginInstance(float x, float y, float z, float w)
@@ -55,10 +54,10 @@ namespace Ray.Domain.Test.Rays
             _rayInstance.Direction = _direction;
         }
 
-        [When(@"set sphere transformation equals firstMatrix")]
+        [When(@"set sphere transformation equals transformMatrix")]
         public void InitializationValues_Transform_SetOnSphereInstance()
         {
-            _sphereInstance.Transformation = _firstMatrix;
+            _sphereInstance.Transformation = _transformMatrix;
         }
 
         [And(@"initialize ray with origin and direction")]
@@ -67,22 +66,22 @@ namespace Ray.Domain.Test.Rays
             InitializationValues_SetOnRayInstance();
         }
 
-        [And(@"firstMatrix equals Identity Matrix")]
-        public void InitializationValues_Identity_SetOnFirstMatrixInstance()
+        [And(@"transformMatrix equals Identity Matrix")]
+        public void InitializationValues_Identity_SetOnTransformMatrixInstance()
         {
-            _firstMatrix = Matrix4x4.Identity;
+            // This is the default value when no transforms applied to the builder
         }
 
-        [And(@"firstMatrix equals Translation Matrix (-?\d+) (-?\d+) (-?\d+)")]
-        public void InitializationValues_Translation_SetOnFirstMatrixInstance(float x, float y, float z)
+        [And(@"transformMatrix equals Translation Matrix (-?\d+) (-?\d+) (-?\d+)")]
+        public void InitializationValues_Translation_SetOnTransformMatrixInstance(float x, float y, float z)
         {
-            _firstMatrix = Matrix4x4.CreateTranslation(x, y, z);
+            _transformMatrix.Translate(new Vector3(x, y, z));
         }
 
-        [And(@"firstMatrix equals Scaling Matrix (-?\d+) (-?\d+) (-?\d+)")]
-        public void InitializationValues_Scaling_SetOnFirstMatrixInstance(float x, float y, float z)
+        [And(@"transformMatrix equals Scaling Matrix (-?\d+) (-?\d+) (-?\d+)")]
+        public void InitializationValues_Scaling_SetOnTransformMatrixInstance(float x, float y, float z)
         {
-            _firstMatrix = Matrix4x4.CreateScale(x, y, z);
+            _transformMatrix.Scale(new Vector3(x, y, z));
         }
 
         [And(@"initialize sphere as a unit sphere at the origin")]
@@ -96,20 +95,13 @@ namespace Ray.Domain.Test.Rays
         {
 
             _xs = new SceneIntersectionCalculator(_rayInstance, new List<IBasicShape> { _sphereInstance });
-
-
-
         }
 
-        
-
-
-
-        [And(@"transform ray with firstMatrix")]
+        [And(@"transform ray with transformMatrix")]
         public void TransformRay_SetOnInitializedInstance()
         {
-            _transformedRay.Origin = _firstMatrix.Multiply(_rayInstance.Origin);
-            _transformedRay.Direction = _firstMatrix.Multiply(_rayInstance.Direction);
+            _transformedRay.Origin = _transformMatrix.Execute(_rayInstance.Origin);
+            _transformedRay.Direction = _transformMatrix.Execute(_rayInstance.Direction);
         }
 
         [Then(@"xs intersection count equals (\d)")]
@@ -153,14 +145,12 @@ namespace Ray.Domain.Test.Rays
             Assert.True(expectedResult.IsApproximately(actualResult));
         }
 
-        
-
-        [Then(@"sphere transform equals firstMatrix")]
+        [Then(@"sphere transform equals transformMatrix")]
         public void GivenExpectedAnswer_QuerySphereTransform_VerifyResult()
         {
-            var expectedAnswer = _firstMatrix;
+            var expectedAnswer = _transformMatrix.GetCompositeTransformation();
 
-            var actualAnswer = _sphereInstance.Transformation;
+            var actualAnswer = _sphereInstance.Transformation.GetCompositeTransformation();
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }

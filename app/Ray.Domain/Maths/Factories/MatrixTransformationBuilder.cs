@@ -8,18 +8,35 @@ namespace Ray.Domain.Maths.Factories
 {
     class MatrixTransformationBuilder : IMatrixTransformationBuilder
     {
-        private readonly Stack<Matrix4x4> _matrices = new Stack<Matrix4x4>();
+        private readonly Stack<Matrix4x4> _transformationsStack = new Stack<Matrix4x4>();
 
-        public Vector4 Execute(Vector4 tuple)
+        public Vector4 Execute(Vector4 tuple, bool invert = false)
         {
-            if (!_matrices.Any())
+            if (!_transformationsStack.Any())
             {
-                throw new InvalidOperationException("No transformations specified");
+                return tuple;
             }
 
+            var transformationChain = GetCompositeTransformation();
+            if (invert)
+            {
+                Matrix4x4.Invert(transformationChain, out transformationChain);
+            }
+            return transformationChain.Multiply(tuple, true);
+        }
+
+        public Matrix4x4 GetCompositeTransformation()
+        {
+            if (!_transformationsStack.Any())
+            {
+                return Matrix4x4.Identity;
+            }
+
+            // Copy instance stack, so can re-execute as many times as need to.
+            var matrices = new Stack<Matrix4x4>(_transformationsStack.Reverse());
             Matrix4x4 transformationChain = default;
             bool firstTransform = true;
-            while (_matrices.TryPop(out var currentTransformation))
+            while (matrices.TryPop(out var currentTransformation))
             {
                 if (firstTransform)
                 {
@@ -31,36 +48,36 @@ namespace Ray.Domain.Maths.Factories
                 transformationChain *= currentTransformation.ToColumnMajorForm();
             }
 
-            return transformationChain.Multiply(tuple, true);
+            return transformationChain;
         }
 
         public IMatrixTransformationBuilder RotateX(float radians)
         {
-            _matrices.Push(Matrix4x4.CreateRotationX(radians));
+            _transformationsStack.Push(Matrix4x4.CreateRotationX(radians));
             return this;
         }
 
         public IMatrixTransformationBuilder RotateY(float radians)
         {
-            _matrices.Push(Matrix4x4.CreateRotationY(radians));
+            _transformationsStack.Push(Matrix4x4.CreateRotationY(radians));
             return this;
         }
 
         public IMatrixTransformationBuilder RotateZ(float radians)
         {
-            _matrices.Push(Matrix4x4.CreateRotationZ(radians));
+            _transformationsStack.Push(Matrix4x4.CreateRotationZ(radians));
             return this;
         }
 
         public IMatrixTransformationBuilder Scale(Vector3 proportions)
         {
-            _matrices.Push(Matrix4x4.CreateScale(proportions));
+            _transformationsStack.Push(Matrix4x4.CreateScale(proportions));
             return this;
         }
 
         public IMatrixTransformationBuilder Translate(Vector3 vector)
         {
-            _matrices.Push(Matrix4x4.CreateTranslation(vector));
+            _transformationsStack.Push(Matrix4x4.CreateTranslation(vector));
             return this;
         }
     }
