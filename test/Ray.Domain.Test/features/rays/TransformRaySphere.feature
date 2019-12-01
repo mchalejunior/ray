@@ -53,4 +53,16 @@ Scenario: Intersecting a scaled sphere with a ray
 	Then xs intersection count equals 2
 	And xs element 0 has t equals 3.0
 	And xs element 1 has t equals 7.0
+	  
+
+Scenario: Intersecting a translated sphere with a ray
+	Given origin equals tuple 0 0 -5 1
+	And direction equals tuple 0 0 1 0
+	#Origin is a Point (W=1), direction a Vector (W=0)
+	And transformMatrix equals Translation Matrix 5 0 0
+	And initialize sphere as a unit sphere at the origin
+	When set sphere transformation equals transformMatrix
+	And initialize ray with origin and direction
+	And initialize xs as intersection calulator for ray, sphere
+	Then xs intersection count equals 0
 

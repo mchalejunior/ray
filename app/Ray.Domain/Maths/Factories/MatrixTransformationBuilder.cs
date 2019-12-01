@@ -80,5 +80,13 @@ namespace Ray.Domain.Maths.Factories
             _transformationsStack.Push(Matrix4x4.CreateTranslation(vector));
             return this;
         }
+
+        public IMatrixTransformationBuilder Shear(float x2y, float x2z, float y2x, float y2z, float z2x, float z2y)
+        {
+            _transformationsStack.Push(BasicMatrixFactory.CreateShearingMatrix(
+                x2y, x2z, y2x, y2z, z2x, z2y
+                ));
+            return this;
+        }
     }
 }

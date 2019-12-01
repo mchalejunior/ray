@@ -44,10 +44,10 @@ namespace Ray.Util.Console.ClockDrawing
              * But still encouraging - the principles and API are working, even if I still lack comprehension!
              */
 
-            var builder = new MatrixTransformationBuilder();
             for (int hour = 1; hour <= 12; hour++)
             {
                 var rotation = hour * MathF.PI / 6;
+                var builder = new MatrixTransformationBuilder();
                 builder.Translate(new Vector3(0F, 0F, 18.75F))
                        .RotateY(rotation);
                 DrawProjectilePath(builder, canvas);

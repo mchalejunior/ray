@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Numerics;
+using Ray.Domain.Maths.Factories;
 using Ray.Util.Console.ClockDrawing;
 using Ray.Util.Console.ProjectileGame;
+using Ray.Util.Console.RaySphereShadow;
 using Environment = Ray.Util.Console.ProjectileGame.Environment;
 
 namespace Ray.Util.Console
@@ -12,9 +14,27 @@ namespace Ray.Util.Console
         {
             RunProjectileSimulation();
             RunClockDrawing();
+            RunSphereRayTracer();
+
 
             System.Console.WriteLine("Press return key to exit");
             System.Console.Read();
+        }
+
+        static void RunSphereRayTracer()
+        {
+
+            SphereRayTracer.DrawSphere("c:\\temp\\ray\\sphere-rt1.bmp", new MatrixTransformationBuilder());
+
+            // shrink and skew
+            SphereRayTracer.DrawSphere("c:\\temp\\ray\\sphere-rt2.bmp", new MatrixTransformationBuilder()
+                    .Scale(new Vector3(0.5F, 1F, 1F))
+                    .Shear(1F, 0F, 0F, 0F, 0F, 0F));
+
+            // shrink and rotate - presumably rotate does nothing here!
+            SphereRayTracer.DrawSphere("c:\\temp\\ray\\sphere-rt3.bmp", new MatrixTransformationBuilder()
+                    .Scale(new Vector3(1F, 0.5F, 1F))
+                    .RotateX(MathF.PI / 4));
         }
 
         static void RunClockDrawing()
