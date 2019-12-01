@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using Ray.Domain.Extensions;
 using Ray.Domain.Maths.Simulations.Intersections;
 using Ray.Domain.Model;
 using Xunit;
@@ -14,20 +15,12 @@ namespace Ray.Domain.Test.Rays
     public sealed class RaySphereTests : Feature
     {
         private Vector4 _origin, _direction;
-        private readonly Model.Ray _rayInstance = new Model.Ray();
+        private Model.Ray _rayInstance;
         private Sphere _sphereInstance = null;
         private float _distance;
 
         private SceneIntersectionCalculator _xs = null;
-        //private IList<float> _orderedIntersectionDistances =>
-        //    _xs.Intersections.Select(x => x.GetPreciseIntersectionPoint().Distance).OrderBy(x => x).ToList();
         
-        // TODO: CM: mid refactor - making sure the new model is working, befor making elegant and removing old way.
-        private IList<float> _orderedIntersectionDistances =>
-            _sphereInstance.GetIntersections(_rayInstance).Select(x => x.DistanceT).ToList();
-
-
-
 
         [Given(@"origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
         public void InitializationValues_SetOnOriginInstance(float x, float y, float z, float w)
@@ -69,7 +62,7 @@ namespace Ray.Domain.Test.Rays
         [And(@"initialize xs as intersection calulator for ray, sphere")]
         public void InitializationValues_SetOnIntersectionCalculator()
         {
-            _xs = new SceneIntersectionCalculator(_rayInstance, new List<IBasicShape> {_sphereInstance});
+            _xs = new SceneIntersectionCalculator(new List<IBasicShape> {_sphereInstance});
         }
 
         [Then(@"ray origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
@@ -107,8 +100,7 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = count;
 
-            _xs.RunSimulation();
-            var actualAnswer = _orderedIntersectionDistances.Count;
+            var actualAnswer = _xs.CalculateIntersections(_rayInstance).Count();
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
@@ -118,7 +110,8 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = t;
 
-            var actualAnswer = _orderedIntersectionDistances[index];
+            var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
+            var actualAnswer = intersections[index].DistanceT;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
@@ -128,7 +121,8 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = _sphereInstance;
 
-            var actualAnswer = _xs.Intersections[index].Shape;
+            var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
+            var actualAnswer = intersections[index].Shape;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
@@ -138,7 +132,7 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = t;
 
-            var actualAnswer = _xs.Hit.DistanceT;
+            var actualAnswer = _xs.CalculateHit(_rayInstance).DistanceT;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
@@ -146,7 +140,7 @@ namespace Ray.Domain.Test.Rays
         [And(@"xs hit t equals null")]
         public void GivenExpectedAnswer_QueryHit_VerifyNull()
         {
-            Assert.Null(_xs.Hit);
+            Assert.False(_xs.CalculateHit(_rayInstance).HasValue);
         }
     }
 }

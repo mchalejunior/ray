@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using Ray.Domain.Extensions;
 using Ray.Domain.Maths.Factories;
 using Ray.Domain.Maths.Simulations.Intersections;
 using Ray.Domain.Model;
+using Ray.Domain.Transportation;
 using Color = System.Windows.Media.Color;
 
 namespace Ray.Util.Console.RaySphereShadow
@@ -31,6 +33,7 @@ namespace Ray.Util.Console.RaySphereShadow
             var wall_size = 7.0F;
             IBasicShape shape = Sphere.CreateDefaultInstance();
             shape.Transformation = transformation;
+            var xs = new SceneIntersectionCalculator(new List<IBasicShape> { shape });
             var canvas_pixels = 100;
             var pixel_size = wall_size / canvas_pixels;
             var half = wall_size / 2;
@@ -50,16 +53,12 @@ namespace Ray.Util.Console.RaySphereShadow
 
                     var position = new Vector4(world_x, world_y, wall_z, 1F);
 
-                    var r = new Domain.Model.Ray
-                    {
-                        Origin = ray_origin,
-                        Direction = Vector4.Normalize(position - ray_origin)
-                    };
+                    var r = new Domain.Model.Ray(
+                        ray_origin, 
+                        Vector4.Normalize(position - ray_origin));
 
-                    var xs = new SceneIntersectionCalculator(r, new List<IBasicShape> {shape});
-                    xs.RunSimulation();
 
-                    if (xs.Hit != null)
+                    if (xs.CalculateHit(r).HasValue)
                     {
                         canvas.SetPixel(x, y, color);
                     }

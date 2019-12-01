@@ -16,8 +16,7 @@ namespace Ray.Domain.Test.Rays
     public sealed class TransformRaySphereTests : Feature
     {
         private Vector4 _origin, _direction;
-        private readonly Model.Ray _rayInstance = new Model.Ray(),
-            _transformedRay = new Model.Ray();
+        private Model.Ray _rayInstance, _transformedRay;
         private IBasicShape _sphereInstance = null;
         private readonly IMatrixTransformationBuilder _transformMatrix = new MatrixTransformationBuilder();
         private SceneIntersectionCalculator _xs = null;
@@ -94,7 +93,7 @@ namespace Ray.Domain.Test.Rays
         public void InitializationValues_SetOnIntersectionCalculator()
         {
 
-            _xs = new SceneIntersectionCalculator(_rayInstance, new List<IBasicShape> { _sphereInstance });
+            _xs = new SceneIntersectionCalculator(new List<IBasicShape> { _sphereInstance });
         }
 
         [And(@"transform ray with transformMatrix")]
@@ -109,8 +108,7 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = count;
 
-            _xs.RunSimulation();
-            var actualAnswer = _xs.Intersections.Count;
+            var actualAnswer = _xs.CalculateIntersections(_rayInstance).Count();
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }
@@ -120,7 +118,8 @@ namespace Ray.Domain.Test.Rays
         {
             var expectedAnswer = t;
 
-            var actualAnswer = _xs.Intersections[index].DistanceT;
+            var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
+            var actualAnswer = intersections[index].DistanceT;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }

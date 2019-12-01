@@ -2,10 +2,16 @@
 
 namespace Ray.Domain.Model
 {
-    public class Ray
+    public struct Ray
     {
-        public Vector4 Origin { get; set; }
-        public Vector4 Direction { get; set; }
+        public Ray(Vector4 origin, Vector4 direction)
+        {
+            Origin = origin;
+            Direction = direction;
+        }
+
+        public Vector4 Origin;
+        public Vector4 Direction;
 
         public Vector4 GetPosition(float t) // using "t" for distance, because in pure maths terms it's "time"
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ray.Domain.Extensions;
 using Ray.Domain.Model;
 using Ray.Domain.Transportation;
 
@@ -8,37 +9,45 @@ namespace Ray.Domain.Maths.Simulations.Intersections
 {
     public class SceneIntersectionCalculator
     {
-        private readonly Model.Ray _ray;
         private readonly List<IBasicShape> _shapes;
+        
 
-        /// <summary>
-        /// Details of where Ray intersects the scene's Shapes (if any intersections).
-        /// <see cref="RunSimulation"/> must be called before querying this property, otherwise it will be empty.
-        /// </summary>
-        public List<IntersectionDto> Intersections { get; private set; } = new List<IntersectionDto>();
-
-        /// <summary>
-        /// The Hit is the first thing the Ray hits. So return the first non-zero (in front of ray) intersection.
-        /// </summary>
-        public IntersectionDto Hit => (
-            from i in Intersections
-            where i.DistanceT > 0F
-            orderby i.DistanceT
-            select i
-        ).FirstOrDefault();
-
-
-        public SceneIntersectionCalculator(Model.Ray ray, List<IBasicShape> shapes)
+        public SceneIntersectionCalculator(List<IBasicShape> shapes)
         {
-            _ray = ray;
             _shapes = shapes;
         }
 
-        public void RunSimulation()
+        /// <summary>
+        /// Calculate intersections with all shapes in the scene. Result includes all intersections
+        /// for all shapes, with reference to the shape, ray and distanceT for each.
+        /// </summary>
+        public IEnumerable<IntersectionDto> CalculateIntersections(Model.Ray ray)
         {
-            Intersections = new List<IntersectionDto>();
+            
+            return from shape in _shapes
+                from intersection in shape.GetIntersections(ray) 
+                select intersection;
 
-            _shapes.ForEach(x => Intersections.AddRange(x.GetIntersections(_ray)));
+        }
+
+        /// <summary>
+        /// Return only the first hit after calculating all
+        /// possible intersections for all shapes in the scene. 
+        /// </summary>
+        /// <remarks>
+        /// This method offers an efficiency compared to <see cref="CalculateIntersections"/>.
+        /// However if you need the intersections as well, then use <see cref="CalculateIntersections"/>
+        /// instead and call the extension method <see cref="IntersectionExtensionMethods.GetHit"/>.
+        /// </remarks>
+        public IntersectionDto CalculateHit(Model.Ray ray)
+        {
+            return (
+                    from s in _shapes
+                    from i in s.GetIntersections(ray)
+                    where i.DistanceT > 0F
+                    orderby i.DistanceT
+                    select i
+                ).FirstOrDefault();
 
         }
 

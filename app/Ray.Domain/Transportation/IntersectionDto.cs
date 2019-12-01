@@ -2,14 +2,23 @@
 
 namespace Ray.Domain.Transportation
 {
-    public class IntersectionDto
+    public struct IntersectionDto
     {
-        public Model.Ray Ray { get; set; }
-        public IBasicShape Shape { get; set; }
+        public IntersectionDto(Model.Ray ray, IBasicShape shape, float distanceT)
+        {
+            Ray = ray;
+            Shape = shape;
+            DistanceT = distanceT;
+        }
+
+        public Model.Ray Ray;
+        public IBasicShape Shape;
         /// <summary>
         /// Distance t along <see cref="Ray"/> represented
         /// by this intersection of <see cref="Shape"/>.
         /// </summary>
-        public float DistanceT { get; set; }
+        public float DistanceT;
+
+        public bool HasValue => Shape != null;
     }
 }
