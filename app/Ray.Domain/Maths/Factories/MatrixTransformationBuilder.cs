@@ -10,7 +10,7 @@ namespace Ray.Domain.Maths.Factories
     {
         private readonly Stack<Matrix4x4> _transformationsStack = new Stack<Matrix4x4>();
 
-        public Vector4 Execute(Vector4 tuple, bool invert = false)
+        public Vector4 Execute(Vector4 tuple, bool invert = false, bool transpose = false)
         {
             if (!_transformationsStack.Any())
             {
@@ -18,10 +18,16 @@ namespace Ray.Domain.Maths.Factories
             }
 
             var transformationChain = GetCompositeTransformation();
+
             if (invert)
             {
                 Matrix4x4.Invert(transformationChain, out transformationChain);
             }
+            if (transpose)
+            {
+                transformationChain = Matrix4x4.Transpose(transformationChain);
+            }
+
             return transformationChain.Multiply(tuple, true);
         }
 

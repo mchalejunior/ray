@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Ray.Domain.Model;
 
 namespace Ray.Domain.Maths.Factories
 {
@@ -14,7 +15,18 @@ namespace Ray.Domain.Maths.Factories
         /// <see cref="RotateX"/>, <see cref="Scale"/> etc. will be
         /// chained in reverse order and the result multiplied by the input tuple.
         /// </remarks>
-        Vector4 Execute(Vector4 tuple, bool invert = false);
+        /// <param name="tuple">
+        /// The <see cref="Vector4"/> (normally a point) to apply the transform(s) to.
+        /// </param>
+        /// <param name="invert">
+        /// E.g. apply the transform to the <see cref="Model.Ray"/> rather than the
+        /// <see cref="IBasicShape"/>. So invert the result to invert the perspective.
+        /// </param>
+        /// <param name="transpose">
+        /// Same idea as <paramref name="invert"/> but for calculating normals.
+        /// Normal calculation actually inverts and then transposes.
+        /// </param>
+        Vector4 Execute(Vector4 tuple, bool invert = false, bool transpose = false);
         /// <summary>
         /// Get the chained / composite matrix.
         /// </summary>

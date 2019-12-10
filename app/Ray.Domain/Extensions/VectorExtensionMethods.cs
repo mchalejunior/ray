@@ -66,12 +66,12 @@ namespace Ray.Domain.Extensions
             return unitVector.Length().IsApproximately(tuple.Length());
         }
 
-        public static bool IsApproximately(this Vector4 left, Vector4 right)
+        public static bool IsApproximately(this Vector4 left, Vector4 right, int? decimalPlaces = 7)
         {
-            return left.X.IsApproximately(right.X) &&
-                   left.Y.IsApproximately(right.Y) &&
-                   left.Z.IsApproximately(right.Z) &&
-                   left.W.IsApproximately(right.W);
+            return left.X.IsApproximately(right.X, decimalPlaces) &&
+                   left.Y.IsApproximately(right.Y, decimalPlaces) &&
+                   left.Z.IsApproximately(right.Z, decimalPlaces) &&
+                   left.W.IsApproximately(right.W, decimalPlaces);
         }
 
     }

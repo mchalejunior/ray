@@ -58,6 +58,34 @@ namespace Ray.Domain.Model
 
         }
 
+        public Vector4 GetNormal(Vector4 point, bool applyLocalTransformation = true)
+        {
+            //TODO: check.require on point, to make sure is a point (W=1)?
+
+            // These calculation assume a unit sphere at the axis origin.
+            // See Transformation property to understand how we scale and translate.
+            // But for this method, we should validate the assumptions as a pre-condition.
+            bool preconditionFailure = !IsPerfectSphere || !IsAtAxisOrigin;
+            if (_enforceAssumptions && preconditionFailure)
+            {
+                throw new ApplicationException("Precondition failed: Require a unit sphere at the axis origin.");
+            }
+
+            if (applyLocalTransformation)
+            {
+                // Straight from text. See for derivation details.
+                var object_point = Transformation.Execute(point, true);
+                var object_normal = object_point - Origin;
+                var world_normal = Transformation.Execute(object_normal, true, true);
+                world_normal.W = 0F;
+                return Vector4.Normalize(world_normal);
+            }
+            else
+            {
+                return Vector4.Normalize(point - Origin);
+            }
+        }
+
 
         #region Helper methods
 
@@ -75,6 +103,7 @@ namespace Ray.Domain.Model
                 Direction = Transformation.Execute(ray.Direction, true)
             };
         }
+
 
         #endregion
 

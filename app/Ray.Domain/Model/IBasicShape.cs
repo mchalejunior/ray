@@ -11,5 +11,7 @@ namespace Ray.Domain.Model
 
         IEnumerable<IntersectionDto> GetIntersections(Ray ray, bool applyLocalTransformation = true);
 
+        Vector4 GetNormal(Vector4 point, bool applyLocalTransformation = true);
+
     }
 }
