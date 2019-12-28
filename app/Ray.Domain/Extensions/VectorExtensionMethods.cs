@@ -43,6 +43,11 @@ namespace Ray.Domain.Extensions
             ).AsVector();
         }
 
+        public static Vector4 Reflect(this Vector4 @in, Vector4 normal)
+        {
+            return @in - normal * 2 * Vector4.Dot(@in, normal);
+        }
+
         public static bool IsUnitVector(this Vector4 tuple, bool isUnitTest = false)
         {
             if (!isUnitTest)

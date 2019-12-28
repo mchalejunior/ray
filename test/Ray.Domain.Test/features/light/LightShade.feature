@@ -9,7 +9,7 @@ Scenario: The normal on a sphere at a point on the x axis
 	#t1 is a point (W=1) - calc normal at this point
 	And t1 equals tuple 1.0 0.0 0.0 1.0
 	When calculate normal for sphere at t1
-	Then normal equals tuple 1.0 0.0 0.0 0.0
+	Then resultantT equals tuple 1.0 0.0 0.0 0.0
 
 
 Scenario: The normal on a sphere at a point on the y axis
@@ -17,7 +17,7 @@ Scenario: The normal on a sphere at a point on the y axis
 	#t1 is a point (W=1) - calc normal at this point
 	And t1 equals tuple 0.0 1.0 0.0 1.0
 	When calculate normal for sphere at t1
-	Then normal equals tuple 0.0 1.0 0.0 0.0
+	Then resultantT equals tuple 0.0 1.0 0.0 0.0
 
 	
 Scenario: The normal on a sphere at a point on the z axis
@@ -25,7 +25,7 @@ Scenario: The normal on a sphere at a point on the z axis
 	#t1 is a point (W=1) - calc normal at this point
 	And t1 equals tuple 0.0 0.0 1.0 1.0
 	When calculate normal for sphere at t1
-	Then normal equals tuple 0.0 0.0 1.0 0.0
+	Then resultantT equals tuple 0.0 0.0 1.0 0.0
 
 	
 Scenario: The normal on a sphere at a non axial point
@@ -33,7 +33,7 @@ Scenario: The normal on a sphere at a non axial point
 	#t1 is a point (W=1) - calc normal at this point
 	And t1 equals tuple 0.57735 0.57735 0.57735 1.0
 	When calculate normal for sphere at t1
-	Then normal equals tuple 0.57735 0.57735 0.57735 0.0
+	Then resultantT equals tuple 0.57735 0.57735 0.57735 0.0
 
 	
 Scenario: The normal is a normalized vector
@@ -51,7 +51,7 @@ Scenario: Computing the normal on a translated sphere
 	And t1 equals tuple 0.0 1.70711 -0.70711 1.0
 	When set sphere transformation equals transformMatrix
 	And calculate normal for sphere at t1
-	Then normal equals tuple 0.0 0.70711 -0.70711 0.0
+	Then resultantT equals tuple 0.0 0.70711 -0.70711 0.0
 	
 	
 Scenario: Computing the normal on a transformed sphere
@@ -62,6 +62,20 @@ Scenario: Computing the normal on a transformed sphere
 	And t1 equals tuple 0.0 0.70711 -0.70711 1.0
 	When set sphere transformation equals transformMatrix
 	And calculate normal for sphere at t1
-	Then normal equals tuple 0.0 0.97014 -0.24254 0.0
+	Then resultantT equals tuple 0.0 0.97014 -0.24254 0.0
+	
+	
+Scenario: Reflecting a vector approaching at 45 degrees
+	Given t1 equals tuple 1.0 -1.0 0.0 0.0
+	And t2 equals tuple 0.0 1.0 0.0 0.0
+	When calculate reflection of t1 given normal t2
+	Then resultantT equals tuple 1.0 1.0 0.0 0.0
+	
+		
+Scenario: Reflecting a vector off a slanted surface
+	Given t1 equals tuple 0.0 -1.0 0.0 0.0
+	And t2 equals tuple 0.70711 0.70711 0.0 0.0
+	When calculate reflection of t1 given normal t2
+	Then resultantT equals tuple 1.0 0.0 0.0 0.0
 	
 

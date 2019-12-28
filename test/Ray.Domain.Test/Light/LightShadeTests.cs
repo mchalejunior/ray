@@ -16,7 +16,7 @@ namespace Ray.Domain.Test.Light
     {
         private Sphere _sphereInstance = null;
         private readonly IMatrixTransformationBuilder _transformMatrix = new MatrixTransformationBuilder();
-        private Vector4 _t1, _normal;
+        private Vector4 _t1, _t2, _resultantT;
 
         [Given(@"initialize sphere as a unit sphere at the origin")]
         public void InitializationValues_SetOnSphereInstance()
@@ -30,13 +30,28 @@ namespace Ray.Domain.Test.Light
             InitializationValues_SetOnSphereInstance();
         }
 
-        [And(@"t1 equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        [Given(@"t1 equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
         public void InitializationValues_SetOnTupleInstance(float x, float y, float z, float w)
         {
             _t1.X = x;
             _t1.Y = y;
             _t1.Z = z;
             _t1.W = w;
+        }
+
+        [And(@"t1 equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        public void InitializationValues_SetOnTupleInstance_Overload(float x, float y, float z, float w)
+        {
+            InitializationValues_SetOnTupleInstance(x, y, z, w);
+        }
+
+        [And(@"t2 equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        public void InitializationValues_SetOnSecondTupleInstance(float x, float y, float z, float w)
+        {
+            _t2.X = x;
+            _t2.Y = y;
+            _t2.Z = z;
+            _t2.W = w;
         }
 
         [And(@"transformMatrix equals Identity Matrix")]
@@ -72,7 +87,7 @@ namespace Ray.Domain.Test.Light
         [When(@"calculate normal for sphere at t1")]
         public void Calculate_NormalAt_SetOnResultVector()
         {
-            _normal = _sphereInstance.GetNormal(_t1);
+            _resultantT = _sphereInstance.GetNormal(_t1);
         }
 
         [And(@"calculate normal for sphere at t1")]
@@ -81,12 +96,18 @@ namespace Ray.Domain.Test.Light
             Calculate_NormalAt_SetOnResultVector();
         }
 
-        [Then(@"normal equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
-        public void GivenExpectedAnswer_QueryTransformedRayOrigin_VerifyResult(float x, float y, float z, float w)
+        [When(@"calculate reflection of t1 given normal t2")]
+        public void Calculate_Reflection_SetOnResultVector()
+        {
+            _resultantT = _t1.Reflect(_t2);
+        }
+
+        [Then(@"resultantT equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
+        public void GivenExpectedAnswer_CompareToCalculatedInstance_VerifyResult(float x, float y, float z, float w)
         {
             var expectedResult = new Vector4(x, y, z, w);
 
-            var actualResult = _normal;
+            var actualResult = _resultantT;
 
             Assert.True(expectedResult.IsApproximately(actualResult, 5));
         }
@@ -94,9 +115,9 @@ namespace Ray.Domain.Test.Light
         [Then(@"normal equals normalized normal")]
         public void GivenExpectedAnswer_NormalizeNormal_VerifyResult()
         {
-            var expectedResult = Vector4.Normalize(_normal);
+            var expectedResult = Vector4.Normalize(_resultantT);
 
-            var actualResult = _normal;
+            var actualResult = _resultantT;
 
             Assert.True(expectedResult.IsApproximately(actualResult));
         }
