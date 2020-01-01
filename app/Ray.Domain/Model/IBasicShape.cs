@@ -7,6 +7,8 @@ namespace Ray.Domain.Model
 {
     public interface IBasicShape
     {
+        Material Material { get; set; }
+
         IMatrixTransformationBuilder Transformation { get; set; }
 
         IEnumerable<IntersectionDto> GetIntersections(Ray ray, bool applyLocalTransformation = true);

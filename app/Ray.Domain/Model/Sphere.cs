@@ -30,18 +30,7 @@ namespace Ray.Domain.Model
         public Vector4 Origin { get; set; }
         public Vector4 Scale { get; set; }
 
-        public float Radius
-        {
-            get
-            {
-                if (!IsPerfectSphere)
-                {
-                    throw new ApplicationException("Non-uniform Sphere. Cannot assume simple radius");
-                }
-
-                return Scale.X;
-            }
-        }
+        public Material Material { get; set; } = Material.CreateDefaultInstance();
 
         /// <summary>
         /// As per text: Intersection calculations kept simple by modeling as unit
@@ -58,6 +47,18 @@ namespace Ray.Domain.Model
         /// <seealso cref="GetIntersections"/>
         public IMatrixTransformationBuilder Transformation { get; set; } = new MatrixTransformationBuilder();
 
+        public float Radius
+        {
+            get
+            {
+                if (!IsPerfectSphere)
+                {
+                    throw new ApplicationException("Non-uniform Sphere. Cannot assume simple radius");
+                }
+
+                return Scale.X;
+            }
+        }
 
 
         public bool IsPerfectSphere => (Scale.X + Scale.Y + Scale.Z).IsApproximately(3 * Scale.X);

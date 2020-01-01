@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
+using System.Windows.Media;
 using Ray.Domain.Extensions;
 using Ray.Domain.Maths.Factories;
 using Ray.Domain.Maths.Simulations.Intersections;
@@ -14,9 +15,11 @@ namespace Ray.Domain.Test.Light
     [FeatureFile("./features/light/LightShade.feature")]
     public sealed class LightShadeTests : Feature
     {
-        private Sphere _sphereInstance = null;
+        private IBasicShape _sphereInstance = null;
         private readonly IMatrixTransformationBuilder _transformMatrix = new MatrixTransformationBuilder();
         private Vector4 _t1, _t2, _resultantT;
+        private Model.Light _lightInstance;
+        private Material _materialInstance;
 
         [Given(@"initialize sphere as a unit sphere at the origin")]
         public void InitializationValues_SetOnSphereInstance()
@@ -54,7 +57,45 @@ namespace Ray.Domain.Test.Light
             _t2.W = w;
         }
 
-        [And(@"transformMatrix equals Identity Matrix")]
+        //[Given(@"light intensity equals tuple (-?\d+) (-?\d+) (-?\d+)")]
+        //public void InitializationValues_Intensity_SetOnLightInstance(float r, float g, float b)
+        //{
+        //    _lightInstance.Intensity = Color.FromScRgb(1.0F, r, g, b);
+        //}
+
+        //[And(@"light intensity equals tuple (-?\d+) (-?\d+) (-?\d+)")]
+        //public void InitializationValues_Intensity_SetOnLightInstance_Overload(float r, float g, float b)
+        //{
+        //    InitializationValues_Intensity_SetOnLightInstance(r, g, b);
+        //}
+
+        //[Given(@"light position equals tuple (-?\d+) (-?\d+) (-?\d+)")]
+        //public void InitializationValues_Position_SetOnLightInstance(float x, float y, float z)
+        //{
+        //    _lightInstance.Position = new Vector3(x, y, z).AsPoint();
+        //}
+
+        //[And(@"light position equals tuple (-?\d+) (-?\d+) (-?\d+)")]
+        //public void InitializationValues_Position_SetOnLightInstance_Overload(float x, float y, float z)
+        //{
+        //    InitializationValues_Intensity_SetOnLightInstance(x, y, z);
+        //}
+
+        // Use star notation in feature file: * Material with default values
+        [Given(@"Material with default values")]
+        public void InitializationValues_Defaults_SetOnMaterialInstance()
+        {
+            _materialInstance = Material.CreateDefaultInstance();
+        }
+
+        [Given(@"Material with non default values")]
+        public void InitializationValues_NonDefault_SetOnMaterialInstance()
+        {
+            _materialInstance = new Material();
+            _materialInstance.Ambient = 27F;
+        }
+
+        [And(@"transformMatrix equals Identity Matrix")] 
         public void InitializationValues_Identity_SetOnTransformMatrixInstance()
         {
             // This is the default value when no transforms applied to the builder
@@ -84,6 +125,12 @@ namespace Ray.Domain.Test.Light
             _sphereInstance.Transformation = _transformMatrix;
         }
 
+        [When(@"set sphere material equals material")]
+        public void InitializationValues_Material_SetOnSphereInstance()
+        {
+            _sphereInstance.Material = _materialInstance;
+        }
+
         [When(@"calculate normal for sphere at t1")]
         public void Calculate_NormalAt_SetOnResultVector()
         {
@@ -100,6 +147,16 @@ namespace Ray.Domain.Test.Light
         public void Calculate_Reflection_SetOnResultVector()
         {
             _resultantT = _t1.Reflect(_t2);
+        }
+
+        [When(@"light intensity and position initialized from t1 and t2")]
+        public void InitializationValues_SetOnLightInstance()
+        {
+            _lightInstance = new Model.Light
+            {
+                Intensity = Color.FromScRgb(1.0F, _t1.X, _t1.Y, _t1.Z),
+                Position = _t2
+            };
         }
 
         [Then(@"resultantT equals tuple (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
@@ -120,6 +177,60 @@ namespace Ray.Domain.Test.Light
             var actualResult = _resultantT;
 
             Assert.True(expectedResult.IsApproximately(actualResult));
+        }
+
+        [Then(@"light intensity equals t1")]
+        public void GivenExpectedAnswer_LightIntensity_VerifyResult()
+        {
+            var expectedResult = Color.FromScRgb(1.0F, _t1.X, _t1.Y, _t1.Z);
+
+            var actualResult = _lightInstance.Intensity;
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Then(@"light position equals t2")]
+        public void GivenExpectedAnswer_LightPosition_VerifyResult()
+        {
+            var expectedResult = _t2;
+
+            var actualResult = _lightInstance.Position;
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [And(@"light position equals t2")]
+        public void GivenExpectedAnswer_LightPosition_VerifyResult_Overload()
+        {
+            GivenExpectedAnswer_LightPosition_VerifyResult();
+        }
+
+        [Then(@"material color equals t1")]
+        public void GivenExpectedAnswer_MaterialColor_VerifyResult()
+        {
+            var expectedResult = Color.FromScRgb(1.0F, _t1.X, _t1.Y, _t1.Z);
+
+            var actualResult = _materialInstance.Color;
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [And(@"material defaults are set")]
+        public void GivenDefaultInitialization_MaterialInstance_VerifyResult()
+        {
+            Assert.Equal(_materialInstance.Ambient, Material.DefaultAmbient);
+            Assert.Equal(_materialInstance.Specular, Material.DefaultSpecular);
+            Assert.Equal(_materialInstance.Shininess, Material.DefaultShininess);
+        }
+
+        [Then(@"sphere material equals material")]
+        public void GivenExpectedAnswer_SphereMaterial_VerifyResult()
+        {
+            var expectedResult = _materialInstance;
+
+            var actualResult = _sphereInstance.Material;
+
+            Assert.Equal(expectedResult, actualResult);
         }
 
     }

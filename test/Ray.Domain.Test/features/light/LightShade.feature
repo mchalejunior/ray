@@ -77,5 +77,34 @@ Scenario: Reflecting a vector off a slanted surface
 	And t2 equals tuple 0.70711 0.70711 0.0 0.0
 	When calculate reflection of t1 given normal t2
 	Then resultantT equals tuple 1.0 0.0 0.0 0.0
+		
+		
+Scenario: A point light has position and intensity
+	Given t1 equals tuple 1.0 1.0 1.0 1.0
+	And t2 equals tuple 0.0 0.0 0.0 1.0
+	When light intensity and position initialized from t1 and t2
+	Then light intensity equals t1
+	And light position equals t2
+			
+		
+Scenario: The default material
+	Given Material with default values
+	And t1 equals tuple 1.0 1.0 1.0 1.0
+	Then material color equals t1
+	And material defaults are set	
+			
+		
+Scenario: A sphere has a default material
+	Given initialize sphere as a unit sphere at the origin
+	* Material with default values
+	Then sphere material equals material
+			
+		
+Scenario: A sphere may be assigned a material
+	Given initialize sphere as a unit sphere at the origin
+	* Material with non default values
+	When set sphere material equals material
+	Then sphere material equals material
+	
 	
 
