@@ -15,9 +15,9 @@ namespace Ray.Domain.Extensions
         /// Therefore we need to convert from WPF color to old-skool color to avail of the
         /// much simpler and fit-for-purpose Bitmap object.
         /// </remarks>
-        public static System.Drawing.Color Simplify(this Color value)
+        public static System.Drawing.Color Simplify(this Color value, int? fixedAlpha = null)
         {
-            return System.Drawing.Color.FromArgb(value.A, value.R, value.G, value.B);
+            return System.Drawing.Color.FromArgb(fixedAlpha ?? value.A, value.R, value.G, value.B);
         }
 
         /// <summary>

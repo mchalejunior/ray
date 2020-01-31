@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 using Xunit.Gherkin.Quick;
 using System.Windows.Media;
 using Ray.Domain.Extensions;
+using Ray.Domain.Maths;
 using Ray.Domain.Model;
 using Xunit;
 
@@ -90,54 +88,9 @@ namespace Ray.Domain.Test.Light
         [When("calculate resultantColor lighting for material light position eye normal")]
         public void Calculate_Lighting_SetOnResultColor()
         {
-            // TODO: Just sticking "phong reflection" calculation here.
-            // This needs to move e.g. under Domain.Maths.
-
-            Color ambient, diffuse, specular;
-
-            // combine the surface color with the lights color/intensity
-            Color effective_color = _materialInstance.Color.Multiply(_lightInstance.Intensity);
-
-            // find the direction to the light source
-            var lightv = Vector4.Normalize(_lightInstance.Position - _pointPosition);
-
-            // compute the ambient contribution
-            ambient = effective_color * _materialInstance.Ambient;
-
-            // light_dot_normal represents the cosine of the angle between the
-            // light vector and the normal vector. A negative number means the
-            // light is on the other side of the surface.
-            var light_dot_normal = Vector4.Dot(lightv, _surfaceNormal);
-            if (light_dot_normal < 0F)
-            {
-                diffuse = System.Windows.Media.Colors.Black;
-                specular = System.Windows.Media.Colors.Black;
-            }
-            else
-            {
-                // compute the diffuse contribution
-                diffuse = effective_color * _materialInstance.Diffuse * light_dot_normal;
-
-                // reflect_dot_eye represents the cosine of the angle between the
-                // reflection vector and the eye vector. A negative number means the
-                // light reflects away from the eye.
-                var reflectv = (-lightv).Reflect(_surfaceNormal);
-                var reflect_dot_eye = Vector4.Dot(reflectv, _eye);
-
-                if (reflect_dot_eye <= 0F)
-                {
-                    specular = System.Windows.Media.Colors.Black;
-                }
-                else
-                {
-                    // compute the specular contribution
-                    var factor = MathF.Pow(reflect_dot_eye, _materialInstance.Shininess);
-                    specular = _lightInstance.Intensity * _materialInstance.Specular * factor;
-                }
-            }
-
-            // add the three contributions together to get the final shading
-            _resultantColor = ambient + diffuse + specular;
+            _resultantColor = Lighting.CalculateColorWithPhongReflection(
+                _materialInstance, _lightInstance, _pointPosition, _eye, _surfaceNormal
+            );
         }
 
 

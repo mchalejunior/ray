@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Windows.Media;
 using Ray.Domain.Extensions;
 using Ray.Domain.Transportation;
 
@@ -88,6 +89,19 @@ namespace Ray.Domain.Model
 
 
         #region Helper methods
+
+        public void SetColor(Color color)
+        {
+            // For now, not adding this behavior to IBasicShape.
+            // Unsure of how shape collections will be initialized and if changing the
+            // Color post-instantiation is a real requirement.
+            // So this method is just a helper.
+
+            var m = Material;
+            m.Color = color;
+            Material = m;
+        }
+
 
         private Ray GetTransformedRay(Ray ray, bool applyLocalTransformation)
         {

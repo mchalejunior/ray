@@ -1,4 +1,5 @@
-﻿using Ray.Domain.Model;
+﻿using System.Numerics;
+using Ray.Domain.Model;
 
 namespace Ray.Domain.Transportation
 {
@@ -18,6 +19,8 @@ namespace Ray.Domain.Transportation
         /// by this intersection of <see cref="Shape"/>.
         /// </summary>
         public float DistanceT;
+
+        public Vector4 Position => Ray.GetPosition(DistanceT);
 
         public bool HasValue => Shape != null;
     }
