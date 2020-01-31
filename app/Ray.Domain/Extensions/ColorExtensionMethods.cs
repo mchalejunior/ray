@@ -40,7 +40,7 @@ namespace Ray.Domain.Extensions
             };
         }
 
-        public static bool AreClose(Color left, Color right, bool ignoreAlpha)
+        public static bool AreClose(this Color left, Color right, bool ignoreAlpha)
         {
             if (!ignoreAlpha)
             {

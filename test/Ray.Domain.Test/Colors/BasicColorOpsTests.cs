@@ -59,7 +59,7 @@ namespace Ray.Domain.Test.Colors
         {
             var expectedResult = Color.FromScRgb(1.0F, r, g, b);
             var actualResult = _firstColor + _secondColor;
-            Assert.True(AreClose(expectedResult, actualResult, true));
+            Assert.True(expectedResult.AreClose(actualResult, true));
         }
 
         [Then(@"c1 minus c2 equals color (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
@@ -67,7 +67,7 @@ namespace Ray.Domain.Test.Colors
         {
             var expectedResult = Color.FromScRgb(1.0F, r, g, b);
             var actualResult = _firstColor - _secondColor;
-            Assert.True(AreClose(expectedResult, actualResult, true));
+            Assert.True(expectedResult.AreClose(actualResult, true));
         }
 
         [Then(@"c1 multiplied by scalar (\d) equals color (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
@@ -75,7 +75,7 @@ namespace Ray.Domain.Test.Colors
         {
             var expectedResult = Color.FromScRgb(1.0F, r, g, b);
             var actualResult = _firstColor * scalar;
-            Assert.True(AreClose(expectedResult, actualResult, true));
+            Assert.True(expectedResult.AreClose(actualResult, true));
         }
 
         [Then(@"c1 multiplied by c2 equals color (-?\d+\.\d+) (-?\d+\.\d+) (-?\d+\.\d+)")]
@@ -83,7 +83,7 @@ namespace Ray.Domain.Test.Colors
         {
             var expectedResult = Color.FromScRgb(1.0F, r, g, b);
             var actualResult = _firstColor.Multiply(_secondColor);
-            Assert.True(AreClose(expectedResult, actualResult, true));
+            Assert.True(expectedResult.AreClose(actualResult, true));
         }
 
     }
