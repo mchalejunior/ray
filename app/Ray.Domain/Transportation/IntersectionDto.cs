@@ -10,6 +10,8 @@ namespace Ray.Domain.Transportation
             Ray = ray;
             Shape = shape;
             DistanceT = distanceT;
+            TangentialIntersection = false;
+            RayOrigin = RaysOrigin.Normal;
         }
 
         public Model.Ray Ray;
@@ -23,5 +25,30 @@ namespace Ray.Domain.Transportation
         public Vector4 Position => Ray.GetPosition(DistanceT);
 
         public bool HasValue => Shape != null;
+
+        public bool TangentialIntersection { get; set; }
+        public RaysOrigin RayOrigin { get; set; }
+        public bool RayOriginatesInsideShape => RayOrigin == RaysOrigin.RayInsideShape;
+        
+
+
+        /// <summary>
+        /// Relative information between the <see cref="Ray"/> and <see cref="Shape"/>.
+        /// </summary>
+        public enum RaysOrigin
+        {
+            /// <summary>
+            /// Ray outside the shape and projected forwards before meeting the shape.
+            /// </summary>
+            Normal = 0,
+            /// <summary>
+            /// Ray originated inside the shape.
+            /// </summary>
+            RayInsideShape = 1,
+            /// <summary>
+            /// Ray outside the shape, but a backwards projection was necessary to meet the shape.
+            /// </summary>
+            ShapeBehindRay = 2
+        }
     }
 }

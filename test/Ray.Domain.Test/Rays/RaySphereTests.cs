@@ -6,6 +6,7 @@ using System.Text;
 using Ray.Domain.Extensions;
 using Ray.Domain.Maths.Simulations.Intersections;
 using Ray.Domain.Model;
+using Ray.Domain.Transportation;
 using Xunit;
 using Xunit.Gherkin.Quick;
 
@@ -141,6 +142,61 @@ namespace Ray.Domain.Test.Rays
         public void GivenExpectedAnswer_QueryHit_VerifyNull()
         {
             Assert.False(_xs.CalculateHit(_rayInstance).HasValue);
+        }
+
+        [And(@"xs calculates ray as originating inside shape")]
+        public void GivenExpectedAnswer_QueryRayOrigin_VerifyInside()
+        {
+            var expectedAnswer = IntersectionDto.RaysOrigin.RayInsideShape;
+
+            var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
+            var actualAnswer = intersections[0].RayOrigin;
+
+            Assert.Equal(expectedAnswer, actualAnswer);
+        }
+
+        [And(@"xs calculates shape being behind ray")]
+        public void GivenExpectedAnswer_QueryRayOrigin_VerifyShapeBehind()
+        {
+            var expectedAnswer = IntersectionDto.RaysOrigin.ShapeBehindRay;
+
+            var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
+            var actualAnswer = intersections[0].RayOrigin;
+
+            Assert.Equal(expectedAnswer, actualAnswer);
+        }
+
+        [And(@"xs calculates shape being in front of ray")]
+        public void GivenExpectedAnswer_QueryRayOrigin_VerifyNormal()
+        {
+            var expectedAnswer = IntersectionDto.RaysOrigin.Normal;
+
+            var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
+            var actualAnswer = intersections[0].RayOrigin;
+
+            Assert.Equal(expectedAnswer, actualAnswer);
+        }
+
+        [And(@"xs calculates intersection as tangential")]
+        public void GivenExpectedAnswer_QueryIntersection_VerifyTangential()
+        {
+            var expectedAnswer = true;
+
+            var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
+            var actualAnswer = intersections[0].TangentialIntersection;
+
+            Assert.Equal(expectedAnswer, actualAnswer);
+        }
+
+        [And(@"xs calculates intersection as non tangential")]
+        public void GivenExpectedAnswer_QueryIntersection_VerifyNonTangential()
+        {
+            var expectedAnswer = false;
+
+            var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
+            var actualAnswer = intersections[0].TangentialIntersection;
+
+            Assert.Equal(expectedAnswer, actualAnswer);
         }
     }
 }

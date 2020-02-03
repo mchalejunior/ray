@@ -39,6 +39,8 @@ Scenario: A ray intersects a sphere at two points
 	Then xs intersection count equals 2
 	And xs element 0 has t equals 4.0
 	And xs element 1 has t equals 6.0
+	And xs calculates shape being in front of ray
+	And xs calculates intersection as non tangential
 
  
 Scenario: A ray intersects a sphere at a tangent
@@ -51,6 +53,7 @@ Scenario: A ray intersects a sphere at a tangent
 	Then xs intersection count equals 2
 	And xs element 0 has t equals 5.0
 	And xs element 1 has t equals 5.0
+	And xs calculates intersection as tangential
 
 
 Scenario: A ray misses a sphere
@@ -73,6 +76,7 @@ Scenario: A ray originates inside a sphere
 	Then xs intersection count equals 2
 	And xs element 0 has t equals -1.0
 	And xs element 1 has t equals 1.0
+	And xs calculates ray as originating inside shape
 
 
 Scenario: A sphere is behind a ray
@@ -85,6 +89,7 @@ Scenario: A sphere is behind a ray
 	Then xs intersection count equals 2
 	And xs element 0 has t equals -6.0
 	And xs element 1 has t equals -4.0
+	And xs calculates shape being behind ray
 
 
 Scenario: An intersection encapsulates t and object

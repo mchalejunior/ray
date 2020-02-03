@@ -41,19 +41,38 @@ namespace Ray.Domain.Model
             var t1 = (-b - MathF.Sqrt(discriminant)) / (2 * a);
             var t2 = (-b + MathF.Sqrt(discriminant)) / (2 * a);
 
+            // Ray origin normal, unless:
+            // 1. Only one of (t1, t2) is negative - tells us ray originates inside shape.
+            //     Edge case - consider t=0 *on shape* as "inside".
+            // 2. Both of (t1, t2) are negative - tells us shape is behind the ray.
+            IntersectionDto.RaysOrigin rayOrigin = IntersectionDto.RaysOrigin.Normal;
+            if (t1 * t2 <= 0F)
+            {
+                rayOrigin = IntersectionDto.RaysOrigin.RayInsideShape;
+            }
+
+            if (t1 < 0F && t2 < 0F)
+            {
+                rayOrigin = IntersectionDto.RaysOrigin.ShapeBehindRay;
+            }
+
             return new List<IntersectionDto>
             {
                 new IntersectionDto
                 {
                     Ray = ray, // NOTE: return original ray (and sphere with transformation).
                     Shape = this,
-                    DistanceT = t1
+                    DistanceT = t1,
+                    TangentialIntersection = t1.IsApproximately(t2, null),
+                    RayOrigin = rayOrigin
                 },
                 new IntersectionDto
                 {
                     Ray = ray, // NOTE: return original ray (and sphere with transformation).
                     Shape = this,
-                    DistanceT = t2
+                    DistanceT = t2,
+                    TangentialIntersection = t1.IsApproximately(t2, null),
+                    RayOrigin = rayOrigin
                 }
             };
 
