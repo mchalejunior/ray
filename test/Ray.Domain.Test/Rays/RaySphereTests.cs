@@ -147,10 +147,10 @@ namespace Ray.Domain.Test.Rays
         [And(@"xs calculates ray as originating inside shape")]
         public void GivenExpectedAnswer_QueryRayOrigin_VerifyInside()
         {
-            var expectedAnswer = IntersectionDto.RaysOrigin.RayInsideShape;
+            var expectedAnswer = true;
 
             var intersections = _xs.CalculateIntersections(_rayInstance).ToList();
-            var actualAnswer = intersections[0].RayOrigin;
+            var actualAnswer = intersections[0].RayOriginatesInsideShape;
 
             Assert.Equal(expectedAnswer, actualAnswer);
         }

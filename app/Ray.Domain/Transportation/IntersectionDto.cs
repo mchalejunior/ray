@@ -23,6 +23,16 @@ namespace Ray.Domain.Transportation
         public float DistanceT;
 
         public Vector4 Position => Ray.GetPosition(DistanceT);
+        /// <summary>
+        /// Vector from the intersection back towards the eye/camera.
+        /// </summary>
+        public Vector4 EyeV => -Ray.Direction;
+        /// <summary>
+        /// Normal vector of reflection off intersection surface.
+        /// </summary>
+        public Vector4 NormalV => RayOriginatesInsideShape ?
+            -Shape.GetNormal(Position) :
+            Shape.GetNormal(Position);
 
         public bool HasValue => Shape != null;
 
