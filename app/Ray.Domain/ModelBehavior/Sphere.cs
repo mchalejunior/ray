@@ -109,15 +109,19 @@ namespace Ray.Domain.Model
 
         #region Helper methods
 
-        public void SetColor(Color color)
+        public void UpdateMaterial(Color color, float diffuse, float specular, float ambient, float shininess)
         {
             // For now, not adding this behavior to IBasicShape.
             // Unsure of how shape collections will be initialized and if changing the
-            // Color post-instantiation is a real requirement.
-            // So this method is just a helper.
+            // Material post-instantiation is a real requirement.
+            // So this method is just a helper for unit testing and textbook sample apps.
 
             var m = Material;
             m.Color = color;
+            m.Diffuse = diffuse;
+            m.Specular = specular;
+            m.Ambient = ambient;
+            m.Shininess = shininess;
             Material = m;
         }
 

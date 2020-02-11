@@ -37,7 +37,13 @@ namespace Ray.Util.Console.RaySphere3d
             var wall_size = 7.0F;
 
             var sphere = Sphere.CreateDefaultInstance();
-            sphere.SetColor(Color.FromScRgb(Material.DefaultColorA, 1.0F, 0.2F, 1.0F));
+            sphere.UpdateMaterial(
+                Color.FromScRgb(Material.DefaultColorA, 1.0F, 0.2F, 1.0F),
+                sphere.Material.Diffuse,
+                sphere.Material.Specular,
+                sphere.Material.Ambient,
+                sphere.Material.Shininess
+            );
             IBasicShape shape = sphere;
             shape.Transformation = transformation;
 
