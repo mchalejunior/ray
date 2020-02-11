@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 using System.Windows.Media;
 using Ray.Domain.Extensions;
 using Ray.Domain.Model;
@@ -24,17 +22,11 @@ namespace Ray.Domain.Maths
                 return Colors.Black;
             }
 
-            //var point = hit.Position;
-            //var normal = hit.Shape.GetNormal(point);
-            //var eye = -hit.Ray.Direction;
-
-            var point = hit.Position;
-            var normal = hit.NormalV;
-            var eye = hit.EyeV;
-
-
-            return Lighting.CalculateColorWithPhongReflection(hit.Shape.Material, light,
-                point, eye, normal);
+            return CalculateColorWithPhongReflection(
+                hit.Shape.Material, light,
+                hit.Position, hit.EyeV,
+                hit.NormalV
+            );
         }
 
         public static Color CalculateColorWithPhongReflection(

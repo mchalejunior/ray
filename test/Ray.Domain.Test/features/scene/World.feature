@@ -61,6 +61,9 @@ Scenario: Intersect a world with a ray
 	And hit normalv equals tuple 0.0 0.0 -1.0 0.0
 
 
+# Above tests dealing with intersections directly.
+# Below tests using the "world" wrapper and readonly "pre-calculation" properties.
+
 Scenario: Shading an intersection
 	Given world equals test default setup
 	And origin equals tuple 0 0 -5 1
@@ -71,7 +74,7 @@ Scenario: Shading an intersection
 
 Scenario: Shading an intersection from the inside
 	Given world equals test default setup
-	And light source is inside sphere
+	And light source is inside both spheres
 	And origin equals tuple 0 0 0 1
 	And direction equals tuple 0 0 1 0
 	When initialize ray with origin and direction
@@ -83,6 +86,7 @@ Scenario: The color when a ray misses
 	And origin equals tuple 0 0 -5 1
 	And direction equals tuple 0 1 0 0
 	When initialize ray with origin and direction
+	# Default (background) color is black.
 	Then world color for ray equals 0.0 0.0 0.0
 
 
@@ -92,6 +96,19 @@ Scenario: The color when a ray hits
 	And direction equals tuple 0 0 1 0
 	When initialize ray with origin and direction
 	Then world color for ray equals 0.380661 0.475826 0.285495
+
+
+# Put the ray inside the outer sphere, but outside the inner sphere.
+# Point ray at the inner sphere. Expect the "hit" to be on the inner sphere
+# and return that color (set ambient to 1 so color not diluted).
+Scenario: The color with an intersection behind the ray
+	Given world equals test default setup
+	And light source is inside outer sphere
+	And material ambient equals 1.0
+	And origin equals tuple 0.0 0.0 0.75 1.0
+	And direction equals tuple 0 0 -1 0
+	When initialize ray with origin and direction
+	Then world color for ray equals inner material color
 
 
 

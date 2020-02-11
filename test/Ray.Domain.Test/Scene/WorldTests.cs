@@ -28,22 +28,35 @@ namespace Ray.Domain.Test.Scene
         [Given("world equals test default setup")]
         public void InitializationValues_SetupDefaultWorld()
         {
+            InitializationValues_SetupDefaultWorld_Overload();
+        }
+
+        private void InitializationValues_SetupDefaultWorld_Overload(float? fixedAmbient = null)
+        {
             _outerSphere = Sphere.CreateDefaultInstance();
             _innerSphere = Sphere.CreateDefaultInstance();
 
             // Encapsulate further, like SetColor?
+            var innerMaterial = _innerSphere.Material;
             var outerNonDefaultMaterial = Material.CreateDefaultInstance();
             outerNonDefaultMaterial.Color = Color.FromScRgb(Material.DefaultColorA, 0.8F, 1.0F, 0.6F);
             outerNonDefaultMaterial.Diffuse = 0.7F;
             outerNonDefaultMaterial.Specular = 0.2F;
 
+            if (fixedAmbient.HasValue)
+            {
+                innerMaterial.Ambient = fixedAmbient.Value;
+                outerNonDefaultMaterial.Ambient = fixedAmbient.Value;
+            }
+
             _outerSphere.Material = outerNonDefaultMaterial;
+            _innerSphere.Material = innerMaterial;
             // As feature file: concentric circles with inner sphere scaled down.
             _innerSphere.Transformation = new MatrixTransformationBuilder()
                 .Scale(new Vector3(0.5F, 0.5F, 0.5F));
 
             _world = new World(
-                new List<IBasicShape> { _outerSphere, _innerSphere }, 
+                new List<IBasicShape> { _outerSphere, _innerSphere },
                 new Model.Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
@@ -52,10 +65,23 @@ namespace Ray.Domain.Test.Scene
             );
         }
 
-        [And(@"light source is inside sphere")]
-        public void InitializationValues_SetWorldLightSource()
+        [And(@"light source is inside both spheres")]
+        public void InitializationValues_LightSource_InsideBothSpheres()
         {
             _world.LightSource.Position = new Vector4(0.0F, 0.25F, 0.0F, 1.0F);
+        }
+
+        [And(@"light source is inside outer sphere")]
+        public void InitializationValues_LightSource_InsideOuterSphere()
+        {
+            _world.LightSource.Position = new Vector4(0.0F, 0.0F, 0.75F, 1.0F);
+        }
+
+        [And(@"material ambient equals (\d+\.\d+)")]
+        public void InitializationValues_Material_SetAmbient(float ambient)
+        {
+            // Use case: Set ambient to 1 so can assert on known color.
+            InitializationValues_SetupDefaultWorld_Overload(ambient);
         }
 
 
@@ -66,6 +92,12 @@ namespace Ray.Domain.Test.Scene
             _origin.Y = y;
             _origin.Z = z;
             _origin.W = w;
+        }
+
+        [And(@"origin equals tuple (-?\d+.\d+) (-?\d+.\d+) (-?\d+.\d+) (-?\d+.\d+)")]
+        public void InitializationValues_SetOnOriginInstance_Overload(float x, float y, float z, float w)
+        {
+            InitializationValues_SetOnOriginInstance(x, y, z, w);
         }
 
         [And(@"direction equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
@@ -256,6 +288,15 @@ namespace Ray.Domain.Test.Scene
 
         }
 
+        [Then(@"world color for ray equals inner material color")]
+        public void GivenExpectedAnswer_CompareColor()
+        {
+            GivenExpectedAnswer_VerifyColor(
+                _innerSphere.Material.Color.ScR,
+                _innerSphere.Material.Color.ScG,
+                _innerSphere.Material.Color.ScB
+            );
+        }
 
     }
 }
