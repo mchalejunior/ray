@@ -18,7 +18,7 @@ namespace Ray.Util.Console
             RunSphereRayTracer();
             RunSphereRayTracer3d();
 
-
+            System.Console.WriteLine("Files at C:\\temp\\ray");
             System.Console.WriteLine("Press return key to exit");
             System.Console.Read();
         }
