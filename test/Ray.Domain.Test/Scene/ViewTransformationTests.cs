@@ -6,6 +6,9 @@ using Ray.Domain.Extensions;
 using Ray.Domain.Model;
 using Xunit;
 using Xunit.Gherkin.Quick;
+using Gherkin.Ast;
+using Ray.Domain.Test.Extensions;
+using Feature = Xunit.Gherkin.Quick.Feature;
 
 namespace Ray.Domain.Test.Scene
 {
@@ -69,7 +72,21 @@ namespace Ray.Domain.Test.Scene
                 expectedResultInRowMajorForm: Matrix4x4.CreateTranslation(x, y, z));
         }
 
+        [Then(@"camera transform equals the following 4x4 matrix:")]
+        public void ViewTransformation_ArbitraryMatrix_VerifyResult(DataTable m)
+        {
+            // Straight from text - already in CMF.
+            var expectedResult = new Matrix4x4(
+                m.ToFloat(1, 1), m.ToFloat(1, 2), m.ToFloat(1, 3), m.ToFloat(1, 4),
+                m.ToFloat(2, 1), m.ToFloat(2, 2), m.ToFloat(2, 3), m.ToFloat(2, 4),
+                m.ToFloat(3, 1), m.ToFloat(3, 2), m.ToFloat(3, 3), m.ToFloat(3, 4),
+                m.ToFloat(4, 1), m.ToFloat(4, 2), m.ToFloat(4, 3), m.ToFloat(4, 4)
+            );
 
+            var actualResult = _cameraInstance.Transform;
+
+            Assert.Equal(expectedResult, actualResult);
+        }
 
 
         private void AssertExpectedAgainstViewTransformation(Matrix4x4 expectedResultInRowMajorForm)
