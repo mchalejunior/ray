@@ -1,9 +1,32 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace Ray.Domain.Extensions
 {
     public static class MatrixExtensionMethods
     {
+        /// <summary>
+        /// Convenience method for <see cref="Matrix4x4.Invert"/> when you know it will succeed.
+        /// Will throw an exception, by default, if it doesn't.
+        /// Allows for more fluent client code.
+        /// </summary>
+        /// <param name="readonlyInputMatrix"></param>
+        /// <param name="throwExceptionIfFails"></param>
+        /// <returns>
+        /// Inverted matrix. If inversion fails, exception thrown by default.
+        /// </returns>
+        public static Matrix4x4 Invert(this Matrix4x4 readonlyInputMatrix, bool throwExceptionIfFails = true)
+        {
+            bool success = Matrix4x4.Invert(readonlyInputMatrix, out var resultantMatrix);
+            if (!success && throwExceptionIfFails)
+            {
+                throw new ArgumentOutOfRangeException(nameof(readonlyInputMatrix),
+                    "Failed to Invert input matrix");
+            }
+
+            return resultantMatrix;
+        }
+
         /// <summary>
         /// Convert from <see cref="System.Numerics"/> "Row Major Form" notation
         /// to the Ray Tracer Texts expected "Column Major Form".

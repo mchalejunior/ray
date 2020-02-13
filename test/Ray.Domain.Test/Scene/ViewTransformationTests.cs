@@ -16,7 +16,7 @@ namespace Ray.Domain.Test.Scene
     public sealed class ViewTransformationTests : Feature
     {
         private Vector4 _from, _to, _up;
-        private Camera _cameraInstance = new Camera();
+        private readonly Camera _cameraInstance = new Camera(160, 120, MathF.PI / 2);
 
         [Given(@"From equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
         public void InitializationValues_SetOnFromInstance(float x, float y, float z, float w)
