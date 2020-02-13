@@ -7,7 +7,7 @@
 
 ## inspiration
 
-Interested in a new coding challenge. Found [this](https://github.com/simonech/ray-tracer-challenge-netcore) repository and decided that I want to do the same. I'm not forking that repository because:
+Interested in a new coding challenge. Found [this](https://github.com/simonech/ray-tracer-challenge-netcore) repository and decided to do a similar project. I'm not forking that repository because:
 
 * The [book and challenge](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge) are presented as chapter-by-chapter and test driven.
     * So to work effectively I'll have to start from zero myself.
