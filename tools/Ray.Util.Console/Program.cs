@@ -5,6 +5,7 @@ using Ray.Util.Console.ClockDrawing;
 using Ray.Util.Console.ProjectileGame;
 using Ray.Util.Console.RaySphere3d;
 using Ray.Util.Console.RaySphereShadow;
+using Ray.Util.Console.Scene;
 using Environment = Ray.Util.Console.ProjectileGame.Environment;
 
 namespace Ray.Util.Console
@@ -17,10 +18,23 @@ namespace Ray.Util.Console
             RunClockDrawing();
             RunSphereRayTracer();
             RunSphereRayTracer3d();
+            RunCameraRenderer();
+            RunWorldRenderer();
 
             System.Console.WriteLine("Files at C:\\temp\\ray");
             System.Console.WriteLine("Press return key to exit");
             System.Console.Read();
+        }
+
+        private static void RunWorldRenderer()
+        {
+            DrawWorld.RenderSphereCentral("c:\\temp\\ray\\sphere-central.bmp");
+        }
+
+        private static void RunCameraRenderer()
+        {
+            CameraRender.DrawDefaultWorld("c:\\temp\\ray\\default-world.bmp");
+            CameraRender.DrawDefaultWorldLarger("c:\\temp\\ray\\default-world-larger.bmp");
         }
 
         static void RunSphereRayTracer3d()
