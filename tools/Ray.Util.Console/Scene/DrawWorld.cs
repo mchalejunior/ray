@@ -21,12 +21,8 @@ namespace Ray.Util.Console.Scene
             var floor = Sphere.CreateDefaultInstance();
             floor.Transformation = new MatrixTransformationBuilder()
                 .Scale(new Vector3(10F, 0.01F, 10F));
-            floor.UpdateMaterial(
-                Color.FromScRgb(Material.DefaultColorA, 1F, 0.9F, 0.9F), 
-                diffuse: floor.Material.Diffuse,
-                specular: 0F,
-                ambient: floor.Material.Ambient,
-                shininess: floor.Material.Shininess);
+            floor.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 1F, 0.9F, 0.9F))
+                 .UpdateSpecular(0F);
 
             var left_wall = Sphere.CreateDefaultInstance();
             left_wall.Transformation = new MatrixTransformationBuilder()
@@ -49,36 +45,27 @@ namespace Ray.Util.Console.Scene
             var middle = Sphere.CreateDefaultInstance();
             middle.Transformation = new MatrixTransformationBuilder()
                 .Translate(new Vector3(-0.5F, 1F, 0.5F));
-            middle.UpdateMaterial(
-                Color.FromScRgb(Material.DefaultColorA, 0.1F, 1F, 0.5F),
-                diffuse: 0.7F,
-                specular: 0.3F,
-                ambient: middle.Material.Ambient,
-                shininess: middle.Material.Shininess);
+            middle.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 0.1F, 1F, 0.5F))
+                  .UpdateDiffuse(0.7F)
+                  .UpdateSpecular(0.3F);
 
             var right = Sphere.CreateDefaultInstance();
             right.Transformation = new MatrixTransformationBuilder()
                 .Scale(new Vector3(0.5F, 0.5F, 0.5F))
                 .Translate(new Vector3(1.5F, 0.5F, -0.5F))
                 ;
-            right.UpdateMaterial(
-                Color.FromScRgb(Material.DefaultColorA, 0.5F, 1F, 0.1F),
-                diffuse: 0.7F,
-                specular: 0.3F,
-                ambient: right.Material.Ambient,
-                shininess: right.Material.Shininess);
+            right.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 0.5F, 1F, 0.1F))
+                 .UpdateDiffuse(0.7F)
+                 .UpdateSpecular(0.3F);
 
             var left = Sphere.CreateDefaultInstance();
             left.Transformation = new MatrixTransformationBuilder()
                 .Scale(new Vector3(0.33F, 0.33F, 0.33F))
                 .Translate(new Vector3(-1.5F, 0.33F, -0.75F))
                 ;
-            left.UpdateMaterial(
-                Color.FromScRgb(Material.DefaultColorA, 1F, 0.8F, 0.1F),
-                diffuse: 0.7F,
-                specular: 0.3F,
-                ambient: left.Material.Ambient,
-                shininess: left.Material.Shininess);
+            left.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 1F, 0.8F, 0.1F))
+                .UpdateDiffuse(0.7F)
+                .UpdateSpecular(0.3F);
 
             var world = new World(new List<IBasicShape>
                 {

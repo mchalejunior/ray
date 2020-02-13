@@ -7,6 +7,10 @@ using Ray.Domain.Transportation;
 
 namespace Ray.Domain.Maths.Simulations.Intersections
 {
+    [Obsolete(
+        @"Replaced by domain model entities. 
+            However, this class was important in arriving at final solution. 
+            Still used by tests and demonstrates progression through the Ray Tracer Challenge textbook.")]
     public class SceneIntersectionCalculator
     {
         private readonly List<IBasicShape> _shapes;

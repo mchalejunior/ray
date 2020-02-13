@@ -104,13 +104,10 @@ namespace Ray.Util.Console.Scene
         {
             var outerSphere = Sphere.CreateDefaultInstance();
             var innerSphere = Sphere.CreateDefaultInstance();
-            outerSphere.UpdateMaterial(
-                Color.FromScRgb(Material.DefaultColorA, 0.8F, 1.0F, 0.6F),
-                0.7F,
-                0.2F,
-                outerSphere.Material.Ambient,
-                outerSphere.Material.Shininess
-            );
+            outerSphere
+                .UpdateColor(Color.FromScRgb(Material.DefaultColorA, 0.8F, 1.0F, 0.6F))
+                .UpdateDiffuse(0.7F)
+                .UpdateSpecular(0.2F);
 
             // As feature file: concentric circles with inner sphere scaled down.
             innerSphere.Transformation = new MatrixTransformationBuilder()
@@ -130,13 +127,10 @@ namespace Ray.Util.Console.Scene
         {
             var outerSphere = Sphere.CreateDefaultInstance();
             var innerSphere = Sphere.CreateDefaultInstance();
-            outerSphere.UpdateMaterial(
-                Color.FromScRgb(Material.DefaultColorA, 0.8F, 1.0F, 0.6F),
-                0.7F,
-                0.2F,
-                outerSphere.Material.Ambient,
-                outerSphere.Material.Shininess
-            );
+            outerSphere
+                .UpdateColor(Color.FromScRgb(Material.DefaultColorA, 0.8F, 1.0F, 0.6F))
+                .UpdateDiffuse(0.7F)
+                .UpdateSpecular(0.2F);
 
             // As feature file: concentric circles with inner sphere scaled down.
             innerSphere.Transformation = new MatrixTransformationBuilder()

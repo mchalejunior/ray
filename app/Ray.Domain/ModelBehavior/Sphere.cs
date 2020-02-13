@@ -107,23 +107,56 @@ namespace Ray.Domain.Model
         }
 
 
-        #region Helper methods
 
-        public void UpdateMaterial(Color color, float diffuse, float specular, float ambient, float shininess)
+        #region Fluent Material manipulation
+
+        // Fluent syntax for updating select material attributes appears to be the most useful.
+        // This might apply at IBasicShape level, not sure yet.
+        public Sphere UpdateColor(Color color)
         {
-            // For now, not adding this behavior to IBasicShape.
-            // Unsure of how shape collections will be initialized and if changing the
-            // Material post-instantiation is a real requirement.
-            // So this method is just a helper for unit testing and textbook sample apps.
-
             var m = Material;
             m.Color = color;
+            Material = m;
+            return this;
+        }
+
+        public Sphere UpdateDiffuse(float diffuse)
+        {
+            var m = Material;
             m.Diffuse = diffuse;
+            Material = m;
+            return this;
+        }
+
+        public Sphere UpdateSpecular(float specular)
+        {
+            var m = Material;
             m.Specular = specular;
+            Material = m;
+            return this;
+        }
+
+        public Sphere UpdateAmbient(float ambient)
+        {
+            var m = Material;
             m.Ambient = ambient;
+            Material = m;
+            return this;
+        }
+
+        public Sphere UpdateShininess(float shininess)
+        {
+            var m = Material;
             m.Shininess = shininess;
             Material = m;
-        }
+            return this;
+        } 
+
+        #endregion
+
+
+
+        #region Helper methods
 
 
         private Ray GetTransformedRay(Ray ray, bool applyLocalTransformation)

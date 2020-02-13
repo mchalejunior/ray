@@ -35,20 +35,13 @@ namespace Ray.Domain.Test.Scene
         {
             _outerSphere = Sphere.CreateDefaultInstance();
             _innerSphere = Sphere.CreateDefaultInstance();
-            _outerSphere.UpdateMaterial(
-                Color.FromScRgb(Material.DefaultColorA, 0.8F, 1.0F, 0.6F),
-                0.7F,
-                0.2F,
-                fixedAmbient ?? _outerSphere.Material.Ambient,
-                _outerSphere.Material.Shininess
-            );
-            _innerSphere.UpdateMaterial(
-                _innerSphere.Material.Color,
-                _innerSphere.Material.Diffuse,
-                _innerSphere.Material.Specular,
-                fixedAmbient ?? _innerSphere.Material.Ambient,
-                _innerSphere.Material.Shininess
-            );
+            _outerSphere
+                .UpdateColor(Color.FromScRgb(Material.DefaultColorA, 0.8F, 1.0F, 0.6F))
+                .UpdateDiffuse(0.7F)
+                .UpdateSpecular(0.2F)
+                .UpdateAmbient(fixedAmbient ?? _outerSphere.Material.Ambient);
+            _innerSphere
+                .UpdateAmbient(fixedAmbient ?? _innerSphere.Material.Ambient);
 
             // As feature file: concentric circles with inner sphere scaled down.
             _innerSphere.Transformation = new MatrixTransformationBuilder()
