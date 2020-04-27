@@ -152,7 +152,7 @@ namespace Ray.Domain.Test.Shadow
         {
             // For Ray from point (_t1), back to the light source:
             //  * Any collisions?
-            //  * If so, is hit between the point origin and light? i.e. cast _t1 in shadow
+            //  * If so, is hit between the point position and the light? i.e. casts _t1 in shadow
             var v = _world.LightSource.Position - _t1;
             var direction = Vector4.Normalize(v);
             var lightingResult = Lighting.CalculateColorWithPhongReflection(

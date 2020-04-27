@@ -30,17 +30,22 @@ namespace Ray.Util.Console
             RunCameraRenderer();
             System.Console.WriteLine("Camera render end");
             System.Console.WriteLine("World render start");
-            RunWorldRenderer();
+            RunWorldRenderer(false);
             System.Console.WriteLine("World render end");
+            System.Console.WriteLine("World render (with acne) start");
+            RunWorldRenderer(true);
+            System.Console.WriteLine("World render (with acne) end");
 
             System.Console.WriteLine("Files at C:\\temp\\ray");
             System.Console.WriteLine("Press return key to exit");
             System.Console.Read();
         }
 
-        private static void RunWorldRenderer()
+        private static void RunWorldRenderer(bool useAcneEffect)
         {
-            DrawWorld.RenderSphereCentral("c:\\temp\\ray\\sphere-central.bmp");
+            DrawWorld.RenderSphereCentral(
+                $"c:\\temp\\ray\\sphere-central-{(useAcneEffect ? "acne" : "clear")}.bmp",
+                useAcneEffect);
         }
 
         private static void RunCameraRenderer()

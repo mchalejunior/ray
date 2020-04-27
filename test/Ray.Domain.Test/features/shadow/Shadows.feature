@@ -23,6 +23,7 @@ Background:
 	And light intensity and position initialized from t1 and t2
 	And is in shadow equals true
 	When calculate resultantColor lighting for material light position eye normal isInShadow
+	# Color only considers the ambient portion
 	Then resultantColor equals tuple 0.1 0.1 0.1
 
 

@@ -13,7 +13,7 @@ namespace Ray.Util.Console.Scene
 {
     class DrawWorld
     {
-        public static void RenderSphereCentral(string outputBitmapFilePath)
+        public static void RenderSphereCentral(string outputBitmapFilePath, bool useAcneEffect = false)
         {
 
             // Define world
@@ -82,7 +82,7 @@ namespace Ray.Util.Console.Scene
             int high = 1000;
             int medium = 500;
             int low = 250;
-            int res = low;
+            int res = medium;
 
             var camera = new Camera(res, res/2, MathF.PI / 3);
             camera.SetViewTransformation(
@@ -101,7 +101,7 @@ namespace Ray.Util.Console.Scene
                 for (int x = 0; x < camera.HorizontalSize - 1; x++)
                 {
                     var ray = camera.GetRay(x, y);
-                    Color color = Lighting.CalculateColorWithPhongReflection(world, ray);
+                    Color color = Lighting.CalculateColorWithPhongReflection(world, ray, useAcneEffect);
 
                     canvas.SetPixel(x, y, color.Simplify(255));
                 }

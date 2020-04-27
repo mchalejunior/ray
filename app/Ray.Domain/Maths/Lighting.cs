@@ -9,17 +9,15 @@ namespace Ray.Domain.Maths
 {
     public static class Lighting
     {
-        public static LightingDto CalculateColorWithPhongReflection(World scene, Model.Ray ray)
+        // NOTE: Notice below reference to the "acne" effect. This is a real rudimentary bootstrap
+        //  of a "special effect". May consider abstracting an "effects engine" at some stage,
+        //  But for now, just allowing for the effect, which is in essence a rounding error!
+
+        public static LightingDto CalculateColorWithPhongReflection(World scene, Model.Ray ray, bool useAcneEffect = false)
         {
-            // TODO: consider efficiency - this Ray is already normally from a point back to
-            // light source. Need to allow for case that it's not. But if is, calculating the hit
-            // twice is inefficient. Could the intersection calculator have "shadow logic" embedded?
-
-            //bool isInShadow = IsPointInShadow(scene, ray.Origin);
-
             var hit = scene.CalculateHit(ray);
 
-            bool isInShadow = hit.HasValue && IsPointInShadow(scene, hit.OverPosition);
+            bool isInShadow = hit.HasValue && IsPointInShadow(scene, useAcneEffect ? hit.Position : hit.OverPosition);
 
             var color = CalculateColorWithPhongReflection(
                 hit, scene.LightSource, isInShadow);
@@ -32,7 +30,7 @@ namespace Ray.Domain.Maths
             };
         }
 
-        public static Color CalculateColorWithPhongReflection(IntersectionDto hit, Light light, bool isInShadow = false)
+        public static Color CalculateColorWithPhongReflection(IntersectionDto hit, Light light, bool isInShadow = false, bool useAcneEffect = false)
         {
             if (!hit.HasValue)
             {
@@ -42,8 +40,8 @@ namespace Ray.Domain.Maths
 
             return CalculateColorWithPhongReflection(
                 hit.Shape.Material, light,
-                hit.OverPosition, hit.EyeV,
-                hit.NormalV, isInShadow
+                useAcneEffect ? hit.Position : hit.OverPosition, 
+                hit.EyeV, hit.NormalV, isInShadow
             );
         }
 
