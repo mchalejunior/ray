@@ -14,12 +14,24 @@ namespace Ray.Util.Console
     {
         static void Main(string[] args)
         {
+            System.Console.WriteLine("Projectile start");
             RunProjectileSimulation();
+            System.Console.WriteLine("Projectile end");
+            System.Console.WriteLine("Clock start");
             RunClockDrawing();
+            System.Console.WriteLine("Clock end");
+            System.Console.WriteLine("2D Ray start");
             RunSphereRayTracer();
+            System.Console.WriteLine("2D Ray end");
+            System.Console.WriteLine("3D Ray start");
             RunSphereRayTracer3d();
+            System.Console.WriteLine("3D Ray end");
+            System.Console.WriteLine("Camera render start");
             RunCameraRenderer();
+            System.Console.WriteLine("Camera render end");
+            System.Console.WriteLine("World render start");
             RunWorldRenderer();
+            System.Console.WriteLine("World render end");
 
             System.Console.WriteLine("Files at C:\\temp\\ray");
             System.Console.WriteLine("Press return key to exit");

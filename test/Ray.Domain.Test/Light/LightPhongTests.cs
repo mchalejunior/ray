@@ -16,6 +16,9 @@ namespace Ray.Domain.Test.Light
         private Color _resultantColor;
         private Material _materialInstance;
 
+        // These tests now concerned with Shadows (that's explored later).
+        private const bool IsInShadowDefault = false;
+
 
         [Given(@"position at the origin")]
         public void InitializationValues_SetPositionAtOrigin()
@@ -89,7 +92,7 @@ namespace Ray.Domain.Test.Light
         public void Calculate_Lighting_SetOnResultColor()
         {
             _resultantColor = Lighting.CalculateColorWithPhongReflection(
-                _materialInstance, _lightInstance, _pointPosition, _eye, _surfaceNormal
+                _materialInstance, _lightInstance, _pointPosition, _eye, _surfaceNormal, IsInShadowDefault
             );
         }
 

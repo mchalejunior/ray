@@ -132,7 +132,7 @@ namespace Ray.Domain.Test.Matrices
         [And(@"firstMatrix IsInvertible equals (.+)")]
         public void GivenExpectedAnswer_CheckIsInvertible_VerifyResult(string boolToParse)
         {
-            var expectedResult = bool.Parse(boolToParse); ;
+            var expectedResult = bool.Parse(boolToParse);
             var actualResult = Matrix4x4.Invert(_firstMatrix, out var invertedMatrix);
 
             Assert.Equal(expectedResult, actualResult);

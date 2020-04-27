@@ -24,7 +24,7 @@ namespace Ray.Domain.Extensions
             if (decimalPlaces == null)
             {
                 // Use Epsilon (minimum possible difference
-                return Math.Abs(left - right) <= Single.Epsilon;
+                return Math.Abs(left - right) <= float.Epsilon;
             }
 
             // Use a more tolerant and likely difference.

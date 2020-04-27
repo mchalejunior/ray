@@ -78,7 +78,13 @@ namespace Ray.Util.Console.Scene
                     Intensity = System.Windows.Media.Colors.White
                 });
 
-            var camera = new Camera(1000, 500, MathF.PI / 3);
+            // Use low res until happy, then crank up. Takes a lot of clock cycles!
+            int high = 1000;
+            int medium = 500;
+            int low = 250;
+            int res = low;
+
+            var camera = new Camera(res, res/2, MathF.PI / 3);
             camera.SetViewTransformation(
                 from: new Vector4(0F, 1.5F, -5F, 1F),
                 to: new Vector4(0F, 1F, 0F, 1F),
@@ -95,7 +101,7 @@ namespace Ray.Util.Console.Scene
                 for (int x = 0; x < camera.HorizontalSize - 1; x++)
                 {
                     var ray = camera.GetRay(x, y);
-                    var color = Lighting.CalculateColorWithPhongReflection(world, ray);
+                    Color color = Lighting.CalculateColorWithPhongReflection(world, ray);
 
                     canvas.SetPixel(x, y, color.Simplify(255));
                 }

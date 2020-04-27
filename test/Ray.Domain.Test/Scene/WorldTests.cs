@@ -274,10 +274,14 @@ namespace Ray.Domain.Test.Scene
         {
             var expectedAnswer = Color.FromScRgb(Material.DefaultColorA, r, g, b);
 
-            var actualAnswer = Lighting.CalculateColorWithPhongReflection(_world, _rayInstance);
+            var hit = _world.CalculateHit(_rayInstance);
+            var actualAnswer = Lighting.CalculateColorWithPhongReflection(hit, _world.LightSource);
 
-            Assert.True(expectedAnswer.AreClose(actualAnswer, true));
-
+            // Note: Addition of "shadow rendering" required a reduction of Color precision
+            // for these tests. These tests effected by use of IntersectionDto.OverPosition,
+            // which itself required a reduction in precision to eliminate "acne".
+            //   That all said, still looks great to the naked eye!
+            Assert.True(expectedAnswer.AreClose(actualAnswer, true, 3));
         }
 
         [Then(@"world color for ray equals inner material color")]

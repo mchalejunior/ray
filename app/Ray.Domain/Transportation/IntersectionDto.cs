@@ -22,7 +22,19 @@ namespace Ray.Domain.Transportation
         /// </summary>
         public float DistanceT;
 
+        /// <summary>
+        /// The point of intersection.
+        /// </summary>
         public Vector4 Position => Ray.GetPosition(DistanceT);
+        /// <summary>
+        /// As per text: Offset Z very slightly to avoid "acne" when "shadowing".
+        /// </summary>
+        /// <remarks>
+        /// Unlike text - which used Epsilon to calculate - finding that a much
+        /// larger offset is required to fully remove "acne".
+        /// </remarks>
+        public Vector4 OverPosition => Position + (NormalV * 0.002F);
+
         /// <summary>
         /// Vector from the intersection back towards the eye/camera.
         /// </summary>

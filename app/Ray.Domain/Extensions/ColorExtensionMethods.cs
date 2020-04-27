@@ -1,9 +1,25 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace Ray.Domain.Extensions
 {
     public static class ColorExtensionMethods
     {
+        private static readonly Dictionary<int, float> ToleranceCache = new Dictionary<int, float>
+        {
+            {1, (float) double.Parse("1E-" + 1)},
+            {2, (float) double.Parse("1E-" + 2)},
+            {3, (float) double.Parse("1E-" + 3)},
+            {4, (float) double.Parse("1E-" + 4)},
+            {5, (float) double.Parse("1E-" + 5)},
+            {6, (float) double.Parse("1E-" + 6)},
+            {7, (float) double.Parse("1E-" + 7)},
+            {8, (float) double.Parse("1E-" + 8)},
+            {9, (float) double.Parse("1E-" + 9)},
+            {10,(float) double.Parse("1E-" + 10)}
+        };
+
         /// <summary>
         /// Convert a WPF (PresentationCore) Color to a System.Drawing.Color.
         /// </summary>
@@ -40,21 +56,29 @@ namespace Ray.Domain.Extensions
             };
         }
 
-        public static bool AreClose(this Color left, Color right, bool ignoreAlpha)
+        public static bool AreClose(this Color left, Color right, bool ignoreAlpha, int? decimalPlaces = 6)
         {
-            if (!ignoreAlpha)
-            {
-                return Color.AreClose(left, right);
-            }
+            //if (!ignoreAlpha)
+            //{
+            //    return Color.AreClose(left, right);
+            //}
 
-            // Slightly convoluted assertion.
-            // Basically the individual RGB comparisons can be outside of Single.Epsilon,
-            // but Color.AreClose would still be happy they're the same color.
-            // So let's use Color.AreClose logic, but just eliminate the Alpha variation.
-            return Color.AreClose(
-                Color.FromScRgb(1.0F, left.ScR, left.ScG, left.ScB),
-                Color.FromScRgb(1.0F, right.ScR, right.ScG, right.ScB)
-            );
+            //// Slightly convoluted assertion.
+            //// Basically the individual RGB comparisons can be outside of Single.Epsilon,
+            //// but Color.AreClose would still be happy they're the same color.
+            //// So let's use Color.AreClose logic, but just eliminate the Alpha variation.
+            //return Color.AreClose(
+            //    Color.FromScRgb(1.0F, left.ScR, left.ScG, left.ScB),
+            //    Color.FromScRgb(1.0F, right.ScR, right.ScG, right.ScB)
+            //);
+
+            float tolerance = decimalPlaces == null ? float.Epsilon : ToleranceCache[decimalPlaces.Value];
+
+            if (MathF.Abs(left.ScR - right.ScR) > tolerance) return false;
+            if (MathF.Abs(left.ScG - right.ScG) > tolerance) return false;
+            if (MathF.Abs(left.ScB - right.ScB) > tolerance) return false;
+
+            return ignoreAlpha || MathF.Abs(left.ScA - right.ScA) <= tolerance;
         }
     }
 }

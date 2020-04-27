@@ -41,7 +41,7 @@ namespace Ray.Util.Console.Scene
                 for (int x = 0; x < camera.HorizontalSize -1; x++)
                 {
                     var ray = camera.GetRay(x, y);
-                    var color = Lighting.CalculateColorWithPhongReflection(world, ray);
+                    Color color = Lighting.CalculateColorWithPhongReflection(world, ray);
 
                     canvas.SetPixel(x, y, color.Simplify(255));
                 }
@@ -83,7 +83,7 @@ namespace Ray.Util.Console.Scene
                 for (int x = 0; x < camera.HorizontalSize - 1; x++)
                 {
                     var ray = camera.GetRay(x, y);
-                    var color = Lighting.CalculateColorWithPhongReflection(world, ray);
+                    Color color = Lighting.CalculateColorWithPhongReflection(world, ray);
 
                     canvas.SetPixel(x, y, color.Simplify(255));
                 }

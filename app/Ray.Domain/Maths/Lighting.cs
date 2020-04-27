@@ -9,12 +9,30 @@ namespace Ray.Domain.Maths
 {
     public static class Lighting
     {
-        public static Color CalculateColorWithPhongReflection(World scene, Model.Ray ray)
+        public static LightingDto CalculateColorWithPhongReflection(World scene, Model.Ray ray)
         {
-            return CalculateColorWithPhongReflection(scene.CalculateHit(ray), scene.LightSource);
+            // TODO: consider efficiency - this Ray is already normally from a point back to
+            // light source. Need to allow for case that it's not. But if is, calculating the hit
+            // twice is inefficient. Could the intersection calculator have "shadow logic" embedded?
+
+            //bool isInShadow = IsPointInShadow(scene, ray.Origin);
+
+            var hit = scene.CalculateHit(ray);
+
+            bool isInShadow = hit.HasValue && IsPointInShadow(scene, hit.OverPosition);
+
+            var color = CalculateColorWithPhongReflection(
+                hit, scene.LightSource, isInShadow);
+
+            return new LightingDto
+            {
+                Color = color,
+                Hit = hit,
+                IsInShadow = isInShadow
+            };
         }
 
-        public static Color CalculateColorWithPhongReflection(IntersectionDto hit, Light light)
+        public static Color CalculateColorWithPhongReflection(IntersectionDto hit, Light light, bool isInShadow = false)
         {
             if (!hit.HasValue)
             {
@@ -24,13 +42,13 @@ namespace Ray.Domain.Maths
 
             return CalculateColorWithPhongReflection(
                 hit.Shape.Material, light,
-                hit.Position, hit.EyeV,
-                hit.NormalV
+                hit.OverPosition, hit.EyeV,
+                hit.NormalV, isInShadow
             );
         }
 
         public static Color CalculateColorWithPhongReflection(
-            Material material, Light light, Vector4 point, Vector4 eyev, Vector4 normalv)
+            Material material, Light light, Vector4 point, Vector4 eyev, Vector4 normalv, bool isInShadow)
         {
             // TODO: DBC ?
 
@@ -39,11 +57,18 @@ namespace Ray.Domain.Maths
             // combine the surface color with the lights color/intensity
             Color effective_color = material.Color.Multiply(light.Intensity);
 
-            // find the direction to the light source
-            var lightv = Vector4.Normalize(light.Position - point);
-
             // compute the ambient contribution
             ambient = effective_color * material.Ambient;
+
+            if (isInShadow)
+            {
+                // No need to calculate diffuse or specular.
+                // Only the ambient value contributes when in shadow.
+                return ambient;
+            }
+
+            // find the direction to the light source
+            var lightv = Vector4.Normalize(light.Position - point);
 
             // light_dot_normal represents the cosine of the angle between the
             // light vector and the normal vector. A negative number means the
@@ -80,5 +105,27 @@ namespace Ray.Domain.Maths
             // add the three contributions together to get the final shading
             return ambient + diffuse + specular;
         }
+
+
+        #region Helper methods
+
+        private static bool IsPointInShadow(World scene, Vector4 point)
+        {
+            // Vector from the point back to the light source.
+            var v = scene.LightSource.Position - point;
+            var distance = v.Length();
+            var direction = Vector4.Normalize(v);
+
+            // Check for a "hit", within the world.
+            var r = new Model.Ray(point, direction);
+            var h = scene.CalculateHit(r);
+
+            // If got a hit, check where (at what distance),
+            // to determine whether point is in shadow.
+            return h.HasValue && h.DistanceT < distance;
+        } 
+
+        #endregion
+
     }
 }
