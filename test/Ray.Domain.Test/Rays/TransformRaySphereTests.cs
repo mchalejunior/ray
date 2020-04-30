@@ -19,7 +19,9 @@ namespace Ray.Domain.Test.Rays
         private Model.Ray _rayInstance, _transformedRay;
         private IBasicShape _sphereInstance = null;
         private readonly IMatrixTransformationBuilder _transformMatrix = new MatrixTransformationBuilder();
+#pragma warning disable CS0618 // Type or member is obsolete
         private SceneIntersectionCalculator _xs = null;
+#pragma warning restore CS0618 // Type or member is obsolete
 
 
         [Given(@"origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
@@ -93,7 +95,9 @@ namespace Ray.Domain.Test.Rays
         public void InitializationValues_SetOnIntersectionCalculator()
         {
 
+#pragma warning disable CS0618 // Type or member is obsolete
             _xs = new SceneIntersectionCalculator(new List<IBasicShape> { _sphereInstance });
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [And(@"transform ray with transformMatrix")]

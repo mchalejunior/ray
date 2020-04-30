@@ -1,4 +1,4 @@
-﻿Feature: LightPhongFeature
+﻿Feature: ShadowsFeature
 	In order to draw realistic 3D scenes
 	As a Ray Tracer
 	I want the ability to draw shadows

@@ -29,16 +29,24 @@ namespace Ray.Util.Console
             System.Console.WriteLine("Camera render start");
             RunCameraRenderer();
             System.Console.WriteLine("Camera render end");
-            System.Console.WriteLine("World render start");
-            RunWorldRenderer(false);
-            System.Console.WriteLine("World render end");
-            System.Console.WriteLine("World render (with acne) start");
-            RunWorldRenderer(true);
-            System.Console.WriteLine("World render (with acne) end");
+            //System.Console.WriteLine("World render start");
+            //RunWorldRenderer(false);
+            //System.Console.WriteLine("World render end");
+            //System.Console.WriteLine("World render (with acne) start");
+            //RunWorldRenderer(true);
+            //System.Console.WriteLine("World render (with acne) end");
+            System.Console.WriteLine("Plane World render start");
+            RunPlaneWorldRenderer();
+            System.Console.WriteLine("Plane World render end");
 
             System.Console.WriteLine("Files at C:\\temp\\ray");
             System.Console.WriteLine("Press return key to exit");
             System.Console.Read();
+        }
+
+        private static void RunPlaneWorldRenderer()
+        {
+            PlaneWorld.ReRenderSphereCentralWithPlanes($"c:\\temp\\ray\\plane-world.bmp");
         }
 
         private static void RunWorldRenderer(bool useAcneEffect)

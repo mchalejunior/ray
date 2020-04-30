@@ -47,7 +47,9 @@ namespace Ray.Util.Console.RaySphere3d
                 Intensity = Color.FromScRgb(Material.DefaultColorA, 1.0F, 1.0F, 1.0F)
             };
 
+#pragma warning disable CS0618 // Type or member is obsolete
             var xs = new SceneIntersectionCalculator(new List<IBasicShape> { shape });
+#pragma warning restore CS0618 // Type or member is obsolete
             var canvas_pixels = 100;
             var pixel_size = wall_size / canvas_pixels;
             var half = wall_size / 2;

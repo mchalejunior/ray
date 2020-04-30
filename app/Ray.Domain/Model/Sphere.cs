@@ -5,7 +5,7 @@ using Ray.Domain.Maths.Factories;
 
 namespace Ray.Domain.Model
 {
-    public partial class Sphere : IBasicShape
+    public partial class Sphere : BaseShape, IBasicShape
     {
         private readonly bool _enforceAssumptions;
 
@@ -30,22 +30,6 @@ namespace Ray.Domain.Model
         public Vector4 Origin { get; set; }
         public Vector4 Scale { get; set; }
 
-        public Material Material { get; set; } = Material.CreateDefaultInstance();
-
-        /// <summary>
-        /// As per text: Intersection calculations kept simple by modeling as unit
-        /// spheres at the origin. This <see cref="Transformation"/> can be applied
-        /// to scale and translate this sphere instance as appropriate.
-        /// </summary>
-        /// <remarks>
-        /// We actually apply the transform to the ray, rather than the sphere.
-        /// The ray ultimately determines the visual output, derived in no small
-        /// part by the intersection calculations. So keep the spheres uniform -
-        /// unit sphere @ origin, move them around world space with the transform,
-        /// but actually apply this transform (inverse of) to the ray.
-        /// </remarks>
-        /// <seealso cref="GetIntersections"/>
-        public IMatrixTransformationBuilder Transformation { get; set; } = new MatrixTransformationBuilder();
 
         public float Radius
         {

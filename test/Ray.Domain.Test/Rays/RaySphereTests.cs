@@ -20,8 +20,10 @@ namespace Ray.Domain.Test.Rays
         private Sphere _sphereInstance = null;
         private float _distance;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         private SceneIntersectionCalculator _xs = null;
-        
+#pragma warning restore CS0618 // Type or member is obsolete
+
 
         [Given(@"origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]
         public void InitializationValues_SetOnOriginInstance(float x, float y, float z, float w)
@@ -63,7 +65,9 @@ namespace Ray.Domain.Test.Rays
         [And(@"initialize xs as intersection calulator for ray, sphere")]
         public void InitializationValues_SetOnIntersectionCalculator()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             _xs = new SceneIntersectionCalculator(new List<IBasicShape> {_sphereInstance});
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [Then(@"ray origin equals tuple (-?\d+) (-?\d+) (-?\d+) (-?\d+)")]

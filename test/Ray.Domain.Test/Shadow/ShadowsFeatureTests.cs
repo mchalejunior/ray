@@ -8,7 +8,6 @@ using Ray.Domain.Maths;
 using Ray.Domain.Maths.Factories;
 using Ray.Domain.Model;
 using Xunit;
-using Ray = Ray.Domain.Model.Ray;
 
 namespace Ray.Domain.Test.Shadow
 {

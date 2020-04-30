@@ -33,7 +33,9 @@ namespace Ray.Util.Console.RaySphereShadow
             var wall_size = 7.0F;
             IBasicShape shape = Sphere.CreateDefaultInstance();
             shape.Transformation = transformation;
+#pragma warning disable CS0618 // Type or member is obsolete
             var xs = new SceneIntersectionCalculator(new List<IBasicShape> { shape });
+#pragma warning restore CS0618 // Type or member is obsolete
             var canvas_pixels = 100;
             var pixel_size = wall_size / canvas_pixels;
             var half = wall_size / 2;

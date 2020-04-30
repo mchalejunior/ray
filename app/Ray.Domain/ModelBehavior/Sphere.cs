@@ -60,7 +60,7 @@ namespace Ray.Domain.Model
             {
                 new IntersectionDto
                 {
-                    Ray = ray, // NOTE: return original ray (and sphere with transformation).
+                    Ray = ray, // NOTE: return original ray (and shape with transformation).
                     Shape = this,
                     DistanceT = t1,
                     TangentialIntersection = t1.IsApproximately(t2, null),
@@ -68,7 +68,7 @@ namespace Ray.Domain.Model
                 },
                 new IntersectionDto
                 {
-                    Ray = ray, // NOTE: return original ray (and sphere with transformation).
+                    Ray = ray, // NOTE: return original ray (and shape with transformation).
                     Shape = this,
                     DistanceT = t2,
                     TangentialIntersection = t1.IsApproximately(t2, null),
@@ -106,76 +106,6 @@ namespace Ray.Domain.Model
             }
         }
 
-
-
-        #region Fluent Material manipulation
-
-        // Fluent syntax for updating select material attributes appears to be the most useful.
-        // This might apply at IBasicShape level, not sure yet.
-        public Sphere UpdateColor(Color color)
-        {
-            var m = Material;
-            m.Color = color;
-            Material = m;
-            return this;
-        }
-
-        public Sphere UpdateDiffuse(float diffuse)
-        {
-            var m = Material;
-            m.Diffuse = diffuse;
-            Material = m;
-            return this;
-        }
-
-        public Sphere UpdateSpecular(float specular)
-        {
-            var m = Material;
-            m.Specular = specular;
-            Material = m;
-            return this;
-        }
-
-        public Sphere UpdateAmbient(float ambient)
-        {
-            var m = Material;
-            m.Ambient = ambient;
-            Material = m;
-            return this;
-        }
-
-        public Sphere UpdateShininess(float shininess)
-        {
-            var m = Material;
-            m.Shininess = shininess;
-            Material = m;
-            return this;
-        } 
-
-        #endregion
-
-
-
-        #region Helper methods
-
-
-        private Ray GetTransformedRay(Ray ray, bool applyLocalTransformation)
-        {
-            if (!applyLocalTransformation)
-            {
-                return ray;
-            }
-
-            return new Ray
-            {
-                // invert:true passed to Execute, as we apply the inverse of the Sphere transform to the Ray.
-                Origin = Transformation.Execute(ray.Origin, true),
-                Direction = Transformation.Execute(ray.Direction, true)
-            };
-        }
-
-
-        #endregion
 
     }
 }
