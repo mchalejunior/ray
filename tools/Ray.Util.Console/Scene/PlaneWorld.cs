@@ -22,8 +22,6 @@ namespace Ray.Util.Console.Scene
             var floor = new Plane();
             floor.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 1F, 0.9F, 0.9F))
                  .UpdateSpecular(0F);
-            //floor.Transformation = new MatrixTransformationBuilder()
-            //    .Translate(new Vector3(0F, -0.5F, 0F));
 
             var left_wall = new Plane();
             left_wall.Transformation = new MatrixTransformationBuilder()
@@ -32,8 +30,6 @@ namespace Ray.Util.Console.Scene
                 .Translate(new Vector3(0F, 0F, 5F))
                 ;
             left_wall.Material = floor.Material;
-            //left_wall.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 1.0F, 0.0F, 0.0F))
-            //    .UpdateSpecular(0F);
 
             var right_wall = new Plane();
             right_wall.Transformation = new MatrixTransformationBuilder()
@@ -42,8 +38,6 @@ namespace Ray.Util.Console.Scene
                 .Translate(new Vector3(0F, 0F, 5F))
                 ;
             right_wall.Material = floor.Material;
-            //right_wall.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 0.0F, 0.0F, 1.0F))
-            //    .UpdateSpecular(0F);
 
             var middle = Sphere.CreateDefaultInstance();
             middle.Transformation = new MatrixTransformationBuilder()
