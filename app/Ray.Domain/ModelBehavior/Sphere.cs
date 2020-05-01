@@ -78,7 +78,7 @@ namespace Ray.Domain.Model
 
         }
 
-        public Vector4 GetNormal(Vector4 point, bool applyLocalTransformation = true)
+        public override Vector4 GetNormal(Vector4 point, bool applyLocalTransformation = true)
         {
             //TODO: check.require on point, to make sure is a point (W=1)?
 
@@ -91,21 +91,13 @@ namespace Ray.Domain.Model
                 throw new ApplicationException("Precondition failed: Require a unit sphere at the axis origin.");
             }
 
-            if (applyLocalTransformation)
-            {
-                // Straight from text. See for derivation details.
-                var object_point = Transformation.Execute(point, true);
-                var object_normal = object_point - Origin;
-                var world_normal = Transformation.Execute(object_normal, true, true);
-                world_normal.W = 0F;
-                return Vector4.Normalize(world_normal);
-            }
-            else
-            {
-                return Vector4.Normalize(point - Origin);
-            }
+            return base.GetNormal(point, applyLocalTransformation);
         }
 
 
+        protected override Vector4 GetLocalNormal(Vector4 point)
+        {
+            return point - Origin;
+        }
     }
 }

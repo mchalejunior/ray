@@ -38,28 +38,29 @@ namespace Ray.Domain.Model
             };
         }
 
-        public Vector4 GetNormal(Vector4 point, bool applyLocalTransformation = true)
+        public override Vector4 GetNormal(Vector4 point, bool applyLocalTransformation = true)
         {
             // Modeled as xz Plane (y=0) passing through the origin.
 
-            if (applyLocalTransformation)
-            {
-                // Normal for a given point on any shape follows same principles.
-                // Potential refactor to base class here. However, something to be
-                // said for making it easier to understand by leaving it within each shape.
-                // E.g. here the local normal is always constant as we assume an xz plane
-                // passing through the origin.
+            // Can't hand straight off to the base. Calculation for Sphere and Plane follows
+            // identical routine, when applying transforms, but differs if none.
+            // We'll need a third shape for further comparison, but for now the simplest
+            // approach is to have the Plane return it's known constant if no transforms to apply.
 
-                var object_point = Transformation.Execute(point, true);
-                var object_normal = new Vector4(0F, 1F, 0F, 0F);
-                var world_normal = Transformation.Execute(object_normal, true, true);
-                world_normal.W = 0F;
-                return Vector4.Normalize(world_normal);
-            }
-            else
+            bool isTransformSpecified = Transformation.GetCompositeTransformation() != Matrix4x4.Identity;
+            bool shouldApplyLocalTransformation = applyLocalTransformation && isTransformSpecified;
+
+            if (shouldApplyLocalTransformation)
             {
-                return new Vector4(0F, 1F, 0F, 0F);
+                return base.GetNormal(point, true);
             }
+
+            return ConstantNormal;
+        }
+
+        protected override Vector4 GetLocalNormal(Vector4 point)
+        {
+            return point - ConstantNormal;
         }
     }
 }

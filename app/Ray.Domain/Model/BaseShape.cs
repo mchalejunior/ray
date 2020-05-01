@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Numerics;
 using System.Windows.Media;
 using Ray.Domain.Maths.Factories;
 
@@ -30,6 +28,26 @@ namespace Ray.Domain.Model
         /// </remarks>
         /// <seealso cref="GetIntersections"/>
         public IMatrixTransformationBuilder Transformation { get; set; } = new MatrixTransformationBuilder();
+
+
+        protected abstract Vector4 GetLocalNormal(Vector4 point);
+
+        public virtual Vector4 GetNormal(Vector4 point, bool applyLocalTransformation = true)
+        {
+            if (applyLocalTransformation)
+            {
+                // Straight from text. See for derivation details.
+                var object_point = Transformation.Execute(point, true);
+                var object_normal = GetLocalNormal(object_point);
+                var world_normal = Transformation.Execute(object_normal, true, true);
+                world_normal.W = 0F;
+                return Vector4.Normalize(world_normal);
+            }
+            else
+            {
+                return Vector4.Normalize(GetLocalNormal(point));
+            }
+        }
 
 
         protected Ray GetTransformedRay(Ray ray, bool applyLocalTransformation)

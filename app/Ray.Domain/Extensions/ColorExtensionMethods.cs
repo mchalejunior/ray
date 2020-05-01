@@ -58,20 +58,6 @@ namespace Ray.Domain.Extensions
 
         public static bool AreClose(this Color left, Color right, bool ignoreAlpha, int? decimalPlaces = 6)
         {
-            //if (!ignoreAlpha)
-            //{
-            //    return Color.AreClose(left, right);
-            //}
-
-            //// Slightly convoluted assertion.
-            //// Basically the individual RGB comparisons can be outside of Single.Epsilon,
-            //// but Color.AreClose would still be happy they're the same color.
-            //// So let's use Color.AreClose logic, but just eliminate the Alpha variation.
-            //return Color.AreClose(
-            //    Color.FromScRgb(1.0F, left.ScR, left.ScG, left.ScB),
-            //    Color.FromScRgb(1.0F, right.ScR, right.ScG, right.ScB)
-            //);
-
             float tolerance = decimalPlaces == null ? float.Epsilon : ToleranceCache[decimalPlaces.Value];
 
             if (MathF.Abs(left.ScR - right.ScR) > tolerance) return false;

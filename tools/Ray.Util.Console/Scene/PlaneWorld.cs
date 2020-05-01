@@ -19,29 +19,31 @@ namespace Ray.Util.Console.Scene
 
             // Define world
 
-            var floor = new Plane(); //Sphere.CreateDefaultInstance();
-            //floor.Transformation = new MatrixTransformationBuilder()
-            //    .Scale(new Vector3(10F, 0.01F, 10F));
+            var floor = new Plane();
             floor.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 1F, 0.9F, 0.9F))
                  .UpdateSpecular(0F);
+            //floor.Transformation = new MatrixTransformationBuilder()
+            //    .Translate(new Vector3(0F, -0.5F, 0F));
 
-            //var left_wall = Sphere.CreateDefaultInstance();
-            //left_wall.Transformation = new MatrixTransformationBuilder()
-            //    .Scale(new Vector3(10F, 0.01F, 10F))
-            //    .RotateX(MathF.PI / 2)
-            //    .RotateY(-MathF.PI / 4)
-            //    .Translate(new Vector3(0F, 0F, 5F))
-            //    ;
-            //left_wall.Material = floor.Material;
+            var left_wall = new Plane();
+            left_wall.Transformation = new MatrixTransformationBuilder()
+                .RotateX(MathF.PI / 2)
+                .RotateY(-MathF.PI / 4)
+                .Translate(new Vector3(0F, 0F, 5F))
+                ;
+            left_wall.Material = floor.Material;
+            //left_wall.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 1.0F, 0.0F, 0.0F))
+            //    .UpdateSpecular(0F);
 
-            //var right_wall = Sphere.CreateDefaultInstance();
-            //right_wall.Transformation = new MatrixTransformationBuilder()
-            //    .Scale(new Vector3(10F, 0.01F, 10F))
-            //    .RotateX(MathF.PI / 2)
-            //    .RotateY(MathF.PI / 4)
-            //    .Translate(new Vector3(0F, 0F, 5F))
-            //    ;
-            //right_wall.Material = floor.Material;
+            var right_wall = new Plane();
+            right_wall.Transformation = new MatrixTransformationBuilder()
+                .RotateX(MathF.PI / 2)
+                .RotateY(MathF.PI / 4)
+                .Translate(new Vector3(0F, 0F, 5F))
+                ;
+            right_wall.Material = floor.Material;
+            //right_wall.UpdateColor(Color.FromScRgb(Material.DefaultColorA, 0.0F, 0.0F, 1.0F))
+            //    .UpdateSpecular(0F);
 
             var middle = Sphere.CreateDefaultInstance();
             middle.Transformation = new MatrixTransformationBuilder()
@@ -70,7 +72,7 @@ namespace Ray.Util.Console.Scene
 
             var world = new World(new List<IBasicShape>
                 {
-                    floor, //left_wall, right_wall,
+                    floor, left_wall, right_wall,
                     left, middle, right
                 },
                 new Light

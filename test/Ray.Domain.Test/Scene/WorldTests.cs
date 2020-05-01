@@ -281,7 +281,7 @@ namespace Ray.Domain.Test.Scene
             // for these tests. These tests effected by use of IntersectionDto.OverPosition,
             // which itself required a reduction in precision to eliminate "acne".
             //   That all said, still looks great to the naked eye!
-            Assert.True(expectedAnswer.AreClose(actualAnswer, true, 3));
+            Assert.True(expectedAnswer.AreClose(actualAnswer, true, 4));
         }
 
         [Then(@"world color for ray equals inner material color")]
