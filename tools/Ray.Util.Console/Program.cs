@@ -26,22 +26,30 @@ namespace Ray.Util.Console
             System.Console.WriteLine("3D Ray start");
             RunSphereRayTracer3d();
             System.Console.WriteLine("3D Ray end");
-            System.Console.WriteLine("Camera render start");
-            RunCameraRenderer();
-            System.Console.WriteLine("Camera render end");
-            System.Console.WriteLine("World render start");
-            RunWorldRenderer(false);
-            System.Console.WriteLine("World render end");
-            System.Console.WriteLine("World render (with acne) start");
-            RunWorldRenderer(true);
-            System.Console.WriteLine("World render (with acne) end");
-            System.Console.WriteLine("Plane World render start");
-            RunPlaneWorldRenderer();
-            System.Console.WriteLine("Plane World render end");
+            //System.Console.WriteLine("Camera render start");
+            //RunCameraRenderer();
+            //System.Console.WriteLine("Camera render end");
+            //System.Console.WriteLine("World render start");
+            //RunWorldRenderer(false);
+            //System.Console.WriteLine("World render end");
+            //System.Console.WriteLine("World render (with acne) start");
+            //RunWorldRenderer(true);
+            //System.Console.WriteLine("World render (with acne) end");
+            //System.Console.WriteLine("Plane World render start");
+            //RunPlaneWorldRenderer();
+            //System.Console.WriteLine("Plane World render end");
+            System.Console.WriteLine("Overhead World render start");
+            RunOverheadPlaneWorldRenderer();
+            System.Console.WriteLine("Overhead World render end");
 
             System.Console.WriteLine("Files at C:\\temp\\ray");
             System.Console.WriteLine("Press return key to exit");
             System.Console.Read();
+        }
+
+        private static void RunOverheadPlaneWorldRenderer()
+        {
+            PlaneWorld.RenderSphereWithPlanesFromOverhead($"c:\\temp\\ray\\overhead-world.bmp");
         }
 
         private static void RunPlaneWorldRenderer()
