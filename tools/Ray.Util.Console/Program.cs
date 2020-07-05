@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Numerics;
 using Ray.Domain.Maths.Factories;
 using Ray.Util.Console.ClockDrawing;
@@ -41,10 +42,20 @@ namespace Ray.Util.Console
             System.Console.WriteLine("Overhead World render start");
             RunOverheadPlaneWorldRenderer();
             System.Console.WriteLine("Overhead World render end");
+            System.Console.WriteLine("Serialize Scene start");
+            OutputSceneAsJson();
+            System.Console.WriteLine("Serialize Scene end");
+
 
             System.Console.WriteLine("Files at C:\\temp\\ray");
             System.Console.WriteLine("Press return key to exit");
             System.Console.Read();
+        }
+
+        private static void OutputSceneAsJson()
+        {
+            var json = PlaneWorld.SerializeSphereCentralWithPlanesAsJson();
+            File.WriteAllText($"c:\\temp\\ray\\example-scene.json", json);
         }
 
         private static void RunOverheadPlaneWorldRenderer()

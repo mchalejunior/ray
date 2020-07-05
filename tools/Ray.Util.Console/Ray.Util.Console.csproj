@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\app\Ray.Domain\Ray.Domain.csproj" />
+    <ProjectReference Include="..\..\app\Ray.Serialize\Ray.Serialize.csproj" />
   </ItemGroup>
 
 </Project>
