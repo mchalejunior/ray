@@ -17,8 +17,6 @@ namespace Ray.Util.Console.Scene
 
     public class CameraRender
     {
-        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
-
         public static void DrawDefaultWorld(string outputBitmapFilePath = null, System.Drawing.Bitmap canvas = null)
         {
             var world = CreateDefaultWorld();
@@ -118,7 +116,7 @@ namespace Ray.Util.Console.Scene
                 new Domain.Model.Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = WHITE
+                    Intensity = Color.White
                 }
             );
         }
@@ -143,7 +141,7 @@ namespace Ray.Util.Console.Scene
                 new Domain.Model.Light
                 {
                     Position = new Vector4(-30.0F, 30.0F, -30.0F, 1.0F),
-                    Intensity = WHITE
+                    Intensity = Color.White
                 }
             );
         }

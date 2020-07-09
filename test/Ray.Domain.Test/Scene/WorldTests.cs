@@ -16,7 +16,6 @@ namespace Ray.Domain.Test.Scene
     [FeatureFile("./features/scene/World.feature")]
     public sealed class WorldTests : Feature
     {
-        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
         private World _world;
         private Sphere _outerSphere, _innerSphere;
         private Vector4 _origin, _direction;
@@ -52,7 +51,7 @@ namespace Ray.Domain.Test.Scene
                 new Model.Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = WHITE
+                    Intensity = Color.White
                 }
             );
         }

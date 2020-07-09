@@ -15,8 +15,6 @@ namespace Ray.Util.Console.Scene
 {
     class PlaneWorld
     {
-        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
-
         public static void ReRenderSphereCentralWithPlanes(string outputBitmapFilePath)
         {
 
@@ -75,7 +73,7 @@ namespace Ray.Util.Console.Scene
                 new Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = WHITE
+                    Intensity = Color.White
                 });
 
             // Use low res until happy, then crank up. Takes a lot of clock cycles!
@@ -171,7 +169,7 @@ namespace Ray.Util.Console.Scene
                 new Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = WHITE
+                    Intensity = Color.White
                 });
 
             // Use low res until happy, then crank up. Takes a lot of clock cycles!
@@ -229,7 +227,7 @@ namespace Ray.Util.Console.Scene
             // Templates
             var defaultSphere = Sphere.CreateDefaultInstance();
             var defaultMaterial = Material.CreateDefaultInstance();
-            var white = System.Windows.Media.Colors.White;
+            var white = Color.White;
 
             // Copying ReRenderSphereCentralWithPlanes code using serializable DTOs.
 

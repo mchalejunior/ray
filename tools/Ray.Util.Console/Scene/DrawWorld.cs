@@ -12,8 +12,6 @@ namespace Ray.Util.Console.Scene
 {
     class DrawWorld
     {
-        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
-
         public static void RenderSphereCentral(string outputBitmapFilePath, bool useAcneEffect = false)
         {
 
@@ -76,7 +74,7 @@ namespace Ray.Util.Console.Scene
                 new Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = WHITE
+                    Intensity = Color.White
                 });
 
             // Use low res until happy, then crank up. Takes a lot of clock cycles!

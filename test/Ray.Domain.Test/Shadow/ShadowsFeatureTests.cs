@@ -13,7 +13,6 @@ namespace Ray.Domain.Test.Shadow
     [FeatureFile("./features/shadow/Shadows.feature")]
     public sealed class ShadowsFeatureTests : Feature
     {
-        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
         private World _world;
         private Sphere _outerSphere, _innerSphere;
         private Model.Light _lightInstance;
@@ -63,7 +62,7 @@ namespace Ray.Domain.Test.Shadow
                 new Model.Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = WHITE
+                    Intensity = Color.White
                 }
             );
         }

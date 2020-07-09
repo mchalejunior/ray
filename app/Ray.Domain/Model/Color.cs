@@ -8,9 +8,9 @@ namespace Ray.Domain.Model
     public struct Color
     {
         public float ScA;
-        public float ScB;
-        public float ScG;
         public float ScR;
+        public float ScG;
+        public float ScB;
 
         public static Color FromScRgb(float a, float r, float g, float b)
         {
@@ -18,10 +18,13 @@ namespace Ray.Domain.Model
             {
                 ScA = a,
                 ScR = r,
-                ScB = b,
-                ScG = g
+                ScG = g,
+                ScB = b
             };
         }
+
+        public static Color White => Color.FromScRgb(1F, 1F, 1F, 1F);
+        public static Color Black => Color.FromScRgb(1F, 0F, 0F, 0F);
 
 
         #region Straight from System.Windows.Media.Color decompilation
@@ -41,8 +44,8 @@ namespace Ray.Domain.Model
         }
 
         public byte R => ScRgbTosRgb(ScR);
-        public byte G => ScRgbTosRgb(ScR);
-        public byte B => ScRgbTosRgb(ScR);
+        public byte G => ScRgbTosRgb(ScG);
+        public byte B => ScRgbTosRgb(ScB);
 
 
         private static byte ScRgbTosRgb(float val)

@@ -8,8 +8,6 @@ namespace Ray.Domain.Maths
 {
     public static class Lighting
     {
-        private static Color BLACK = new Color();
-
         // NOTE: Notice below reference to the "acne" effect. This is a real rudimentary bootstrap
         //  of a "special effect". May consider abstracting an "effects engine" at some stage,
         //  But for now, just allowing for the effect, which is in essence a rounding error!
@@ -36,7 +34,7 @@ namespace Ray.Domain.Maths
             if (!hit.HasValue)
             {
                 // Ray misses everything. Default color is black.
-                return BLACK;
+                return Color.Black;
             }
 
             return CalculateColorWithPhongReflection(
@@ -75,8 +73,8 @@ namespace Ray.Domain.Maths
             var light_dot_normal = Vector4.Dot(lightv, normalv);
             if (light_dot_normal < 0F)
             {
-                diffuse = BLACK;
-                specular = BLACK;
+                diffuse = Color.Black;
+                specular = Color.Black;
             }
             else
             {
@@ -91,7 +89,7 @@ namespace Ray.Domain.Maths
 
                 if (reflect_dot_eye <= 0F)
                 {
-                    specular = BLACK;
+                    specular = Color.Black;
                 }
                 else
                 {
