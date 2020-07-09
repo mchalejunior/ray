@@ -16,6 +16,7 @@ namespace Ray.Web.Api.Controllers
     [ApiController]
     public class SceneController : ControllerBase
     {
+        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
 
         [HttpGet("example")]
         public IActionResult Get()
@@ -37,7 +38,7 @@ namespace Ray.Web.Api.Controllers
             // Templates
             var defaultSphere = Sphere.CreateDefaultInstance();
             var defaultMaterial = Material.CreateDefaultInstance();
-            var white = System.Windows.Media.Colors.White;
+            var white = WHITE;
 
             // Copying ReRenderSphereCentralWithPlanes code using serializable DTOs.
 
