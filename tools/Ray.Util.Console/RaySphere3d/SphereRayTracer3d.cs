@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -10,7 +9,6 @@ using Ray.Domain.Maths.Factories;
 using Ray.Domain.Maths.Simulations.Intersections;
 using Ray.Domain.Model;
 using Ray.Domain.Transportation;
-using Color = System.Windows.Media.Color;
 
 namespace Ray.Util.Console.RaySphere3d
 {
@@ -55,7 +53,7 @@ namespace Ray.Util.Console.RaySphere3d
             var half = wall_size / 2;
 
 
-            using var canvas = new Bitmap(canvas_pixels, canvas_pixels);
+            using var canvas = new System.Drawing.Bitmap(canvas_pixels, canvas_pixels);
 
             for (int y = 0; y < canvas_pixels; y++)
             {

@@ -6,6 +6,6 @@ namespace Ray.Domain.Model
     {
         // TODO: DBC for W = 1.0F ?
         public Vector4 Position { get; set; }
-        public System.Windows.Media.Color Intensity { get; set; }
+        public Color Intensity { get; set; }
     }
 }

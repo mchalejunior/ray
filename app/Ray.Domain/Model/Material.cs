@@ -6,7 +6,7 @@
         {
             return new Material
             {
-                Color = System.Windows.Media.Color.FromScRgb(DefaultColorA, DefaultColorR, DefaultColorG, DefaultColorB),
+                Color = Model.Color.FromScRgb(DefaultColorA, DefaultColorR, DefaultColorG, DefaultColorB),
                 Ambient = DefaultAmbient,
                 Diffuse = DefaultDiffuse,
                 Specular = DefaultSpecular,
@@ -19,7 +19,7 @@
         public const float DefaultColorA = 1.0F, DefaultColorR = 1.0F, DefaultColorG = 1.0F, DefaultColorB = 1.0F,
             DefaultAmbient = 0.1F, DefaultDiffuse = 0.9F, DefaultSpecular = 0.9F, DefaultShininess = 200F;
 
-        public System.Windows.Media.Color Color;
+        public Model.Color Color;
         public float Ambient;
         public float Diffuse;
         public float Specular;

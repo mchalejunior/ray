@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
-using System.Windows.Media;
 using Ray.Domain.Extensions;
 using Ray.Domain.Maths.Factories;
 using Ray.Domain.Maths.Simulations.Intersections;
 using Ray.Domain.Model;
 using Xunit;
 using Xunit.Gherkin.Quick;
-using Color = System.Windows.Media.Color;
 
 namespace Ray.Domain.Test.Light
 {

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Numerics;
 using System.Text;
 using Ray.Domain.Extensions;
 using Ray.Domain.Maths.Factories;
-using Color = System.Windows.Media.Color;
+using Ray.Domain.Model;
 
 namespace Ray.Util.Console.ClockDrawing
 {
@@ -13,7 +12,7 @@ namespace Ray.Util.Console.ClockDrawing
     {
         public static void DrawClock(string outputBitmapFilePath)
         {
-            using var canvas = new Bitmap(50, 50);
+            using var canvas = new System.Drawing.Bitmap(50, 50);
 
             // Canvas is 50 x 50. (REM top-left = 0,0).
             // Centre of clock in centre of canvas @ 25, 25.
@@ -56,7 +55,7 @@ namespace Ray.Util.Console.ClockDrawing
             canvas.Save(outputBitmapFilePath);
         }
 
-        private static void DrawProjectilePath(IMatrixTransformationBuilder builder, Bitmap canvas)
+        private static void DrawProjectilePath(IMatrixTransformationBuilder builder, System.Drawing.Bitmap canvas)
         {
             var hourMark = builder.Execute(new Vector4(0F, 0F, 0F, 1F));
 

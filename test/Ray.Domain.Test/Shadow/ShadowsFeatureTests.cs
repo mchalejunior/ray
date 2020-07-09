@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Numerics;
 using Ray.Domain.Extensions;
 using Xunit.Gherkin.Quick;
-using System.Windows.Media;
 using Ray.Domain.Maths;
 using Ray.Domain.Maths.Factories;
 using Ray.Domain.Model;
 using Xunit;
-using Color = System.Windows.Media.Color;
 
 namespace Ray.Domain.Test.Shadow
 {
     [FeatureFile("./features/shadow/Shadows.feature")]
     public sealed class ShadowsFeatureTests : Feature
     {
+        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
         private World _world;
         private Sphere _outerSphere, _innerSphere;
         private Model.Light _lightInstance;
@@ -64,7 +63,7 @@ namespace Ray.Domain.Test.Shadow
                 new Model.Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = System.Windows.Media.Colors.White
+                    Intensity = WHITE
                 }
             );
         }

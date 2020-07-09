@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Drawing;
 using Ray.Domain.Extensions;
-using Color = System.Windows.Media.Color;
+using Ray.Domain.Model;
 
 namespace Ray.Util.Console.ProjectileGame
 {
@@ -15,7 +14,7 @@ namespace Ray.Util.Console.ProjectileGame
                 Wind: {environment.Wind.X} {environment.Wind.Y} {environment.Wind.Z}."
             );
 
-            using var canvas = new Bitmap(50, 50);
+            using var canvas = new System.Drawing.Bitmap(50, 50);
             var projectileCalculator = new ProjectileCalculator(environment, launchSettings);
 
             while (!projectileCalculator.HasLanded)
@@ -31,7 +30,7 @@ namespace Ray.Util.Console.ProjectileGame
             // NOTE: 0,0 is top-left of canvas (standard computer image processing), but is
             // bottom-left in the real world! Book suggests subtracting y from canvas height.
             // Instead, let's leave it and then just flip the image.
-            canvas.RotateFlip(RotateFlipType.Rotate180FlipX);
+            canvas.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipX);
             canvas.Save(outputBitmapFilePath);
         }
 
@@ -45,7 +44,7 @@ namespace Ray.Util.Console.ProjectileGame
             );
         }
 
-        private static void DrawProjectilePath(ProjectileCalculator currentState, Bitmap canvas)
+        private static void DrawProjectilePath(ProjectileCalculator currentState, System.Drawing.Bitmap canvas)
         {
             var roundX = Math.Round(currentState.CurrentPosition.X, 0);
             var roundY = Math.Round(currentState.CurrentPosition.Y, 0);

@@ -1,5 +1,5 @@
-﻿using System.Windows.Media;
-using Ray.Domain.Extensions;
+﻿using Ray.Domain.Extensions;
+using Ray.Domain.Model;
 using Xunit;
 using Xunit.Gherkin.Quick;
 using static Ray.Domain.Extensions.ColorExtensionMethods;

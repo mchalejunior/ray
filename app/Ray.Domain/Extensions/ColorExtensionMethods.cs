@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media;
+using Ray.Domain.Model;
 
 namespace Ray.Domain.Extensions
 {

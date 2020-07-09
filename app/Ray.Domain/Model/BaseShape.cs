@@ -70,7 +70,7 @@ namespace Ray.Domain.Model
 
         // Fluent syntax for updating select material attributes appears to be the most useful.
         // This might apply at IBasicShape level, not sure yet.
-        public BaseShape UpdateColor(System.Windows.Media.Color color)
+        public BaseShape UpdateColor(Color color)
         {
             var m = Material;
             m.Color = color;

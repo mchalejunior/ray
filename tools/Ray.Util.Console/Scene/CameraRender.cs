@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Numerics;
 using System.Text;
 using Ray.Domain.Extensions;
 using Ray.Domain.Maths;
 using Ray.Domain.Maths.Factories;
 using Ray.Domain.Model;
-using Color = System.Windows.Media.Color;
 
 namespace Ray.Util.Console.Scene
 {
@@ -19,7 +17,9 @@ namespace Ray.Util.Console.Scene
 
     public class CameraRender
     {
-        public static void DrawDefaultWorld(string outputBitmapFilePath = null, Bitmap canvas = null)
+        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
+
+        public static void DrawDefaultWorld(string outputBitmapFilePath = null, System.Drawing.Bitmap canvas = null)
         {
             var world = CreateDefaultWorld();
             var camera = new Camera(11, 11, MathF.PI / 2);
@@ -33,7 +33,7 @@ namespace Ray.Util.Console.Scene
             bool shouldDispose = canvas == null;
             if (canvas == null)
             {
-                canvas = new Bitmap(camera.HorizontalSize, camera.VerticalSize);
+                canvas = new System.Drawing.Bitmap(camera.HorizontalSize, camera.VerticalSize);
             }
 
             for (int y = 0; y < camera.VerticalSize -1; y++)
@@ -58,7 +58,7 @@ namespace Ray.Util.Console.Scene
             }
         }
 
-        public static void DrawDefaultWorldLarger(string outputBitmapFilePath = null, Bitmap canvas = null)
+        public static void DrawDefaultWorldLarger(string outputBitmapFilePath = null, System.Drawing.Bitmap canvas = null)
         {
             var world = CreateDefaultWorldLarger();
             var camera = new Camera(110, 110, MathF.PI / 2);
@@ -75,7 +75,7 @@ namespace Ray.Util.Console.Scene
             bool shouldDispose = canvas == null;
             if (canvas == null)
             {
-                canvas = new Bitmap(camera.HorizontalSize, camera.VerticalSize);
+                canvas = new System.Drawing.Bitmap(camera.HorizontalSize, camera.VerticalSize);
             }
 
             for (int y = 0; y < camera.VerticalSize - 1; y++)
@@ -118,7 +118,7 @@ namespace Ray.Util.Console.Scene
                 new Domain.Model.Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = System.Windows.Media.Colors.White
+                    Intensity = WHITE
                 }
             );
         }
@@ -143,7 +143,7 @@ namespace Ray.Util.Console.Scene
                 new Domain.Model.Light
                 {
                     Position = new Vector4(-30.0F, 30.0F, -30.0F, 1.0F),
-                    Intensity = System.Windows.Media.Colors.White
+                    Intensity = WHITE
                 }
             );
         }

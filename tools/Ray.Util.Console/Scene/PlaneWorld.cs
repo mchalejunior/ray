@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Numerics;
 using System.Text;
 using Newtonsoft.Json;
@@ -10,14 +9,14 @@ using Ray.Domain.Maths;
 using Ray.Domain.Maths.Factories;
 using Ray.Domain.Model;
 using Ray.Serialize.Scene;
-using Color = System.Windows.Media.Color;
 using Plane = Ray.Domain.Model.Plane;
 
 namespace Ray.Util.Console.Scene
 {
     class PlaneWorld
     {
-        
+        private static Color WHITE = Color.FromScRgb(1F, 1F, 1F, 1F);
+
         public static void ReRenderSphereCentralWithPlanes(string outputBitmapFilePath)
         {
 
@@ -76,7 +75,7 @@ namespace Ray.Util.Console.Scene
                 new Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = System.Windows.Media.Colors.White
+                    Intensity = WHITE
                 });
 
             // Use low res until happy, then crank up. Takes a lot of clock cycles!
@@ -97,7 +96,7 @@ namespace Ray.Util.Console.Scene
 
             // Render image
 
-            using var canvas = new Bitmap(camera.HorizontalSize, camera.VerticalSize);
+            using var canvas = new System.Drawing.Bitmap(camera.HorizontalSize, camera.VerticalSize);
 
             for (int y = 0; y < camera.VerticalSize - 1; y++)
             {
@@ -172,7 +171,7 @@ namespace Ray.Util.Console.Scene
                 new Light
                 {
                     Position = new Vector4(-10.0F, 10.0F, -10.0F, 1.0F),
-                    Intensity = System.Windows.Media.Colors.White
+                    Intensity = WHITE
                 });
 
             // Use low res until happy, then crank up. Takes a lot of clock cycles!
@@ -193,7 +192,7 @@ namespace Ray.Util.Console.Scene
 
             // Render image
 
-            using var canvas = new Bitmap(camera.HorizontalSize, camera.VerticalSize);
+            using var canvas = new System.Drawing.Bitmap(camera.HorizontalSize, camera.VerticalSize);
 
             for (int y = 0; y < camera.VerticalSize - 1; y++)
             {
