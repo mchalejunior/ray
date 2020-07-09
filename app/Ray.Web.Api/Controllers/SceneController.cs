@@ -1,29 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using Ray.Domain.Model;
 using Ray.Serialize.Scene;
 
 namespace Ray.Web.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class SceneController : ControllerBase
     {
         [HttpGet("example")]
         public IActionResult Get()
         {
-            //JsonSerializerSettings jsonSettings = new JsonSerializerSettings();
-            //jsonSettings.Converters.Add(new StringEnumConverter());
-            //jsonSettings.NullValueHandling = NullValueHandling.Ignore;
-            //return JsonConvert.SerializeObject(scene, Formatting.Indented, jsonSettings);
-
             return new JsonResult(GetSphereCentralWithPlanesExample());
         }
 
