@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Windows.Automation;
 using Ray.Domain.Model;
 
 namespace Ray.Domain.Transportation

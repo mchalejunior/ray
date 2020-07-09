@@ -13,7 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{ED787C24-E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ray.Util.Console", "tools\Ray.Util.Console\Ray.Util.Console.csproj", "{9D572DF7-2789-4146-96CA-B00ECFAC5250}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ray.Serialize", "app\Ray.Serialize\Ray.Serialize.csproj", "{E2848A60-D274-4180-B7FD-CAA43FE73127}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ray.Serialize", "app\Ray.Serialize\Ray.Serialize.csproj", "{E2848A60-D274-4180-B7FD-CAA43FE73127}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ray.Command", "app\Ray.Command\Ray.Command.csproj", "{4BE181FB-D2BB-4DB7-A7E9-7842CC40B3A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ray.Web.Api", "app\Ray.Web.Api\Ray.Web.Api.csproj", "{A3AA16F8-D189-4DE2-8250-4B1E7D415AF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,14 @@ Global
 		{E2848A60-D274-4180-B7FD-CAA43FE73127}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2848A60-D274-4180-B7FD-CAA43FE73127}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2848A60-D274-4180-B7FD-CAA43FE73127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BE181FB-D2BB-4DB7-A7E9-7842CC40B3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BE181FB-D2BB-4DB7-A7E9-7842CC40B3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BE181FB-D2BB-4DB7-A7E9-7842CC40B3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BE181FB-D2BB-4DB7-A7E9-7842CC40B3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3AA16F8-D189-4DE2-8250-4B1E7D415AF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3AA16F8-D189-4DE2-8250-4B1E7D415AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3AA16F8-D189-4DE2-8250-4B1E7D415AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3AA16F8-D189-4DE2-8250-4B1E7D415AF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +57,7 @@ Global
 		{81AC8E56-9552-4964-9094-32078D1D67F7} = {ED787C24-EA03-4FCA-8D08-9359361F6F8C}
 		{7198A49D-6469-4C24-9350-2CAC578E7B1C} = {A3B56B0C-D57D-4EE1-A449-A16CF4DA4D8B}
 		{E2848A60-D274-4180-B7FD-CAA43FE73127} = {ED787C24-EA03-4FCA-8D08-9359361F6F8C}
+		{4BE181FB-D2BB-4DB7-A7E9-7842CC40B3A0} = {ED787C24-EA03-4FCA-8D08-9359361F6F8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3234EB4A-5463-4AC9-9852-F6460B7DBA50}
