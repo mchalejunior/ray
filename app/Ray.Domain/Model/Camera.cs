@@ -39,7 +39,7 @@ namespace Ray.Domain.Model
         // pixels.
         public int HorizontalSize { get; }
         public int VerticalSize { get; }
-        
+
         // angle (radians e.g. pi/2).
         public float FieldOfView { get; }
 
@@ -56,7 +56,7 @@ namespace Ray.Domain.Model
         /// <see cref="SetViewTransformation"/>
         public Matrix4x4 Transform { get; private set; } = Matrix4x4.Identity; // Identity RMF == CMF
 
-        
-        
+
+
     }
 }

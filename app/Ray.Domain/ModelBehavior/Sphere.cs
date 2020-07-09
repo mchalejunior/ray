@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Ray.Domain.Extensions;
+using Ray.Domain.Transportation;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Ray.Domain.Extensions;
-using Ray.Domain.Transportation;
 
 namespace Ray.Domain.Model
 {

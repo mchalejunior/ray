@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ray.Domain.Extensions;
+﻿using Ray.Domain.Extensions;
 using Ray.Domain.Model;
 using Ray.Domain.Transportation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Ray.Domain.Maths.Simulations.Intersections
 {
@@ -14,7 +14,7 @@ namespace Ray.Domain.Maths.Simulations.Intersections
     public class SceneIntersectionCalculator
     {
         private readonly List<IBasicShape> _shapes;
-        
+
 
         public SceneIntersectionCalculator(List<IBasicShape> shapes)
         {
@@ -27,10 +27,10 @@ namespace Ray.Domain.Maths.Simulations.Intersections
         /// </summary>
         public IEnumerable<IntersectionDto> CalculateIntersections(Model.Ray ray)
         {
-            
+
             return from shape in _shapes
-                from intersection in shape.GetIntersections(ray) 
-                select intersection;
+                   from intersection in shape.GetIntersections(ray)
+                   select intersection;
 
         }
 

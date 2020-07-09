@@ -5,6 +5,7 @@ using Ray.Domain.Extensions;
 using Ray.Domain.Maths;
 using Ray.Domain.Model;
 using Xunit;
+using Color = System.Windows.Media.Color;
 
 namespace Ray.Domain.Test.Light
 {

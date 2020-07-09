@@ -1,9 +1,10 @@
-﻿using System;
-using System.Numerics;
-using System.Windows.Media;
-using Ray.Domain.Extensions;
+﻿using Ray.Domain.Extensions;
 using Ray.Domain.Model;
 using Ray.Domain.Transportation;
+using System;
+using System.Numerics;
+using System.Windows.Media;
+using Color = System.Windows.Media.Color;
 
 namespace Ray.Domain.Maths
 {
@@ -40,7 +41,7 @@ namespace Ray.Domain.Maths
 
             return CalculateColorWithPhongReflection(
                 hit.Shape.Material, light,
-                useAcneEffect ? hit.Position : hit.OverPosition, 
+                useAcneEffect ? hit.Position : hit.OverPosition,
                 hit.EyeV, hit.NormalV, isInShadow
             );
         }
@@ -121,7 +122,7 @@ namespace Ray.Domain.Maths
             // If got a hit, check where (at what distance),
             // to determine whether point is in shadow.
             return h.HasValue && h.DistanceT < distance;
-        } 
+        }
 
         #endregion
 

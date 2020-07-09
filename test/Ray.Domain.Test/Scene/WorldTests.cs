@@ -11,6 +11,7 @@ using Ray.Domain.Model;
 using Ray.Domain.Transportation;
 using Xunit;
 using Xunit.Gherkin.Quick;
+using Color = System.Windows.Media.Color;
 
 namespace Ray.Domain.Test.Scene
 {

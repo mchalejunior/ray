@@ -1,5 +1,5 @@
-﻿using System.Numerics;
-using Ray.Domain.Model;
+﻿using Ray.Domain.Model;
+using System.Numerics;
 
 namespace Ray.Domain.Transportation
 {
@@ -53,7 +53,7 @@ namespace Ray.Domain.Transportation
         public bool TangentialIntersection { get; set; }
         public RaysOrigin RayOrigin { get; set; }
         public bool RayOriginatesInsideShape => RayOrigin == RaysOrigin.RayInsideShape;
-        
+
 
 
         /// <summary>

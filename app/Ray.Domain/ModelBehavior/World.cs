@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Ray.Domain.Extensions;
+using Ray.Domain.Transportation;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Ray.Domain.Extensions;
-using Ray.Domain.Transportation;
 
 namespace Ray.Domain.Model
 {
@@ -17,8 +15,8 @@ namespace Ray.Domain.Model
         {
 
             return from shape in Shapes
-                from intersection in shape.GetIntersections(ray)
-                select intersection;
+                   from intersection in shape.GetIntersections(ray)
+                   select intersection;
 
         }
 

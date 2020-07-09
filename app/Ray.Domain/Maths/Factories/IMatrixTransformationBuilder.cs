@@ -1,5 +1,5 @@
-﻿using System.Numerics;
-using Ray.Domain.Model;
+﻿using Ray.Domain.Model;
+using System.Numerics;
 
 namespace Ray.Domain.Maths.Factories
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
-using Ray.Domain.Extensions;
-using System.Windows.Media;
+﻿using System.Numerics;
 
 namespace Ray.Domain.Model
 {
@@ -11,6 +6,6 @@ namespace Ray.Domain.Model
     {
         // TODO: DBC for W = 1.0F ?
         public Vector4 Position { get; set; }
-        public Color Intensity { get; set; }
+        public System.Windows.Media.Color Intensity { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using Ray.Domain.Maths.Simulations.Intersections;
 using Ray.Domain.Model;
 using Xunit;
 using Xunit.Gherkin.Quick;
+using Color = System.Windows.Media.Color;
 
 namespace Ray.Domain.Test.Light
 {

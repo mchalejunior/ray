@@ -1,6 +1,5 @@
-﻿using System.Numerics;
-using System.Windows.Media;
-using Ray.Domain.Maths.Factories;
+﻿using Ray.Domain.Maths.Factories;
+using System.Numerics;
 
 namespace Ray.Domain.Model
 {
@@ -71,7 +70,7 @@ namespace Ray.Domain.Model
 
         // Fluent syntax for updating select material attributes appears to be the most useful.
         // This might apply at IBasicShape level, not sure yet.
-        public BaseShape UpdateColor(Color color)
+        public BaseShape UpdateColor(System.Windows.Media.Color color)
         {
             var m = Material;
             m.Color = color;

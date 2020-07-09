@@ -1,6 +1,6 @@
-﻿using System.Numerics;
-using Ray.Domain.Extensions;
+﻿using Ray.Domain.Extensions;
 using Ray.Domain.Maths.Factories;
+using System.Numerics;
 
 namespace Ray.Domain.Model
 {
@@ -24,10 +24,22 @@ namespace Ray.Domain.Model
             // Straight from text
             var columnMajorForm = new Matrix4x4
             {
-                M11 = left.X, M12 = left.Y, M13 = left.Z, M14 = 0.0F,
-                M21 = true_up.X, M22 = true_up.Y, M23 = true_up.Z, M24 = 0.0F,
-                M31 = -forward.X, M32 = -forward.Y, M33 = -forward.Z, M34 = 0.0F,
-                M41 = 0.0F, M42 = 0.0F, M43 = 0.0F, M44 = 1.0F
+                M11 = left.X,
+                M12 = left.Y,
+                M13 = left.Z,
+                M14 = 0.0F,
+                M21 = true_up.X,
+                M22 = true_up.Y,
+                M23 = true_up.Z,
+                M24 = 0.0F,
+                M31 = -forward.X,
+                M32 = -forward.Y,
+                M33 = -forward.Z,
+                M34 = 0.0F,
+                M41 = 0.0F,
+                M42 = 0.0F,
+                M43 = 0.0F,
+                M44 = 1.0F
             };
 
             // As in MatrixTransformationBuilder: When chaining matrix transformations need
@@ -55,7 +67,7 @@ namespace Ray.Domain.Model
             // and then compute the ray's direction vector.
             // Remember: Canvas is at z=-1 (always 1 unit away - use transforms like in intersections).
             var pixel = Transform.Invert().Multiply(
-                new Vector4(world_x, world_y, -1.0F, 1.0F), 
+                new Vector4(world_x, world_y, -1.0F, 1.0F),
                 true);
             var origin = Transform.Invert().Multiply(
                 new Vector4(0.0F, 0.0F, 0.0F, 1.0F),

@@ -65,7 +65,7 @@ namespace Ray.Domain.Extensions
             // A lay person explanation: System.Numerics namespace offers the ability to multiply two matrices,
             // or two vectors. But not a matrix by a vector. The Ray Tracer Text describes how this vector is
             // really just a skinny 1x4 matrix. So that's what we create here and then just multiple two matrices.
-            
+
             // You'll notice that we use CMF here. See further notes about this in ToColumnMajorForm. 
             // Ideally this important difference will be encapsulated by the code project being built here and it
             // won't be something client code has to worry about, but worth understanding the difference between CMF
@@ -75,7 +75,7 @@ namespace Ray.Domain.Extensions
                 left = left.ToColumnMajorForm();
             }
 
-            var skinnyMatrix = new Matrix4x4 {M11 = right.X, M21 = right.Y, M31 = right.Z, M41 = right.W};
+            var skinnyMatrix = new Matrix4x4 { M11 = right.X, M21 = right.Y, M31 = right.Z, M41 = right.W };
             var matrixCalculation = left * skinnyMatrix;
 
             return new Vector4(

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Media;
-
-namespace Ray.Domain.Model
+﻿namespace Ray.Domain.Model
 {
     public struct Material
     {
@@ -11,7 +6,7 @@ namespace Ray.Domain.Model
         {
             return new Material
             {
-                Color = Color.FromScRgb(DefaultColorA, DefaultColorR, DefaultColorG, DefaultColorB),
+                Color = System.Windows.Media.Color.FromScRgb(DefaultColorA, DefaultColorR, DefaultColorG, DefaultColorB),
                 Ambient = DefaultAmbient,
                 Diffuse = DefaultDiffuse,
                 Specular = DefaultSpecular,
@@ -24,7 +19,7 @@ namespace Ray.Domain.Model
         public const float DefaultColorA = 1.0F, DefaultColorR = 1.0F, DefaultColorG = 1.0F, DefaultColorB = 1.0F,
             DefaultAmbient = 0.1F, DefaultDiffuse = 0.9F, DefaultSpecular = 0.9F, DefaultShininess = 200F;
 
-        public Color Color;
+        public System.Windows.Media.Color Color;
         public float Ambient;
         public float Diffuse;
         public float Specular;

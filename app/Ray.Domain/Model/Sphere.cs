@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Ray.Domain.Extensions;
+using System;
 using System.Numerics;
-using Ray.Domain.Extensions;
-using Ray.Domain.Maths.Factories;
 
 namespace Ray.Domain.Model
 {

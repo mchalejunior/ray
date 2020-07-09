@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
-using Ray.Domain.Maths.Factories;
+﻿using Ray.Domain.Maths.Factories;
 using Ray.Domain.Transportation;
+using System.Collections.Generic;
+using System.Numerics;
 
 namespace Ray.Domain.Model
 {

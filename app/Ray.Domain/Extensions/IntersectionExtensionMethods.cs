@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Ray.Domain.Transportation;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Ray.Domain.Transportation;
 
 namespace Ray.Domain.Extensions
 {
