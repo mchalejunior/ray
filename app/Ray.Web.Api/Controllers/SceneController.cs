@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Ray.Command.Scene;
 using Ray.Domain.Model;
 using Ray.Serialize.Scene;
 
@@ -10,12 +13,25 @@ namespace Ray.Web.Api.Controllers
     [ApiController]
     public class SceneController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public SceneController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         [HttpGet("example")]
         public IActionResult Get()
         {
             return new JsonResult(GetSphereCentralWithPlanesExample());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post(SceneDto scene)
+        {
+            var result = await _mediator.Send(new CreateSceneCommand {Scene = scene});
+            return Ok(result);
+        }
 
 
         #region Example scene to serialize

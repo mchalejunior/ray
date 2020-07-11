@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Ray.Command.Scene;
 
 namespace Ray.Web.Api
 {
@@ -34,6 +36,8 @@ namespace Ray.Web.Api
                     x.JsonSerializerOptions.WriteIndented = true;
                     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
+
+            services.AddMediatR(typeof(CreateSceneCommand));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
