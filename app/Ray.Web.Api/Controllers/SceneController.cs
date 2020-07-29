@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Ray.Command.Scene;
+using Ray.Command.ApiHandlers;
 using Ray.Domain.Model;
 using Ray.Serialize.Scene;
 
