@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Ray.Command.ApiHandlers;
 using Ray.Domain.Model;
@@ -14,10 +15,12 @@ namespace Ray.Web.Api.Controllers
     public class SceneController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IWebHostEnvironment _env;
 
-        public SceneController(IMediator mediator)
+        public SceneController(IMediator mediator, IWebHostEnvironment env)
         {
             _mediator = mediator;
+            _env = env;
         }
 
         [HttpGet("example")]
@@ -29,7 +32,25 @@ namespace Ray.Web.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(SceneDto scene)
         {
-            var result = await _mediator.Send(new CreateSceneCommand {Scene = scene});
+            // TODO: input sanitize e.g.
+            // best to accumulate errors and return a not ok with violations
+            if (scene?.LightSource?.Position == null || scene?.LightSource?.Intensity == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(scene.LightSource));
+            }
+            if (scene?.Camera?.From == null || scene?.Camera?.To == null || scene?.Camera?.Up == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(scene.Camera));
+            }
+
+            var physicalProvider = _env.ContentRootFileProvider;
+            var physicalPath = physicalProvider.GetFileInfo("test.bmp");
+
+            var result = await _mediator.Send(new CreateSceneCommand
+            {
+                Scene = scene,
+                OutputFilePath = physicalPath.PhysicalPath
+            });
             return Ok(result);
         }
 
