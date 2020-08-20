@@ -258,7 +258,7 @@ namespace Ray.Web.Api.Controllers
             int high = 1000;
             int medium = 500;
             int low = 250;
-            int res = low;
+            int res = medium;
 #pragma warning restore CS0219 // Variable is assigned but its value is never used
 
             var scene = new SceneDto
@@ -279,9 +279,9 @@ namespace Ray.Web.Api.Controllers
                     Intensity = new ColorDto
                     {
                         A = white.ScA,
-                        R = white.R,
-                        G = white.G,
-                        B = white.B
+                        R = white.ScR,
+                        G = white.ScG,
+                        B = white.ScB
                     }
                 },
                 Camera = new CameraDto
