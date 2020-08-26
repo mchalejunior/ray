@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Ray.Command.ApiHandlers;
 using Ray.Domain.Model;
 using Ray.Serialize.Scene;
+using Ray.Web.Api.Data;
+using Ray.Web.Api.Infrastructure;
 
 namespace Ray.Web.Api.Controllers
 {
@@ -14,12 +16,17 @@ namespace Ray.Web.Api.Controllers
     [ApiController]
     public class SceneController : ControllerBase
     {
+        private readonly IBackgroundTaskQueue _taskQueue;
         private readonly IMediator _mediator;
-        private readonly IWebHostEnvironment _env;
+        private readonly ILogger<SceneController> _logger;
+        private readonly IHostEnvironment _env;
 
-        public SceneController(IMediator mediator, IWebHostEnvironment env)
+        public SceneController(IBackgroundTaskQueue taskQueue, IMediator mediator, 
+            ILogger<SceneController> logger, IHostEnvironment env)
         {
+            _taskQueue = taskQueue;
             _mediator = mediator;
+            _logger = logger;
             _env = env;
         }
 
@@ -30,7 +37,7 @@ namespace Ray.Web.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(SceneDto scene)
+        public IActionResult Post(SceneDto scene)
         {
             // TODO: input sanitize e.g.
             // best to accumulate errors and return a not ok with violations
@@ -43,15 +50,32 @@ namespace Ray.Web.Api.Controllers
                 throw new ArgumentOutOfRangeException(nameof(scene.Camera));
             }
 
-            var physicalProvider = _env.ContentRootFileProvider;
-            var physicalPath = physicalProvider.GetFileInfo("test.bmp");
 
-            var result = await _mediator.Send(new CreateSceneCommand
+            var correlationId = Guid.NewGuid();
+            var physicalProvider = _env.ContentRootFileProvider;
+            var physicalPath = physicalProvider.GetFileInfo(correlationId + ".bmp");
+
+            _taskQueue.QueueBackgroundWorkItem(async token =>
             {
-                Scene = scene,
-                OutputFilePath = physicalPath.PhysicalPath
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                var createSceneCommand = new CreateSceneCommand
+                {
+                    Scene = scene,
+                    CorrelationId = correlationId,
+                    OutputFilePath = physicalPath.PhysicalPath
+                };
+                await _mediator.Send(createSceneCommand, token);
             });
-            return Ok(result);
+
+            return Ok(new CreateSceneResponse
+            {
+                CorrelationId = correlationId,
+                Message = "Scene submitted to renderer. TODO: info and URL to poll for rendered image."
+            });
         }
 
 
