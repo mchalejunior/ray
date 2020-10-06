@@ -12,19 +12,19 @@ using Ray.Serialize.Scene;
 
 namespace Ray.Command.ApiHandlers
 {
-    public class CreateSceneCommand : IRequest
+    public class RenderSceneCommand : IRequest
     {
         public Guid CorrelationId { get; set; }
 
         public SceneDto Scene { get; set; }
 
-        public string OutputFilePath { get; set; }
+        public string FilePath { get; set; }
     }
 
     
-    public class CreateSceneHandler : AsyncRequestHandler<CreateSceneCommand>
+    public class RenderSceneHandler : AsyncRequestHandler<RenderSceneCommand>
     {
-        protected override Task Handle(CreateSceneCommand request, CancellationToken cancellationToken)
+        protected override Task Handle(RenderSceneCommand request, CancellationToken cancellationToken)
         {
             var shapes = new List<IBasicShape>();
             shapes.AddRange(request.Scene.Shapes.Select(ShapeFactory.MapApiToDomain));
@@ -58,7 +58,7 @@ namespace Ray.Command.ApiHandlers
 
             if (!cancellationToken.IsCancellationRequested)
             {
-                canvas.Save(request.OutputFilePath);
+                canvas.Save(request.FilePath);
             }
 
             return cancellationToken.IsCancellationRequested ? Task.FromCanceled(cancellationToken) : Task.CompletedTask;

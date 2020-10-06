@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Ray.Command.ApiHandlers;
-using Ray.Domain.Model;
 using Ray.Serialize.Scene;
 using Ray.Web.Api.Data;
 using Ray.Web.Api.Infrastructure;
@@ -20,20 +21,22 @@ namespace Ray.Web.Api.Controllers
         private readonly IMediator _mediator;
         private readonly ILogger<SceneController> _logger;
         private readonly IHostEnvironment _env;
+        private readonly CancellationToken _applicationStopping;
 
         public SceneController(IBackgroundTaskQueue taskQueue, IMediator mediator, 
-            ILogger<SceneController> logger, IHostEnvironment env)
+            ILogger<SceneController> logger, IHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
             _taskQueue = taskQueue;
             _mediator = mediator;
             _logger = logger;
             _env = env;
+            _applicationStopping = applicationLifetime.ApplicationStopping;
         }
 
         [HttpGet("example")]
-        public IActionResult Get()
+        public IActionResult Example()
         {
-            return new JsonResult(GetSphereCentralWithPlanesExample());
+            return new JsonResult(SampleData.GetSphereCentralWithPlanesExample());
         }
 
         [HttpPost]
@@ -51,9 +54,7 @@ namespace Ray.Web.Api.Controllers
             }
 
 
-            var correlationId = Guid.NewGuid();
-            var physicalProvider = _env.ContentRootFileProvider;
-            var physicalPath = physicalProvider.GetFileInfo(correlationId + ".bmp");
+            var renderSceneCommand = GetRenderSceneCommand(scene);
 
             _taskQueue.QueueBackgroundWorkItem(async token =>
             {
@@ -62,267 +63,66 @@ namespace Ray.Web.Api.Controllers
                     return;
                 }
 
-                var createSceneCommand = new CreateSceneCommand
-                {
-                    Scene = scene,
-                    CorrelationId = correlationId,
-                    OutputFilePath = physicalPath.PhysicalPath
-                };
-                await _mediator.Send(createSceneCommand, token);
+                await _mediator.Send(renderSceneCommand, token);
             });
 
             return Ok(new CreateSceneResponse
             {
-                CorrelationId = correlationId,
+                CorrelationId = renderSceneCommand.CorrelationId,
                 Message = "Scene submitted to renderer. TODO: info and URL to poll for rendered image."
             });
         }
 
-
-        #region Example scene to serialize
-
-        public static SceneDto GetSphereCentralWithPlanesExample()
+        [HttpGet]
+        public async Task<IActionResult> Get(Guid id)
         {
-            // Templates
-            var defaultSphere = Sphere.CreateDefaultInstance();
-            var defaultMaterial = Material.CreateDefaultInstance();
-            var white = Color.White;
+            // TODO: input sanitize + handle error from command handler e.g. file not found.
 
-            // Copying ReRenderSphereCentralWithPlanes code using serializable DTOs.
+            var downloadRenderedSceneCommand = GetDownloadRenderedSceneCommand(id);
+            var byteStream = await _mediator.Send(downloadRenderedSceneCommand, _applicationStopping);
 
-            // Planes
+            return File(byteStream, "application/octet-stream", downloadRenderedSceneCommand.FileName);
+        }
 
-            var floor = new ShapeDto
+
+
+        #region Helper methods
+
+        private RenderSceneCommand GetRenderSceneCommand(SceneDto scene)
+        {
+            var correlationId = Guid.NewGuid();
+            var command = new RenderSceneCommand
             {
-                Type = ShapeDto.ShapeType.Plane,
-                Material = new MaterialDto
-                {
-                    Color = new ColorDto
-                    {
-                        A = Material.DefaultColorA,
-                        R = 1F,
-                        G = 0.9F,
-                        B = 0.9F
-                    },
-                    Specular = 0F,
-                    Ambient = defaultMaterial.Ambient,
-                    Diffuse = defaultMaterial.Diffuse,
-                    Shininess = defaultMaterial.Shininess
-                }
+                Scene = scene,
+                CorrelationId = correlationId,
+                FilePath = GetSceneBitmapFileInfo(correlationId).PhysicalPath
             };
 
-            var left_wall = new ShapeDto
+            return command;
+        }
+
+        private DownloadRenderedSceneCommand GetDownloadRenderedSceneCommand(Guid correlationId)
+        {
+            var fileInfo = GetSceneBitmapFileInfo(correlationId);
+            var command = new DownloadRenderedSceneCommand
             {
-                Type = ShapeDto.ShapeType.Plane,
-                Material = floor.Material,
-                Transformations = new List<TransformDto>
-                {
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.RotateX,
-                        RotationRadians = MathF.PI / 2
-                    },
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.RotateY,
-                        RotationRadians = -MathF.PI / 4
-                    },
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.Translate,
-                        VectorTransformation = new VectorDto
-                        {
-                            X = 0F, Y = 0F, Z = 5F
-                        }
-                    }
-                }
+                CorrelationId = correlationId,
+                FilePath = fileInfo.PhysicalPath,
+                FileName = fileInfo.Name
             };
 
-            var right_wall = new ShapeDto
-            {
-                Type = ShapeDto.ShapeType.Plane,
-                Material = floor.Material,
-                Transformations = new List<TransformDto>
-                {
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.RotateX,
-                        RotationRadians = MathF.PI / 2
-                    },
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.RotateY,
-                        RotationRadians = MathF.PI / 4
-                    },
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.Translate,
-                        VectorTransformation = new VectorDto
-                        {
-                            X = 0F, Y = 0F, Z = 5F
-                        }
-                    }
-                }
-            };
+            return command;
+        }
 
-
-            // Spheres
-
-            var middle = new ShapeDto
-            {
-                Type = ShapeDto.ShapeType.Sphere,
-                Material = new MaterialDto
-                {
-                    Color = new ColorDto
-                    {
-                        A = Material.DefaultColorA,
-                        R = 0.1F,
-                        G = 1F,
-                        B = 0.5F
-                    },
-                    Diffuse = 0.7F,
-                    Specular = 0.3F,
-                    Ambient = defaultMaterial.Ambient,
-                    Shininess = defaultMaterial.Shininess
-                },
-                Transformations = new List<TransformDto>
-                {
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.Translate,
-                        VectorTransformation = new VectorDto
-                        {
-                            X = -0.5F, Y = 1F, Z = 0.5F
-                        }
-                    }
-                }
-            };
-
-            var right = new ShapeDto
-            {
-                Type = ShapeDto.ShapeType.Sphere,
-                Material = new MaterialDto
-                {
-                    Color = new ColorDto
-                    {
-                        A = Material.DefaultColorA,
-                        R = 0.5F,
-                        G = 1F,
-                        B = 0.1F
-                    },
-                    Diffuse = 0.7F,
-                    Specular = 0.3F,
-                    Ambient = defaultMaterial.Ambient,
-                    Shininess = defaultMaterial.Shininess
-                },
-                Transformations = new List<TransformDto>
-                {
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.Scale,
-                        VectorTransformation = new VectorDto
-                        {
-                            X = 0.5F, Y = 0.5F, Z = 0.5F
-                        }
-                    },
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.Translate,
-                        VectorTransformation = new VectorDto
-                        {
-                            X = 1.5F, Y = 0.5F, Z = -0.5F
-                        }
-                    }
-                }
-            };
-
-            var left = new ShapeDto
-            {
-                Type = ShapeDto.ShapeType.Sphere,
-                Material = new MaterialDto
-                {
-                    Color = new ColorDto
-                    {
-                        A = Material.DefaultColorA,
-                        R = 1F,
-                        G = 0.8F,
-                        B = 0.1F
-                    },
-                    Diffuse = 0.7F,
-                    Specular = 0.3F,
-                    Ambient = defaultMaterial.Ambient,
-                    Shininess = defaultMaterial.Shininess
-                },
-                Transformations = new List<TransformDto>
-                {
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.Scale,
-                        VectorTransformation = new VectorDto
-                        {
-                            X = 0.33F, Y = 0.33F, Z = 0.33F
-                        }
-                    },
-                    new TransformDto
-                    {
-                        TransformType = TransformDto.TransformationType.Translate,
-                        VectorTransformation = new VectorDto
-                        {
-                            X = -1.5F, Y = 0.33F, Z = -0.75F
-                        }
-                    }
-                }
-            };
-
-
-            // Scene - pull together shapes into root serializable object
-
-            // Use low res until happy, then crank up. Takes a lot of clock cycles!
-#pragma warning disable CS0219 // Variable is assigned but its value is never used
-            int high = 1000;
-            int medium = 500;
-            int low = 250;
-            int res = medium;
-#pragma warning restore CS0219 // Variable is assigned but its value is never used
-
-            var scene = new SceneDto
-            {
-                Shapes = new List<ShapeDto>
-                {
-                    floor, left_wall, right_wall,
-                    left, middle, right
-                },
-                LightSource = new LightDto
-                {
-                    Position = new VectorDto
-                    {
-                        X = -10F,
-                        Y = 10F,
-                        Z = -10F
-                    },
-                    Intensity = new ColorDto
-                    {
-                        A = white.ScA,
-                        R = white.ScR,
-                        G = white.ScG,
-                        B = white.ScB
-                    }
-                },
-                Camera = new CameraDto
-                {
-                    HSize = res,
-                    VSize = res / 2,
-                    FieldOfView = MathF.PI / 3,
-                    From = new VectorDto { X = 0F, Y = 1.5F, Z = -5F },
-                    To = new VectorDto { X = 0F, Y = 1F, Z = 0F },
-                    Up = new VectorDto { X = 0F, Y = 1F, Z = 0F }
-                }
-            };
-
-            return scene;
+        private IFileInfo GetSceneBitmapFileInfo(Guid correlationId)
+        {
+            var physicalProvider = _env.ContentRootFileProvider;
+            var physicalPath = physicalProvider.GetFileInfo(correlationId + ".bmp");
+            return physicalPath;
         }
 
         #endregion
+
 
 
     }

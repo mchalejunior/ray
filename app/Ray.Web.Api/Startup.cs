@@ -31,7 +31,7 @@ namespace Ray.Web.Api
                     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
-            services.AddMediatR(typeof(CreateSceneCommand));
+            services.AddMediatR(typeof(RenderSceneCommand));
 
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
