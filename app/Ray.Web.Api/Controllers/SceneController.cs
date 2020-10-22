@@ -69,7 +69,8 @@ namespace Ray.Web.Api.Controllers
             return Ok(new CreateSceneResponse
             {
                 CorrelationId = renderSceneCommand.CorrelationId,
-                Message = "Scene submitted to renderer. TODO: info and URL to poll for rendered image."
+                PollUrl = this.Url.Action(nameof(Get), this.ControllerContext.ActionDescriptor.ControllerName, new { id = renderSceneCommand.CorrelationId }, this.Request.Scheme),
+                Message = "Scene submitted to renderer. When the image is ready, it can be fetched at the 'PollUrl' included. Depending on complexity, images can take quite some time to render."
             });
         }
 
