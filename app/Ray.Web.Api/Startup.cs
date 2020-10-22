@@ -45,7 +45,9 @@ namespace Ray.Web.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // CM: Removing redirection to https to simplify Docker runtime
+            //  and github documentation for end-user.
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
