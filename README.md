@@ -92,3 +92,7 @@ POST http://localhost:8081/scene
 #  The example Json, posted as-is, should render in a few seconds.
 GET http://localhost:8081/Scene?id=fa22209d-5e53-47b7-8065-e7343d67b123
 ````
+
+## Output
+
+![Example Json rendered image](example.bmp)
