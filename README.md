@@ -56,13 +56,39 @@ To decouple the API frontend and Image Rendering backend I used [MediatR](https:
 
 # Getting Started
 
-Follow these instructions to build a Docker image from source, spin-up the API in the Docker run-time, fetch some example Json, use that Json to request an image render and finally poll for the completed image and download as a bitmap.
+Follow these instructions to build a Docker image from source, spin-up the API in the Docker runtime, fetch some example Json, use that Json to request an image render and finally poll for the completed image and download as a bitmap.
+
+## Runtime
 
 ````
 git clone https://github.com/cathalmchale/ray.git
 
-# Navigate to the solution root, which includes file Ray.sln.
+# Change directory to the solution root, which includes file Ray.sln.
 docker build --tag raywebapi:latest --file ./app/Ray.Web.Api/Dockerfile .
 
 docker run -d -e "ASPNETCORE_ENVIRONMENT=Development" -e "ASPNETCORE_URLS=http://+:80" -p 8081:80 raywebapi:latest
+````
+
+## API
+
+The runtime steps should make the API available over http on port 8081. To interact with the API, I recommend using Postman. Follow these steps to fetch some example Json from endpoint A, then post that Json to endpoint B and finally fetch the rendered image from endpoint C.
+
+````
+# Fetch some example Json
+GET http://localhost:8081/scene/example
+
+# Copy the example Json to the body of the next request.
+#  Include header Content-Type: application/json
+POST http://localhost:8081/scene
+
+# The response from the post will look like:
+{
+    "correlationId": "fa22209d-5e53-47b7-8065-e7343d67b123",
+    "pollUrl": "http://localhost:8081/Scene?id=fa22209d-5e53-47b7-8065-e7343d67b123",
+    "message": "Scene submitted to renderer. When the image is ready, it can be fetched at the 'pollUrl' included. Depending on complexity, images can take quite some time to render."
+}
+
+# Follow the "pollUrl" to download the rendered image, when it's ready.
+#  The example Json, posted as-is, should render in a few seconds.
+GET http://localhost:8081/Scene?id=fa22209d-5e53-47b7-8065-e7343d67b123
 ````
