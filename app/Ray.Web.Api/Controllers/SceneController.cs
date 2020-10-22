@@ -70,7 +70,7 @@ namespace Ray.Web.Api.Controllers
             {
                 CorrelationId = renderSceneCommand.CorrelationId,
                 PollUrl = this.Url.Action(nameof(Get), this.ControllerContext.ActionDescriptor.ControllerName, new { id = renderSceneCommand.CorrelationId }, this.Request.Scheme),
-                Message = "Scene submitted to renderer. When the image is ready, it can be fetched at the 'PollUrl' included. Depending on complexity, images can take quite some time to render."
+                Message = "Scene submitted to renderer. When the image is ready, it can be fetched at the 'pollUrl' included. Depending on complexity, images can take quite some time to render."
             });
         }
 
@@ -92,11 +92,12 @@ namespace Ray.Web.Api.Controllers
         private RenderSceneCommand GetRenderSceneCommand(SceneDto scene)
         {
             var correlationId = Guid.NewGuid();
+            var fileInfo = GetSceneBitmapFileInfo(correlationId);
             var command = new RenderSceneCommand
             {
                 Scene = scene,
                 CorrelationId = correlationId,
-                FilePath = GetSceneBitmapFileInfo(correlationId).PhysicalPath
+                FilePath = fileInfo.PhysicalPath
             };
 
             return command;
